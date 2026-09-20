@@ -1,0 +1,644 @@
+C:\xampp\htdocs\automation\side-project/data/exams/29l6wh2f5izows/source.txt
+--- PAGE 1 ---
+Lesson 1: System Administration and Maintenance (Linux) 
+Abbreviations 
+●​ OS: Operating System 
+●​ PC: Personal Computer 
+●​ GNU: GNU's Not Unix 
+●​ IEEE: Institute of Electrical and Electronics Engineers 
+●​ FSF: Free Software Foundation 
+●​ LAMP: Linux, Apache, MySQL, Perl/PHP/Python 
+●​ GPL: General Public License 
+●​ GUI: Graphical User Interface 
+●​ CLI: Command Line Interface 
+●​ MS: Microsoft 
+●​ I/O: Input/Output 
+●​ BSD: Berkeley Software Distribution 
+●​ SCSI: Small Computer System Interface 
+●​ NCP: NetWare Core Protocol 
+●​ SMB: Server Message Block 
+●​ LAN: Local Area Network 
+●​ NFS: Network File System 
+●​ Btrfs: B-tree File System 
+●​ VM: Virtual Machine 
+●​ NUMA: Non-Uniform Memory Access 
+●​ ZSTD: Zstandard 
+●​ RAM: Random Access Memory 
+●​ initramfs: Initial RAM File System 
+●​ USB: Universal Serial Bus 
+●​ IBM: International Business Machines 
+●​ BIOS: Basic Input/Output System 
+●​ AMD: Advanced Micro Devices 
+●​ GPU: Graphics Processing Unit 
+●​ HMM: Heterogeneous Memory Management 
+●​ SVM: Shared Virtual Memory 
+●​ ACPI: Advanced Configuration and Power Interface 
+●​ VMM: Virtual Machine Monitor 
+●​ CPU: Central Processing Unit 
+●​ IPC: Inter-Process Communication 
+●​ NT: New Technology 
+●​ IoT: Internet of Things 
+●​ SUS: Single UNIX Specification 
+●​ POSIX: Portable Operating System Interface 
+●​ ALSA: Advanced Linux Sound Architecture 
+
+--- PAGE 2 ---
+●​ SELinux: Security-Enhanced Linux 
+●​ sh: Bourne Shell 
+●​ bash: GNU Bourne-Again Shell 
+●​ csh: C Shell 
+●​ ksh: Korn Shell 
+●​ fish / fsh: Friendly Interactive Shell 
+●​ zsh: Z Shell 
+●​ tcsh: TENEX C Shell 
+​
+Enumerations 
+●​ Operating Systems Comparison (Pros and Cons): 
+○​ Windows Pros:  
+■​ Support for all hardware 
+■​ Ease of use 
+■​ Software support 
+■​ Plug and play feature 
+■​ Desktop and touchscreen. 
+○​ Windows Cons:  
+■​ Virus attacks 
+■​ Paid software 
+■​ High computer resources 
+■​ Technical support. 
+○​ Mac Pros:  
+■​ Fewer virus attacks 
+■​ Good customer support 
+■​ Similar GUI for all products 
+■​ Performance and long life 
+■​ Default apps. 
+○​ Mac Cons:  
+■​ Expensive  
+■​ Fewer games and software 
+■​ No hardware customization. 
+○​ Linux Pros:  
+■​ Open-source  
+■​ No need for anti-virus 
+■​ Powerful CLI 
+■​ Low system specifications 
+■​ Good at multitasking 
+■​ Less disk space needed. 
+○​ Linux Cons:  
+■​ Hardware drivers 
+■​ Learning curve 
+
+--- PAGE 3 ---
+■​ Software alternative 
+■​ Games. 
+ 
+●​ Fundamental Differences (Linux vs. Windows): 
+1.​ Linux is yours, Windows is still theirs. 
+2.​ Linux needs root privileges to be able to execute codes. 
+3.​ Linux does not need any anti-virus software (No OS is totally secure). 
+4.​ Windows users are encouraged to pay for software that is only about 20% effective and 
+severely limits performance. 
+5.​ Linux uses a centralized software approach, Windows does not. 
+6.​ Most new-user-friendly Linux distributions come with the most needed software already 
+installed. 
+7.​ Linux software is installed in predetermined directories; it cannot be moved or installed 
+elsewhere. 
+8.​ Proprietary drivers are available through online repositories; Windows drivers include 
+unwanted software or adware. 
+9.​ Linux updates everything at once and never restarts without permission; Windows 
+updates select software and restarts without consent. 
+10.​Linux uses /dev for drives; Windows uses alphabet letters. 
+ 
+●​ Mistakes from New Linux Users: 
+1.​ Choose wrong hardware. 
+2.​ Choose wrong Linux distributions. 
+3.​ Linux is not Windows (expectation). 
+4.​ User uses Google to find software. 
+5.​ User doesn't take time to learn Linux. 
+ 
+●​ Kernel Objectives: 
+○​ To establish communication between user-level applications and hardware. 
+○​ To decide the state of incoming processes. 
+○​ To control disk management. 
+○​ To control memory management. 
+○​ To control task management. 
+ 
+●​ What Kernel Manages: 
+○​ CPU/GPU 
+○​ Memory 
+○​ Input/Output (I/O) devices 
+○​ Resource management 
+○​ Memory management 
+○​ Device management 
+○​ System calls 
+○​ Kernel Security & Protection 
+ 
+
+--- PAGE 4 ---
+●​ Kernel Functions: 
+○​ Process Management 
+○​ Memory Management 
+○​ Device Management 
+○​ File System Management 
+○​ Resource Management 
+○​ Security and Access Control 
+○​ Inter-Process Communication (IPC) 
+○​ Task Scheduling, Load Balancing, Error Handling 
+ 
+●​ Types of Kernels: 
+1.​ Monolithic Kernel 
+2.​ Microkernel 
+3.​ Hybrid Kernel 
+4.​ Exo Kernel 
+5.​ Nano Kernel 
+6.​ Virtual Machine (VM) Kernel or Hypervisor 
+7.​ Embedded Kernel 
+ 
+●​ Different Types of Shells in Linux: 
+1.​ Bourne Shell (sh) 
+2.​ GNU Bourne-Again Shell (bash) 
+3.​ C Shell (csh) 
+4.​ Korn Shell (ksh) 
+5.​ Friendly Interactive Shell (fish / fsh) 
+6.​ Z Shell (zsh) 
+7.​ TENEX C Shell (tcsh) 
+ 
+●​ Shell Prompts by Type: 
+○​ Bourne shell (sh): Root: # | Non-root: $ 
+○​ GNU Bourne-Again shell (bash): Root: bash-VersionNumber# | Non-root: 
+bash-VersionNumber$ 
+○​ C shell (csh): Root: # | Non-root: % 
+○​ Korn shell (ksh): Root: # | Non-root: $ 
+○​ Z Shell (zsh): Root: hostname># | Non-root: hostname>$ 
+ 
+ 
+ 
+ 
+Lesson 2: File System 
+Abbreviations 
+
+--- PAGE 5 ---
+●​ FS: File System 
+●​ TB: Terabyte 
+●​ EB: Exabyte 
+●​ COW: Copy-on-Write 
+●​ NAS: Network Attached Storage 
+●​ XFS: X File System 
+●​ ZFS: Zettabyte File System 
+●​ FAT: File Allocation Table 
+●​ NTFS: New Technology File System 
+●​ exFAT: Extended File Allocation Table 
+●​ ReFS: Resilient File System 
+●​ CD / CD-ROM: Compact Disc / Compact Disc Read-Only Memory 
+●​ HDD: Hard Disk Drive 
+●​ FHS: Filesystem Hierarchy Standard 
+●​ FTP: File Transfer Protocol 
+●​ USR: User System Resources 
+ 
+Enumerations 
+●​ Linux File Systems: 
+○​ Minix file system 
+○​ Extended file system family (ext, ext2, ext3, ext4) 
+○​ Btrfs 
+○​ ReiserFS 
+○​ XFS 
+○​ ZFS 
+○​ JFS 
+ 
+●​ Common Use Cases for ZFS: 
+○​ Enterprise Storage Solutions 
+○​ Backup and Disaster Recovery 
+○​ File Server and NAS 
+ 
+●​ Components of NFS: 
+○​ NFS Server 
+○​ NFS Client 
+ 
+●​ MS Windows File Systems: 
+○​ FAT 
+○​ NTFS 
+○​ exFAT 
+○​ Live File System 
+○​ Resilient File System (ReFS) 
+
+--- PAGE 6 ---
+ 
+●​ Linux Directory Structure: 
+○​ / (Primary root directory) 
+○​ /bin (Essential command binaries) 
+○​ /boot (Boot loader files) 
+○​ /dev (Device files) 
+○​ /etc (Host-specific system-wide configuration files) 
+○​ /home (User home directories) 
+○​ /lib (Essential shared libraries and kernel modules) 
+○​ /media (Mount points for removable media) 
+○​ /mnt (Temporarily mounted filesystems) 
+○​ /opt (Add-on application software packages) 
+○​ /proc (Virtual filesystem for process and kernel information) 
+○​ /root (Home directory for the root user) 
+○​ /run (Run-time variable data) 
+○​ /sbin (Essential system administrative binaries) 
+○​ /srv (Site-specific data served by the system) 
+○​ /sys (Device, driver, and kernel feature information) 
+○​ /tmp (Temporary files) 
+○​ /usr (Secondary hierarchy for user data and applications) 
+○​ /var (Variable data files) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Lesson 3: Linux Distributions 
+Abbreviations 
+●​ YaST: Yet another Setup Tool 
+●​ DVD: Digital Versatile Disc 
+
+--- PAGE 7 ---
+●​ RHEL: Red Hat Enterprise Linux 
+●​ KVM: Kernel-based Virtual Machine 
+ 
+Enumerations 
+●​ Linux Distributions Listed: 
+1.​ Slackware (July 1993) 
+2.​ Debian (September 1993) 
+3.​ SUSE (1994) 
+4.​ Red Hat (May 1995) 
+5.​ Knoppix (September 2000) 
+6.​ Gentoo (March 2002) 
+7.​ Arch Linux (March 2002) 
+8.​ Fedora (November 2003) 
+9.​ CentOS (2004) 
+10.​Ubuntu (October 2004) 
+11.​Alpine Linux (August 2005) 
+12.​Oracle Linux (October 2006) 
+13.​Musix (December 2006) 
+14.​Android (September 2008) 
+15.​Mageia (June 2011) 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Lesson 4: Desktop Environments, Package Management, and 
+Boot Loaders 
+Abbreviations 
+●​ DE: Desktop Environment 
+●​ SSD: Solid-State Drive 
+
+--- PAGE 8 ---
+●​ MBR: Master Boot Record 
+●​ GPT: GUID Partition Table 
+●​ GUID: Globally Unique Identifier 
+●​ LightDM: Lightweight Display Manager 
+●​ SDDM: Simple Desktop Display Manager 
+●​ GDM / GDM3: GNOME Display Manager 
+●​ LXDM: LXDE Display Manager 
+●​ XDM: X Display Manager 
+●​ Ly: Lightweight 
+●​ KDM: KDE Display Manager 
+●​ WDM: WINGS Display Manager 
+●​ MDM: MDM Display Manager 
+●​ CDM: Console Display Manager 
+●​ SLiM: Simple Login Manager 
+●​ XDMCP: X Display Manager Control Protocol 
+●​ KDE: K Desktop Environment 
+●​ GNOME: GNU Network Object Model Environment 
+●​ LXDE: Lightweight X11 Desktop Environment 
+●​ LXQt: Lightweight Qt Desktop Environment 
+●​ XFCE / Xfce: XForms Common Environment 
+●​ BSPWM: Binary Space Partitioning Window Manager 
+●​ CDE: Common Desktop Environment 
+●​ UKUI: Ubuntu Kylin User Interface 
+●​ KIS: Keep It Simple 
+●​ ICCCM: Inter-Client Communication Conventions Manual 
+●​ EWMH: Extended Window Manager Hints 
+●​ APK: Alpine Package Keeper / Android Package Kit 
+●​ MSI: Microsoft Installer 
+●​ RPM: RPM Package Manager (originally Red Hat Package Manager) 
+●​ YUM: Yellowdog Updater, Modified 
+●​ DNF: Dandified YUM 
+●​ APT: Advanced Package Tool 
+●​ HTTP: Hypertext Transfer Protocol 
+●​ d-i: Debian-Installer 
+●​ Wubi: Windows-based Ubuntu Installer 
+●​ GRUB: GRand Unified Bootloader 
+●​ LILO: Linux Loader 
+●​ UEFI: Unified Extensible Firmware Interface 
+●​ EFI: Extensible Firmware Interface 
+●​ NTLDR: NT Loader 
+●​ BOOTMGR: Windows Boot Manager 
+●​ BURG: Brand-new Universal loadeR from GRUB 
+●​ RAID: Redundant Array of Independent Disks 
+●​ GHz: Gigahertz 
+
+--- PAGE 9 ---
+●​ GB: Gigabyte 
+ 
+Enumerations 
+●​ Major Display Renders: 
+○​ Xorg / X Window System (X11) 
+○​ Wayland 
+ 
+●​ Common Linux Partitioning Utilities: 
+1.​ fdisk 
+2.​ parted 
+3.​ gdisk 
+4.​ cfdisk 
+5.​ gparted 
+6.​ lsblk 
+ 
+●​ Linux Display Managers: 
+1.​ GNOME Display Manager (GDM/GDM3) 
+2.​ Simple Desktop Display Manager (SDDM) 
+3.​ Lightweight Display Manager (LightDM) 
+4.​ LXDE display manager (LXDM) 
+5.​ X Display Manager (XDM) 
+6.​ Lightweight (Ly) 
+7.​ KDE Display Manager (KDM) 
+8.​ WINGS Display Manager (WDM) 
+9.​ MDM Display Manager (MDM) 
+10.​Console Display Manager (CDM) 
+11.​SLiM (Simple Login Manager) 
+12.​Entrance 
+13.​XDMCP (X Display Manager Control Protocol) 
+14.​emptty 
+15.​greetd 
+●​ Linux Desktop Environments and Window Managers: 
+○​ KDE Plasma 
+○​ MATE 
+○​ GNOME 
+○​ Cinnamon 
+○​ Budgie 
+○​ LXQt 
+○​ LXDE 
+○​ XFCE 
+○​ Deepin 
+○​ Unity 
+
+--- PAGE 10 ---
+○​ Pantheon 
+○​ Lumina 
+○​ Enlightenment 
+○​ i3 
+○​ Ambient 
+○​ BSPWM 
+○​ CDE 
+○​ Trinity 
+○​ UKUI 
+○​ Sugar 
+○​ Openbox 
+○​ Fluxbox 
+○​ Awesome 
+○​ Hyprland 
+ 
+●​ Steps in Linux Installation: 
+○​ Keyboard settings 
+○​ Partition 
+○​ Set Timezone 
+○​ User Information 
+○​ Install files (copy files to HDD) 
+ 
+●​ Package Formats and Consuming Systems: 
+○​ APK (Alpine) – Alpine Linux 
+○​ APK (Android) – Android 
+○​ AppImage – Linux distribution-agnostic 
+○​ Deb – Debian, Ubuntu, Xubuntu, Linux Mint 
+○​ ebuild – Gentoo Linux 
+○​ eopkg – Solus 
+○​ Flatpak – Linux distribution-agnostic 
+○​ PKG – OS X, iOS, PlayStation 3, Solaris, SunOS, UNIX System V, Symbian, BeOS, 
+Apple Newton 
+○​ .pkg.tar.zst – Arch Linux 
+○​ PUP and PET – Puppy Linux 
+○​ RPM – Red Hat Enterprise Linux, Fedora, CentOS, SUSE Linux Enterprise Server, 
+openSUSE 
+○​ Snap – Linux distribution-agnostic (mainly Ubuntu) 
+○​ MSI – Microsoft Windows 
+ 
+●​ Popular Package Managers: 
+○​ npm – Node.js 
+○​ pip – Python 
+○​ vcpkg – C and C++ 
+○​ Homebrew – macOS 
+
+--- PAGE 11 ---
+○​ apt – Debian packages 
+○​ yum and dnf – Fedora and Red Hat Enterprise Linux 
+○​ pacman – Arch Linux 
+○​ zypper – openSUSE / SUSE 
+○​ nala – APT frontend 
+ 
+●​ RPM Modes: 
+○​ Query, Verify, Install, Upgrade, Erase, Show querytags, Show configuration 
+ 
+●​ Linux System Installers: 
+1.​ Anaconda 
+2.​ Debian-Installer 
+3.​ DrakX 
+4.​ Preseed 
+5.​ Snap 
+6.​ Wubi 
+7.​ Calamares 
+ 
+●​ Tasks Performed by Debian-Installer: 
+○​ Detects hardware 
+○​ Detects installation media 
+○​ Configures the network 
+○​ Configures APT / selects mirrors 
+○​ Sets up user accounts 
+○​ Detects other operating systems 
+ 
+●​ Boot Loaders: 
+1.​ GNU GRUB (Grand Unified Bootloader) 
+2.​ LILO (Linux Loader) 
+3.​ rEFInd 
+4.​ BootX (Apple / Linux) 
+5.​ NTLDR 
+6.​ BURG 
+7.​ SYSLINUX 
+ 
+●​ System Requirements by Distribution: 
+○​ Arch Linux: 2GB RAM (4GB+ rec.), 10GB HDD, 64-bit CPU Dual Core 2GHz+. 
+○​ Kali Linux: 2GB RAM (8GB+ rec.), 20GB HDD, 32/64-bit CPU Dual Core 2GHz+. 
+○​ Linux Mint: 4GB RAM+, 20GB HDD (100GB rec.), 64-bit CPU Single Core 2GHz+. 
+○​ Ubuntu Linux: 4GB RAM (8GB+ rec.), 40GB HDD, 64-bit CPU Quad Core 2.5GHz+. 
+○​ Fedora Linux: 8GB RAM (12GB+ rec.), 40GB HDD, 64-bit CPU Quad Core 2GHz+. 
+○​ SUSE Linux: 4GB RAM (8GB+ rec.), 30GB HDD, 64-bit CPU Quad Core 2GHz+. 
+ 
+ 
+
+--- PAGE 12 ---
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Lesson 5: Basic Commands 
+Abbreviations 
+●​ UID: User Identification / User ID 
+●​ GID: Group Identification / Group ID 
+●​ PAM: Pluggable Authentication Modules 
+●​ ASCII: American Standard Code for Information Interchange 
+●​ IP: Internet Protocol 
+●​ SSH: Secure Shell 
+●​ DNS: Domain Name System 
+●​ PING: Packet Internet Groper 
+ 
+
+--- PAGE 13 ---
+Enumerations 
+●​ Types of Linux Paths: 
+1.​ Relative paths 
+2.​ Absolute paths 
+ 
+●​ Linux Directory Commands: 
+○​ pwd (print working directory) 
+○​ mkdir (make directory) 
+○​ rmdir (remove directory) 
+○​ ls (list directory contents) 
+○​ cd (change directory) 
+ 
+●​ Linux File Commands: 
+○​ touch (create empty files) 
+○​ cat (concatenate and display file content) 
+○​ echo (output a string) 
+○​ printf (formatted printing) 
+○​ rm (remove files or directories) 
+○​ cp (copy files or directories) 
+○​ mv (move files or directories) 
+○​ rename (rename multiple files) 
+○​ head (display first lines) 
+○​ tail (display last lines) 
+○​ tac (display file contents in reverse order) 
+○​ more (display file screen-by-screen) 
+○​ less (enhanced file viewing) 
+ 
+●​ Navigation Keys in more Command: 
+○​ ENTER: Scroll down page by line 
+○​ Space bar: Move to the next page 
+○​ b key: Move to the previous page 
+○​ / key: Search the string 
+ 
+●​ Linux User & Group Commands: 
+○​ su (switch administrative user) 
+○​ id (display UID and GID) 
+○​ useradd (add user account) 
+○​ passwd (change user password) 
+○​ userdel / deluser (delete user account) 
+○​ usermod (modify user account) 
+○​ groupadd (create a user group) 
+○​ groupmod (modify group definition) 
+○​ groupdel (remove a group) 
+
+--- PAGE 14 ---
+○​ gpasswd (administer group passwords and members) 
+ 
+●​ Fields of /etc/passwd File: 
+1.​ Username 
+2.​ Password (x marker) 
+3.​ User ID (UID) 
+4.​ Group ID (GID) 
+5.​ User Info (GECOS / Full Name) 
+6.​ Home Directory 
+7.​ Shell 
+ 
+●​ Reserved UID Ranges: 
+○​ UID 0: Reserved for root user 
+○​ UID 1–99: Predefined system accounts 
+○​ UID 100–999: System accounts and groups 
+○​ UID 1000+: Regular user accounts 
+ 
+●​ Types of Linux Groups: 
+1.​ Primary or login group 
+2.​ Secondary or supplementary group 
+ 
+●​ Linux Filter Commands: 
+○​ grep (Global Regular Expression Print) 
+○​ wc (word, line, character count) 
+○​ od (octal dump / format display) 
+○​ sort (sort lines of text files) 
+ 
+●​ Compress & Decompress Tools & Options: 
+○​ tar options: 
+-c: Create an archive 
+-x: Extract an archive 
+-v: Verbose progress 
+-f: Filename of the archive 
+-t: View content of the archive 
+-j: Filter archive through bzip2 
+-z: Filter archive through gzip 
+-r: Append or update files 
+-W: Verify an archive 
+-C: Extract to a different directory 
+○​ gzip (compress file to .gz) 
+○​ gunzip (decompress .gz file) 
+○​ zcat (view compressed files) 
+ 
+●​ Linux Utility Commands: 
+
+--- PAGE 15 ---
+○​ find (search files in real-time directory tree) 
+○​ locate (search files using pre-indexed database) 
+○​ date (display date, time, and timezone) 
+○​ cal (display calendar) 
+○​ time (measure command execution time) 
+○​ df (disk free / report file system disk space usage) 
+○​ mount (mount storage device filesystem) 
+○​ exit (exit current shell session) 
+○​ clear (clear the terminal screen) 
+ 
+●​ Linux Networking Commands: 
+○​ ip (manage network interfaces and IP addresses) 
+○​ ssh (secure remote command line session) 
+○​ mail (send emails from terminal) 
+○​ ping (test network connectivity using ICMP) 
+○​ host (perform DNS lookups) 
+ 
+●​ Link Commands: 
+○​ ln -s (create symbolic/soft link) 
+○​ link / ln (create hard link) 
+○​ unlink (remove hard link/file entry) 
+ 

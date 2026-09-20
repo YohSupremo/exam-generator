@@ -1,0 +1,1829 @@
+{
+    "title": "Linux System Administration Comprehensive Exam",
+    "subject": "System Administration and Maintenance (Linux)",
+    "summary": "Interactive examination covering five lessons: System Administration and Maintenance (Linux) with operating system comparisons, Linux-versus-Windows differences, the kernel, shells and shell prompts; the File System with Linux and Windows file systems, NFS, ZFS, and the Linux directory structure; Linux distributions and their release timeline; desktop environments, package management systems, boot loaders, and installation; and basic commands covering paths, directories, files, users and groups, filters, archiving, utilities, networking, and links.",
+    "chapters": [
+        {
+            "chapterId": "ch1",
+            "title": "System Administration and Maintenance (Linux)",
+            "description": "Operating system comparison pros and cons, fundamental Linux-versus-Windows differences, mistakes of new Linux users, kernel objectives, kernel functions and management, kernel types, and shell types with their prompts.",
+            "questions": [
+                {
+                    "id": "ch1-q01",
+                    "question": "In the abbreviation LAMP, what does the letter M stand for?",
+                    "choices": [
+                        "Microsoft",
+                        "MySQL",
+                        "Memory",
+                        "Module"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "LAMP stands for Linux, Apache, MySQL, Perl\/PHP\/Python, so M is MySQL."
+                },
+                {
+                    "id": "ch1-q02",
+                    "question": "Which of these stands for the Free Software Foundation?",
+                    "choices": [
+                        "FSF",
+                        "FST",
+                        "FSS",
+                        "FRS"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "FSF is the Free Software Foundation, a supporter of the GNU project."
+                },
+                {
+                    "id": "ch1-q03",
+                    "question": "POSIX is an abbreviation for which standard interface?",
+                    "choices": [
+                        "Primary Operating System Interface",
+                        "Post-Operating System Interface",
+                        "Portable Operating System Interface",
+                        "Protocol Operating System Interface"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "POSIX is the Portable Operating System Interface (Single UNIX Specification)."
+                },
+                {
+                    "id": "ch1-q04",
+                    "question": "Which of the following is listed as a Windows con in the reference?",
+                    "choices": [
+                        "Fewer games and software",
+                        "No hardware customization",
+                        "Steep learning curve of commands",
+                        "Virus attacks and paid software"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Virus attacks are listed among Windows cons; the other choices are Mac or Linux cons."
+                },
+                {
+                    "id": "ch1-q05",
+                    "question": "Which advantage is attributed to macOS in the reference?",
+                    "choices": [
+                        "Support for all hardware",
+                        "Fewer virus attacks",
+                        "No need for anti-virus",
+                        "Low system specifications"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "For Mac, the reference lists fewer virus attacks as one of its pros."
+                },
+                {
+                    "id": "ch1-q06",
+                    "question": "What qualification does the reference add after stating Linux needs no anti-virus?",
+                    "choices": [
+                        "Only paid editions remain safe",
+                        "Windows is fully secure",
+                        "Firewalls are unnecessary",
+                        "No OS is totally secure"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Linux does not need anti-virus, but the reference adds that no OS is totally secure."
+                },
+                {
+                    "id": "ch1-q07",
+                    "question": "According to the reference, what does Linux need in order to execute code?",
+                    "choices": [
+                        "Root privileges",
+                        "A licensed kernel",
+                        "An anti-virus scan",
+                        "A desktop environment"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Linux needs root privileges to be able to execute codes, as stated in the fundamental differences."
+                },
+                {
+                    "id": "ch1-q08",
+                    "question": "How does Linux handle updates according to the reference?",
+                    "choices": [
+                        "Updates selected software, then restarts if it needs to",
+                        "Requires a paid subscription for every package update",
+                        "Updates everything at once, without forced restarts",
+                        "Delays all updates until the next major version release"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Linux updates everything at once and never restarts without permission, unlike the Windows behavior described."
+                },
+                {
+                    "id": "ch1-q09",
+                    "question": "How do Linux and Windows differ in how they represent drives?",
+                    "choices": [
+                        "Windows uses alphabet letters; Linux uses \/dev",
+                        "Linux uses alphabet letters; Windows uses \/dev",
+                        "Both use mount points for every drive",
+                        "Both rely on network shares only"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Linux uses \/dev for drives while Windows uses alphabet letters, per the reference."
+                },
+                {
+                    "id": "ch1-q10",
+                    "question": "Which of these is listed as a mistake made by new Linux users?",
+                    "choices": [
+                        "Reading the manual pages before installation",
+                        "Choosing the recommended Linux distribution",
+                        "Backing up files before partition table changes",
+                        "Searching Google to find and install software"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Using Google to find software is among the mistakes new Linux users make."
+                },
+                {
+                    "id": "ch1-q11",
+                    "question": "Which is one of the five kernel objectives in the reference?",
+                    "choices": [
+                        "Render the graphical desktop for the end user",
+                        "Compile application source code into packages",
+                        "Link user-level applications with the hardware",
+                        "Store the user's documents and personal settings"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "A kernel objective is to establish communication between user-level applications and hardware, plus controlling disk, memory, and task management."
+                },
+                {
+                    "id": "ch1-q12",
+                    "question": "Which of the following is something the kernel manages?",
+                    "choices": [
+                        "Desktop wallpapers",
+                        "Email accounts",
+                        "Browser bookmarks",
+                        "CPU and GPU"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The kernel manages CPU\/GPU, memory, I\/O devices, resources, devices, system calls, and security and protection."
+                },
+                {
+                    "id": "ch1-q13",
+                    "question": "Which of these is NOT a kernel function named in the reference?",
+                    "choices": [
+                        "Process management task",
+                        "Memory management duty",
+                        "Web server configuration",
+                        "Device management task"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Kernel functions include process, memory, device, and file system management plus IPC and scheduling; web server configuration is not one."
+                },
+                {
+                    "id": "ch1-q14",
+                    "question": "Which of these is a type of kernel listed in the reference?",
+                    "choices": [
+                        "Shell kernel",
+                        "Display kernel",
+                        "Network kernel",
+                        "Microkernel"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Microkernel is one of the listed kernel types, along with monolithic, hybrid, exo, nano, VM, and embedded kernels."
+                },
+                {
+                    "id": "ch1-q15",
+                    "question": "Which kernel type is also referred to as a Virtual Machine (VM) kernel or hypervisor?",
+                    "choices": [
+                        "Embedded kernel type",
+                        "Monolithic kernel type",
+                        "VM kernel or hypervisor",
+                        "Hybrid kernel design"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The VM Kernel or Hypervisor is one of the seven kernel types listed."
+                },
+                {
+                    "id": "ch1-q16",
+                    "question": "Which shell is the GNU Bourne-Again Shell?",
+                    "choices": [
+                        "bash",
+                        "csh",
+                        "ksh",
+                        "zsh"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "bash is the GNU Bourne-Again Shell."
+                },
+                {
+                    "id": "ch1-q17",
+                    "question": "Which shell is described as the Friendly Interactive Shell?",
+                    "choices": [
+                        "fish \/ fsh",
+                        "tcsh",
+                        "sh",
+                        "csh"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "fish (or fsh), the Friendly Interactive Shell, is one of the shell types listed."
+                },
+                {
+                    "id": "ch1-q18",
+                    "question": "Which prompt character indicates a root user in the Bourne shell?",
+                    "choices": [
+                        "$",
+                        "#",
+                        "%",
+                        ">"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The Bourne shell shows # for root and $ for non-root users."
+                },
+                {
+                    "id": "ch1-q19",
+                    "question": "What is the non-root prompt in the C shell (csh)?",
+                    "choices": [
+                        "#",
+                        "$",
+                        ">",
+                        "%"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The C shell uses # for root and % for non-root users."
+                },
+                {
+                    "id": "ch1-q20",
+                    "question": "What is the root prompt in the Z Shell (zsh)?",
+                    "choices": [
+                        "hostname>$",
+                        "hostname>#",
+                        "bash-VersionNumber#",
+                        "%"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The Z Shell shows hostname># for root and hostname>$ for non-root users."
+                },
+                {
+                    "id": "ch1-q21",
+                    "question": "SCSI stands for which of the following?",
+                    "choices": [
+                        "Serial Computer Storage Interface",
+                        "Standard Console System Interface",
+                        "Small Computer System Interface",
+                        "System Control and Storage Input"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "SCSI is the Small Computer System Interface."
+                },
+                {
+                    "id": "ch1-q22",
+                    "question": "ACPI is an abbreviation for which interface standard?",
+                    "choices": [
+                        "Advanced Control and Power Integration",
+                        "Automatic Configuration Protocol Interface",
+                        "Advanced Configuration and Power Interface",
+                        "Active Computing and Processor Index"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "ACPI is the Advanced Configuration and Power Interface."
+                },
+                {
+                    "id": "ch1-q23",
+                    "question": "NUMA stands for which memory architecture?",
+                    "choices": [
+                        "Non-Uniform Memory Access",
+                        "Network Unified Memory Allocation",
+                        "Non-Volatile Unified Memory Array",
+                        "Node-Universal Memory Addressing"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "NUMA is Non-Uniform Memory Access."
+                },
+                {
+                    "id": "ch1-q24",
+                    "question": "What does initramfs stand for?",
+                    "choices": [
+                        "Initial Random Access Memory File Store",
+                        "Integrated RAM File Service layer",
+                        "Initial RAM File System (initramfs)",
+                        "Immediate Runtime Memory File System"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "initramfs is the Initial RAM File System."
+                },
+                {
+                    "id": "ch1-q25",
+                    "question": "Btrfs stands for which of the following?",
+                    "choices": [
+                        "Backup Transfer File System",
+                        "Binary Tree File System",
+                        "Basic Transfer File System",
+                        "B-tree File System (btrfs)"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Btrfs is the B-tree File System."
+                },
+                {
+                    "id": "ch1-q26",
+                    "question": "What does the statement 'Linux is yours, Windows is still theirs' mean in the reference?",
+                    "choices": [
+                        "Windows can only be copied after paying for it",
+                        "Users control Linux; the vendor owns Windows",
+                        "Linux belongs to a single software company",
+                        "Windows cannot be customized or modified at all"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The reference contrasts Linux as user-controlled versus Windows as vendor-controlled software."
+                },
+                {
+                    "id": "ch1-q27",
+                    "question": "Which two drawbacks are both listed under the Mac cons in the reference?",
+                    "choices": [
+                        "Expensive and fewer games and software",
+                        "Virus attacks and paid software",
+                        "Hardware drivers and learning curve",
+                        "High resources and technical support"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Under Mac cons the reference lists expensive, fewer games and software, and no hardware customization."
+                },
+                {
+                    "id": "ch1-q28",
+                    "question": "Which item appears in the Linux pros list in the reference?",
+                    "choices": [
+                        "Support for every hardware type",
+                        "A powerful command line interface",
+                        "A similar GUI for all products",
+                        "Plug and play hardware feature"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The Linux pros include open-source, no anti-virus need, powerful CLI, low specs, multitasking, and less disk space."
+                },
+                {
+                    "id": "ch1-q29",
+                    "question": "Which kernel function deals with communication between running processes?",
+                    "choices": [
+                        "Managing system memory",
+                        "Inter-Process Communication",
+                        "Handling device drivers",
+                        "Process task scheduling"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Inter-Process Communication (IPC) is a kernel function that handles process communication."
+                },
+                {
+                    "id": "ch1-q30",
+                    "question": "What does SELinux stand for?",
+                    "choices": [
+                        "Security-Enhanced Linux",
+                        "Secure Enterprise Linux",
+                        "System Encryption Layer",
+                        "Standard Elevated Linux"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "SELinux is Security-Enhanced Linux."
+                }
+            ]
+        },
+        {
+            "chapterId": "ch2",
+            "title": "File System",
+            "description": "File system abbreviations, Linux and Microsoft Windows file systems, ZFS use cases, NFS components, and the Linux directory structure under the Filesystem Hierarchy Standard.",
+            "questions": [
+                {
+                    "id": "ch2-q01",
+                    "question": "Which abbreviation stands for Filesystem Hierarchy Standard?",
+                    "choices": [
+                        "FHS",
+                        "FSH",
+                        "FST",
+                        "FTS"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "FHS is the Filesystem Hierarchy Standard that defines Linux directory locations."
+                },
+                {
+                    "id": "ch2-q02",
+                    "question": "What does COW stand for in file system terms?",
+                    "choices": [
+                        "Create-or-Write",
+                        "Copy-Over-Write",
+                        "Copy-on-Write",
+                        "Cache-on-Write"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "COW stands for Copy-on-Write."
+                },
+                {
+                    "id": "ch2-q03",
+                    "question": "Which of these is listed as a Linux file system in the reference?",
+                    "choices": [
+                        "NTFS",
+                        "exFAT",
+                        "ReFS",
+                        "Btrfs"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Btrfs is listed among Linux file systems, while NTFS, exFAT, and ReFS are Windows file systems."
+                },
+                {
+                    "id": "ch2-q04",
+                    "question": "What does the abbreviation XFS stand for?",
+                    "choices": [
+                        "Extended File System",
+                        "Xtra Fast System",
+                        "X File System",
+                        "eXtensible File Store"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "XFS stands for X File System."
+                },
+                {
+                    "id": "ch2-q05",
+                    "question": "What does ZFS stand for?",
+                    "choices": [
+                        "Zero File System",
+                        "Zipped File System",
+                        "Zone File System",
+                        "Zettabyte File System"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "ZFS stands for Zettabyte File System."
+                },
+                {
+                    "id": "ch2-q06",
+                    "question": "What does exFAT stand for?",
+                    "choices": [
+                        "Extended Fast Allocation Table",
+                        "External File Access Table",
+                        "Extended Format Archive Table",
+                        "Extended File Allocation Table"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "exFAT is the Extended File Allocation Table."
+                },
+                {
+                    "id": "ch2-q07",
+                    "question": "What does NTFS stand for?",
+                    "choices": [
+                        "Network Transfer File System",
+                        "Native Text File System",
+                        "Next-gen Table File System",
+                        "New Technology File System"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "NTFS is the New Technology File System."
+                },
+                {
+                    "id": "ch2-q08",
+                    "question": "What does ReFS stand for?",
+                    "choices": [
+                        "Recoverable File System",
+                        "Resilient File System",
+                        "Redundant File Store",
+                        "Runtime File System"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "ReFS is the Resilient File System."
+                },
+                {
+                    "id": "ch2-q09",
+                    "question": "What are the two components of NFS named in the reference?",
+                    "choices": [
+                        "NFS Server and NFS Client",
+                        "NFS Host and NFS Reader",
+                        "NFS Master and NFS Slave",
+                        "NFS Source and NFS Cache"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The components of NFS are the NFS Server and the NFS Client."
+                },
+                {
+                    "id": "ch2-q10",
+                    "question": "Which of these is listed as a common use case for ZFS?",
+                    "choices": [
+                        "Booting the operating system",
+                        "Compressing log files",
+                        "Serving web pages directly",
+                        "Backup and Disaster Recovery"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "ZFS use cases include Enterprise Storage Solutions, Backup and Disaster Recovery, and File Server and NAS."
+                },
+                {
+                    "id": "ch2-q11",
+                    "question": "Which of these is a Microsoft Windows file system in the reference?",
+                    "choices": [
+                        "Minix file system",
+                        "Live File System",
+                        "ReiserFS file system",
+                        "JFS file system"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "MS Windows file systems are FAT, NTFS, exFAT, Live File System, and ReFS."
+                },
+                {
+                    "id": "ch2-q12",
+                    "question": "Which Linux directory holds host-specific system-wide configuration files?",
+                    "choices": [
+                        "\/home",
+                        "\/var",
+                        "\/etc",
+                        "\/tmp"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "\/etc holds host-specific system-wide configuration files."
+                },
+                {
+                    "id": "ch2-q13",
+                    "question": "Which directory contains user home directories?",
+                    "choices": [
+                        "\/root",
+                        "\/home",
+                        "\/usr",
+                        "\/srv"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "\/home contains user home directories."
+                },
+                {
+                    "id": "ch2-q14",
+                    "question": "Which directory contains device files?",
+                    "choices": [
+                        "\/dev",
+                        "\/usr",
+                        "\/bin",
+                        "\/proc"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "\/dev is the device files directory."
+                },
+                {
+                    "id": "ch2-q15",
+                    "question": "Which directory is a virtual filesystem for process and kernel information?",
+                    "choices": [
+                        "\/proc",
+                        "\/sys",
+                        "\/run",
+                        "\/opt"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "\/proc is the virtual filesystem for process and kernel information."
+                },
+                {
+                    "id": "ch2-q16",
+                    "question": "Which directory stores variable data files?",
+                    "choices": [
+                        "\/var",
+                        "\/tmp",
+                        "\/usr",
+                        "\/srv"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "\/var holds variable data files."
+                },
+                {
+                    "id": "ch2-q17",
+                    "question": "Which directory is intended for temporary files?",
+                    "choices": [
+                        "\/run",
+                        "\/cache",
+                        "\/tmp",
+                        "\/media"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "\/tmp is the temporary files directory."
+                },
+                {
+                    "id": "ch2-q18",
+                    "question": "Which directory is the secondary hierarchy for user data and applications?",
+                    "choices": [
+                        "\/bin",
+                        "\/var",
+                        "\/usr",
+                        "\/home"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "\/usr is the secondary hierarchy for user data and applications."
+                },
+                {
+                    "id": "ch2-q19",
+                    "question": "Which directory is the home directory for the root user?",
+                    "choices": [
+                        "\/var",
+                        "\/home",
+                        "\/sbin",
+                        "\/root"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "\/root is the home directory for the root user."
+                },
+                {
+                    "id": "ch2-q20",
+                    "question": "Which directory provides mount points for removable media?",
+                    "choices": [
+                        "\/mnt",
+                        "\/dev",
+                        "\/sys",
+                        "\/media"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "\/media holds mount points for removable media."
+                },
+                {
+                    "id": "ch2-q21",
+                    "question": "Which directory is used for temporarily mounted filesystems?",
+                    "choices": [
+                        "\/media",
+                        "\/mnt",
+                        "\/opt",
+                        "\/run"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "\/mnt is for temporarily mounted filesystems."
+                },
+                {
+                    "id": "ch2-q22",
+                    "question": "Which directory holds essential system administrative binaries?",
+                    "choices": [
+                        "\/bin",
+                        "\/usr",
+                        "\/sbin",
+                        "\/sys"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "\/sbin holds essential system administrative binaries."
+                },
+                {
+                    "id": "ch2-q23",
+                    "question": "Which directory holds add-on application software packages?",
+                    "choices": [
+                        "\/opt",
+                        "\/srv",
+                        "\/lib",
+                        "\/etc"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "\/opt holds add-on application software packages."
+                },
+                {
+                    "id": "ch2-q24",
+                    "question": "Which directory holds site-specific data served by the system?",
+                    "choices": [
+                        "\/var",
+                        "\/srv",
+                        "\/www",
+                        "\/data"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "\/srv holds site-specific data served by the system."
+                },
+                {
+                    "id": "ch2-q25",
+                    "question": "Which directory holds run-time variable data?",
+                    "choices": [
+                        "\/tmp",
+                        "\/run",
+                        "\/proc",
+                        "\/sys"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "\/run holds run-time variable data."
+                },
+                {
+                    "id": "ch2-q26",
+                    "question": "Which directory holds device, driver, and kernel feature information?",
+                    "choices": [
+                        "\/proc",
+                        "\/sys",
+                        "\/dev",
+                        "\/etc"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "\/sys holds device, driver, and kernel feature information."
+                },
+                {
+                    "id": "ch2-q27",
+                    "question": "Which directory holds essential command binaries?",
+                    "choices": [
+                        "\/bin",
+                        "\/sbin",
+                        "\/opt",
+                        "\/boot"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "\/bin holds essential command binaries."
+                },
+                {
+                    "id": "ch2-q28",
+                    "question": "Which directory holds the boot loader files?",
+                    "choices": [
+                        "\/boot",
+                        "\/bin",
+                        "\/dev",
+                        "\/lib"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "\/boot holds boot loader files."
+                },
+                {
+                    "id": "ch2-q29",
+                    "question": "What does the abbreviation USR stand for?",
+                    "choices": [
+                        "User Software Repository",
+                        "Unified System Registry",
+                        "User System Resources",
+                        "Universal Storage Region"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "USR stands for User System Resources."
+                },
+                {
+                    "id": "ch2-q30",
+                    "question": "In the Linux directory structure, which of these is the primary root directory written as a single slash?",
+                    "choices": [
+                        "\/root",
+                        "\/usr",
+                        "\/home",
+                        "\/"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The primary root directory of the Linux hierarchy is \/."
+                }
+            ]
+        },
+        {
+            "chapterId": "ch3",
+            "title": "Linux Distributions",
+            "description": "Linux distribution abbreviations and the release timeline of the distributions listed in the reference, from Slackware in July 1993 to Mageia in June 2011.",
+            "questions": [
+                {
+                    "id": "ch3-q01",
+                    "question": "What does YaST stand for?",
+                    "choices": [
+                        "Your System Test",
+                        "Yet another Storage Tool",
+                        "Young Support Tool",
+                        "Yet another Setup Tool"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "YaST is 'Yet another Setup Tool', the configuration tool used by SUSE."
+                },
+                {
+                    "id": "ch3-q02",
+                    "question": "What does RHEL stand for?",
+                    "choices": [
+                        "Red Hat Extended Linux",
+                        "Rocky Hat Enhanced Linux",
+                        "Redcore Enterprise Linux",
+                        "Red Hat Enterprise Linux"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "RHEL is Red Hat Enterprise Linux."
+                },
+                {
+                    "id": "ch3-q03",
+                    "question": "What does KVM stand for?",
+                    "choices": [
+                        "Kernel Visual Machine",
+                        "Kernel-based Virtual Machine",
+                        "Keyed Virtual Memory",
+                        "Kernel Virtual Module"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "KVM is the Kernel-based Virtual Machine."
+                },
+                {
+                    "id": "ch3-q04",
+                    "question": "Which distribution in the reference timeline has the earliest release date?",
+                    "choices": [
+                        "Debian (September 1993)",
+                        "Red Hat (May 1995)",
+                        "SUSE (1994)",
+                        "Slackware (July 1993)"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Slackware, released July 1993, is the earliest listed distribution."
+                },
+                {
+                    "id": "ch3-q05",
+                    "question": "Which distribution was released in September 1993?",
+                    "choices": [
+                        "Debian",
+                        "Fedora",
+                        "Ubuntu",
+                        "Mageia"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Debian was released in September 1993."
+                },
+                {
+                    "id": "ch3-q06",
+                    "question": "Which distribution was released in May 1995?",
+                    "choices": [
+                        "CentOS",
+                        "Red Hat",
+                        "Knoppix",
+                        "Alpine Linux"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Red Hat was released in May 1995."
+                },
+                {
+                    "id": "ch3-q07",
+                    "question": "Which distribution was released in September 2000?",
+                    "choices": [
+                        "Knoppix",
+                        "Gentoo",
+                        "Arch Linux",
+                        "Musix"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Knoppix was released in September 2000."
+                },
+                {
+                    "id": "ch3-q08",
+                    "question": "Which two distributions in the reference share the release date of March 2002?",
+                    "choices": [
+                        "Fedora and CentOS",
+                        "Ubuntu and Debian",
+                        "Gentoo and Arch Linux",
+                        "Oracle Linux and Musix"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Both Gentoo and Arch Linux were released in March 2002."
+                },
+                {
+                    "id": "ch3-q09",
+                    "question": "Which distribution was released in November 2003?",
+                    "choices": [
+                        "Fedora",
+                        "Ubuntu",
+                        "CentOS",
+                        "Mageia"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Fedora was released in November 2003."
+                },
+                {
+                    "id": "ch3-q10",
+                    "question": "Which distribution is recorded in the reference only with the year 2004?",
+                    "choices": [
+                        "Ubuntu",
+                        "Gentoo",
+                        "Android",
+                        "CentOS"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "CentOS is recorded simply as 2004, while Ubuntu has October 2004."
+                },
+                {
+                    "id": "ch3-q11",
+                    "question": "Which distribution was released in October 2004?",
+                    "choices": [
+                        "Alpine Linux",
+                        "Ubuntu",
+                        "Musix",
+                        "Oracle Linux"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Ubuntu was released in October 2004."
+                },
+                {
+                    "id": "ch3-q12",
+                    "question": "Which distribution was released in August 2005?",
+                    "choices": [
+                        "Alpine Linux",
+                        "Android OS",
+                        "Mageia OS",
+                        "Knoppix Live"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Alpine Linux was released in August 2005."
+                },
+                {
+                    "id": "ch3-q13",
+                    "question": "Which distribution was released in October 2006?",
+                    "choices": [
+                        "Musix Linux",
+                        "Oracle distro",
+                        "Fedora Core",
+                        "CentOS Linux"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Oracle Linux was released in October 2006."
+                },
+                {
+                    "id": "ch3-q14",
+                    "question": "Which distribution was released in December 2006?",
+                    "choices": [
+                        "Oracle Linux",
+                        "Musix",
+                        "Ubuntu",
+                        "Arch Linux"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Musix was released in December 2006."
+                },
+                {
+                    "id": "ch3-q15",
+                    "question": "Which distribution was released in September 2008?",
+                    "choices": [
+                        "Mageia",
+                        "Alpine Linux",
+                        "Android",
+                        "SUSE"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Android was released in September 2008."
+                },
+                {
+                    "id": "ch3-q16",
+                    "question": "Which distribution in the reference has the most recent release date?",
+                    "choices": [
+                        "Android (September 2008)",
+                        "Musix (December 2006)",
+                        "Mageia (June 2011)",
+                        "Ubuntu (October 2004)"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Mageia, released June 2011, is the most recent listed distribution."
+                },
+                {
+                    "id": "ch3-q17",
+                    "question": "Which distribution was released in 1994?",
+                    "choices": [
+                        "Red Hat",
+                        "Debian",
+                        "SUSE",
+                        "Fedora"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "SUSE was released in 1994."
+                },
+                {
+                    "id": "ch3-q18",
+                    "question": "Which of these distributions appears in the reference timeline?",
+                    "choices": [
+                        "Manjaro",
+                        "Pop!_OS",
+                        "Slackware",
+                        "MX Linux"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Slackware appears in the timeline, while the others are not listed in it."
+                },
+                {
+                    "id": "ch3-q19",
+                    "question": "What does the abbreviation DVD stand for?",
+                    "choices": [
+                        "Digital Visual Device",
+                        "Data Volume Drive",
+                        "Dynamic Video Disc",
+                        "Digital Versatile Disc"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "DVD stands for Digital Versatile Disc."
+                },
+                {
+                    "id": "ch3-q20",
+                    "question": "Which pairing of distribution and release year matches the reference?",
+                    "choices": [
+                        "Ubuntu 2004",
+                        "Fedora 2004",
+                        "CentOS 2005",
+                        "Gentoo 2003"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Ubuntu was released in October 2004; Fedora was November 2003, CentOS 2004, and Gentoo March 2002."
+                }
+            ]
+        },
+        {
+            "chapterId": "ch4",
+            "title": "Desktop Environments, Package Management, and Boot Loaders",
+            "description": "Desktop environments, display renderers, display managers, partitioning utilities, Linux installation steps, package formats and package managers, system installers, and boot loaders with system requirements.",
+            "questions": [
+                {
+                    "id": "ch4-q01",
+                    "question": "What does the abbreviation DE stand for?",
+                    "choices": [
+                        "Display Environment",
+                        "Device Emulator",
+                        "Desktop Environment",
+                        "Data Encoder"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "DE stands for Desktop Environment."
+                },
+                {
+                    "id": "ch4-q02",
+                    "question": "What does MBR stand for?",
+                    "choices": [
+                        "Master Boot Record",
+                        "Main Boot Routine",
+                        "Master Backup Register",
+                        "Module Boot Resource"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "MBR stands for Master Boot Record."
+                },
+                {
+                    "id": "ch4-q03",
+                    "question": "What does GPT stand for?",
+                    "choices": [
+                        "Generic Partition Table",
+                        "Global Partition Type",
+                        "GUID Partition Table",
+                        "Grid Partition Tool"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "GPT is the GUID Partition Table."
+                },
+                {
+                    "id": "ch4-q04",
+                    "question": "What does GUID stand for?",
+                    "choices": [
+                        "General Unified Identifier",
+                        "Global User Index Data",
+                        "Generic Update Identifier",
+                        "Globally Unique Identifier"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "GUID stands for Globally Unique Identifier."
+                },
+                {
+                    "id": "ch4-q05",
+                    "question": "Which two technologies are named as the major display renderers?",
+                    "choices": [
+                        "GRUB and LILO boot loaders",
+                        "GDM and LightDM managers",
+                        "fdisk and parted tools",
+                        "Xorg \/ X11 and Wayland renders"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The major display renderers cited are Xorg \/ X Window System (X11) and Wayland."
+                },
+                {
+                    "id": "ch4-q06",
+                    "question": "Which of these is a common Linux partitioning utility?",
+                    "choices": [
+                        "GRUB",
+                        "parted",
+                        "LILO",
+                        "NTLDR"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "parted, fdisk, gdisk, cfdisk, gparted, and lsblk are the Linux partitioning utilities listed."
+                },
+                {
+                    "id": "ch4-q07",
+                    "question": "Which display manager expands to GNOME Display Manager?",
+                    "choices": [
+                        "GDM",
+                        "XDM",
+                        "KDM",
+                        "SDDM"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "GDM (or GDM3) is the GNOME Display Manager."
+                },
+                {
+                    "id": "ch4-q08",
+                    "question": "Which display manager is the Simple Desktop Display Manager?",
+                    "choices": [
+                        "LightDM",
+                        "SDDM",
+                        "LXDM",
+                        "CDM"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "SDDM stands for Simple Desktop Display Manager."
+                },
+                {
+                    "id": "ch4-q09",
+                    "question": "Which display manager is described as Lightweight?",
+                    "choices": [
+                        "KDM",
+                        "XDM",
+                        "WDM",
+                        "LightDM"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "LightDM is the Lightweight Display Manager; Ly is also described as Lightweight."
+                },
+                {
+                    "id": "ch4-q10",
+                    "question": "Which of these is listed as a Linux desktop environment?",
+                    "choices": [
+                        "KDE Plasma",
+                        "AUTOEXEC.BAT",
+                        "BOOTMGR",
+                        "NTLDR"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "KDE Plasma, GNOME, XFCE, LXDE, and LXQt are among the desktop environments listed."
+                },
+                {
+                    "id": "ch4-q11",
+                    "question": "Which sequence matches the Linux installation steps given in the reference?",
+                    "choices": [
+                        "Partition, Keyboard settings, User Information, Set Timezone, Install files",
+                        "Keyboard settings, Partition, Set Timezone, User Information, Install files",
+                        "Set Timezone, Keyboard settings, Partition, Install files, User Information",
+                        "User Information, Set Timezone, Keyboard settings, Partition, Install files"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The reference order is Keyboard settings, Partition, Set Timezone, User Information, then Install files."
+                },
+                {
+                    "id": "ch4-q12",
+                    "question": "Which package format is used by Gentoo Linux?",
+                    "choices": [
+                        "ebuild",
+                        "RPM",
+                        "deb",
+                        "eopkg"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "ebuild is the Gentoo Linux package format."
+                },
+                {
+                    "id": "ch4-q13",
+                    "question": "Which package format is distribution-agnostic and mainly used by Ubuntu per the reference?",
+                    "choices": [
+                        "AppImage",
+                        "Flatpak",
+                        "MSI",
+                        "Snap"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Snap is distribution-agnostic and mainly associated with Ubuntu."
+                },
+                {
+                    "id": "ch4-q14",
+                    "question": "Which package format is .pkg.tar.zst used by?",
+                    "choices": [
+                        "Arch Linux",
+                        "Solus",
+                        "Puppy Linux",
+                        "Alpine Linux"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": ".pkg.tar.zst is the package format of Arch Linux."
+                },
+                {
+                    "id": "ch4-q15",
+                    "question": "Which package manager belongs to Node.js?",
+                    "choices": [
+                        "pip",
+                        "vcpkg",
+                        "npm",
+                        "Homebrew"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "npm is the Node.js package manager."
+                },
+                {
+                    "id": "ch4-q16",
+                    "question": "Which package manager belongs to Python?",
+                    "choices": [
+                        "nala",
+                        "pacman",
+                        "zypper",
+                        "pip"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "pip is the Python package manager."
+                },
+                {
+                    "id": "ch4-q17",
+                    "question": "Which package manager is used by Arch Linux?",
+                    "choices": [
+                        "apt",
+                        "pacman",
+                        "yum",
+                        "dnf"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "pacman is the Arch Linux package manager."
+                },
+                {
+                    "id": "ch4-q18",
+                    "question": "Which package manager is used by openSUSE and SUSE?",
+                    "choices": [
+                        "apt",
+                        "zypper",
+                        "nala",
+                        "Homebrew"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "zypper is the package manager for openSUSE \/ SUSE."
+                },
+                {
+                    "id": "ch4-q19",
+                    "question": "Which of these is listed as an RPM mode?",
+                    "choices": [
+                        "Compile",
+                        "Sign",
+                        "Query",
+                        "Build"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "RPM modes include Query, Verify, Install, Upgrade, Erase, Show querytags, and Show configuration."
+                },
+                {
+                    "id": "ch4-q20",
+                    "question": "Which of these is a Linux system installer?",
+                    "choices": [
+                        "Anaconda",
+                        "NTLDR",
+                        "BOOTMGR",
+                        "SYSLINUX"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Anaconda, Debian-Installer, DrakX, Preseed, Snap, Wubi, and Calamares are the system installers listed."
+                },
+                {
+                    "id": "ch4-q21",
+                    "question": "Which task is performed by Debian-Installer?",
+                    "choices": [
+                        "Rendering the desktop",
+                        "Detecting the hardware",
+                        "Compiling the kernel",
+                        "Removing unused packages"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Debian-Installer detects hardware, installation media, and other OSes, configures the network and APT, and sets up user accounts."
+                },
+                {
+                    "id": "ch4-q22",
+                    "question": "Which of these is a boot loader listed in the reference?",
+                    "choices": [
+                        "rEFInd",
+                        "GDM",
+                        "LXDM",
+                        "GUID"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "GNU GRUB, LILO, rEFInd, BootX, NTLDR, BURG, and SYSLINUX are the boot loaders listed."
+                },
+                {
+                    "id": "ch4-q23",
+                    "question": "Which boot-related program is the Windows Boot Manager?",
+                    "choices": [
+                        "NTLDR",
+                        "BOOTMGR",
+                        "BootX",
+                        "GRUB"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "BOOTMGR is the Windows Boot Manager; NTLDR is the NT Loader."
+                },
+                {
+                    "id": "ch4-q24",
+                    "question": "What does GRUB stand for?",
+                    "choices": [
+                        "General Resource Utility Block",
+                        "Global Run Uniform Boot",
+                        "Group Reader Update Block",
+                        "GRand Unified Bootloader"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "GRUB is the GRand Unified Bootloader."
+                },
+                {
+                    "id": "ch4-q25",
+                    "question": "What does UEFI stand for?",
+                    "choices": [
+                        "Universal Extra Firmware Interface",
+                        "Unique External Firmware Index",
+                        "Unified Extensible Firmware Interface",
+                        "Unified External Format Interface"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "UEFI is the Unified Extensible Firmware Interface."
+                },
+                {
+                    "id": "ch4-q26",
+                    "question": "Which distribution requires 8 GB RAM (12 GB recommended) per the reference?",
+                    "choices": [
+                        "Ubuntu Linux",
+                        "Kali Linux",
+                        "Linux Mint",
+                        "Fedora Linux"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Fedora lists 8 GB RAM (12 GB recommended), Ubuntu and SUSE 4 GB, Linux Mint 4 GB+, and Kali 2 GB."
+                },
+                {
+                    "id": "ch4-q27",
+                    "question": "Which desktop environment does the abbreviation XFCE stand for?",
+                    "choices": [
+                        "XFast Configuration Engine",
+                        "X File Control Extension",
+                        "XForms Common Environment",
+                        "XFrame Command Entry"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "XFCE stands for XForms Common Environment."
+                },
+                {
+                    "id": "ch4-q28",
+                    "question": "Which window manager is the Binary Space Partitioning Window Manager?",
+                    "choices": [
+                        "LXQt",
+                        "BSPWM",
+                        "LXDE",
+                        "UKUI"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "BSPWM is the Binary Space Partitioning Window Manager."
+                },
+                {
+                    "id": "ch4-q29",
+                    "question": "What does XDMCP stand for?",
+                    "choices": [
+                        "X Desktop Mode Configuration Pack",
+                        "X Domain Manager Control Program",
+                        "X Display Monitor Common Port",
+                        "X Display Manager Control Protocol"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "XDMCP is the X Display Manager Control Protocol."
+                },
+                {
+                    "id": "ch4-q30",
+                    "question": "Which of these is a package format consumed by Red Hat Enterprise Linux, Fedora, and CentOS?",
+                    "choices": [
+                        "deb",
+                        "APK",
+                        "RPM",
+                        "ebuild"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "RPM is used by RHEL, Fedora, CentOS, SUSE Linux Enterprise Server, and openSUSE."
+                }
+            ]
+        },
+        {
+            "chapterId": "ch5",
+            "title": "Basic Commands",
+            "description": "Linux paths, directory and file commands, more command navigation keys, user and group commands, \/etc\/passwd fields, UID ranges, filter commands, compression tools and tar options, utility commands, networking commands, and link commands.",
+            "questions": [
+                {
+                    "id": "ch5-q01",
+                    "question": "What are the two types of Linux paths?",
+                    "choices": [
+                        "Relative and absolute paths",
+                        "Primary and secondary paths",
+                        "Local and remote paths",
+                        "Short and long paths"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Linux paths are either relative or absolute."
+                },
+                {
+                    "id": "ch5-q02",
+                    "question": "Which command prints the current working directory?",
+                    "choices": [
+                        "ls",
+                        "cd",
+                        "pwd",
+                        "mkdir"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "pwd prints the working directory."
+                },
+                {
+                    "id": "ch5-q03",
+                    "question": "Which command makes a new directory?",
+                    "choices": [
+                        "mkgrid",
+                        "mkdir",
+                        "mdir",
+                        "make-dir"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "mkdir (make directory) creates a new directory."
+                },
+                {
+                    "id": "ch5-q04",
+                    "question": "Which command removes an empty directory?",
+                    "choices": [
+                        "del",
+                        "unrm",
+                        "rm-dir",
+                        "rmdir"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "rmdir (remove directory) removes an empty directory."
+                },
+                {
+                    "id": "ch5-q05",
+                    "question": "Which command creates empty files?",
+                    "choices": [
+                        "cat",
+                        "echo",
+                        "head",
+                        "touch"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "touch creates empty files."
+                },
+                {
+                    "id": "ch5-q06",
+                    "question": "Which command concatenates and displays file content?",
+                    "choices": [
+                        "tac",
+                        "sed",
+                        "vim",
+                        "cat"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "cat concatenates and displays file content."
+                },
+                {
+                    "id": "ch5-q07",
+                    "question": "Which command outputs a string?",
+                    "choices": [
+                        "printf",
+                        "print",
+                        "echo",
+                        "say"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "echo outputs a string; printf is described as formatted printing."
+                },
+                {
+                    "id": "ch5-q08",
+                    "question": "Which command performs formatted printing according to the reference?",
+                    "choices": [
+                        "echo",
+                        "print",
+                        "out",
+                        "printf"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "printf is the command for formatted printing."
+                },
+                {
+                    "id": "ch5-q09",
+                    "question": "Which command displays the first lines of a file?",
+                    "choices": [
+                        "tail",
+                        "head",
+                        "top",
+                        "start"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "head displays the first lines of a file."
+                },
+                {
+                    "id": "ch5-q10",
+                    "question": "Which command displays file contents in reverse order?",
+                    "choices": [
+                        "cat -r",
+                        "rev",
+                        "tac",
+                        "tail -a"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "tac displays file contents in reverse order."
+                },
+                {
+                    "id": "ch5-q11",
+                    "question": "Which command is described as an enhanced file viewer?",
+                    "choices": [
+                        "more",
+                        "view",
+                        "less",
+                        "open"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "less is described as the enhanced file viewing command."
+                },
+                {
+                    "id": "ch5-q12",
+                    "question": "In the more command, which key scrolls down page by line?",
+                    "choices": [
+                        "Enter",
+                        "Space bar",
+                        "b",
+                        "\/"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Enter scrolls down page by line in more."
+                },
+                {
+                    "id": "ch5-q13",
+                    "question": "In the more command, which key moves to the previous page?",
+                    "choices": [
+                        "Space bar",
+                        "Enter",
+                        "b",
+                        "\/"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The b key moves to the previous page in more."
+                },
+                {
+                    "id": "ch5-q14",
+                    "question": "In the more command, which key searches for a string?",
+                    "choices": [
+                        "s",
+                        "\/",
+                        "f",
+                        "q"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The \/ key searches for a string in more."
+                },
+                {
+                    "id": "ch5-q15",
+                    "question": "Which command switches to the administrative user?",
+                    "choices": [
+                        "sudo",
+                        "id",
+                        "passwd",
+                        "su"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "su switches to the administrative user."
+                },
+                {
+                    "id": "ch5-q16",
+                    "question": "Which command displays the UID and GID of a user?",
+                    "choices": [
+                        "who",
+                        "me",
+                        "info",
+                        "id"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "id displays the UID and GID."
+                },
+                {
+                    "id": "ch5-q17",
+                    "question": "Which command adds a user account?",
+                    "choices": [
+                        "useradd",
+                        "newuser",
+                        "mkuser",
+                        "add-account"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "useradd adds a user account."
+                },
+                {
+                    "id": "ch5-q18",
+                    "question": "Which command changes a user's password?",
+                    "choices": [
+                        "pwd",
+                        "passwd",
+                        "chpass",
+                        "setpass"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "passwd changes the user password."
+                },
+                {
+                    "id": "ch5-q19",
+                    "question": "Which command deletes a user account?",
+                    "choices": [
+                        "userremove",
+                        "rmuser",
+                        "del-account",
+                        "userdel"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "userdel (or deluser) deletes a user account."
+                },
+                {
+                    "id": "ch5-q20",
+                    "question": "Which command modifies an existing user account?",
+                    "choices": [
+                        "useradd",
+                        "chmod",
+                        "useredit",
+                        "usermod"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "usermod modifies a user account."
+                },
+                {
+                    "id": "ch5-q21",
+                    "question": "Which command creates a user group?",
+                    "choices": [
+                        "groupadd",
+                        "groupmod",
+                        "groupdel",
+                        "groupset"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "groupadd creates a user group."
+                },
+                {
+                    "id": "ch5-q22",
+                    "question": "Which of these is NOT a field in the \/etc\/passwd file?",
+                    "choices": [
+                        "Username",
+                        "Default gateway",
+                        "User ID (UID)",
+                        "Home directory"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "\/etc\/passwd fields are username, password marker, UID, GID, GECOS info, home directory, and shell; the gateway is not among them."
+                },
+                {
+                    "id": "ch5-q23",
+                    "question": "Which UID is reserved for the root user?",
+                    "choices": [
+                        "0",
+                        "1",
+                        "100",
+                        "1000"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "UID 0 is reserved for the root user."
+                },
+                {
+                    "id": "ch5-q24",
+                    "question": "Which UID range is reserved for regular user accounts?",
+                    "choices": [
+                        "1 up through 99",
+                        "1000 and above",
+                        "100 up through 999",
+                        "5000 and above only"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "UID 1000 and above is for regular user accounts."
+                },
+                {
+                    "id": "ch5-q25",
+                    "question": "Which UID range covers predefined system accounts?",
+                    "choices": [
+                        "1-99",
+                        "100-999",
+                        "1000+",
+                        "0-10"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "UID 1-99 is for predefined system accounts; 100-999 covers system accounts and groups."
+                },
+                {
+                    "id": "ch5-q26",
+                    "question": "Which of these is a Linux filter command?",
+                    "choices": [
+                        "grep",
+                        "cp",
+                        "ls",
+                        "cd"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "grep, wc, od, and sort are the filter commands listed."
+                },
+                {
+                    "id": "ch5-q27",
+                    "question": "Which tar option creates an archive?",
+                    "choices": [
+                        "-x",
+                        "-t",
+                        "-c",
+                        "-z"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "-c creates an archive, -x extracts, -t views content, and -z filters through gzip."
+                },
+                {
+                    "id": "ch5-q28",
+                    "question": "Which tar option filters the archive through bzip2?",
+                    "choices": [
+                        "-z",
+                        "-j",
+                        "-v",
+                        "-W"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "-j filters through bzip2 while -z filters through gzip."
+                },
+                {
+                    "id": "ch5-q29",
+                    "question": "Which command performs DNS lookups?",
+                    "choices": [
+                        "ping",
+                        "host",
+                        "ip",
+                        "mail"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "host performs DNS lookups; ping tests connectivity using ICMP."
+                },
+                {
+                    "id": "ch5-q30",
+                    "question": "Which command creates a symbolic (soft) link?",
+                    "choices": [
+                        "link",
+                        "cp -l",
+                        "ln -s",
+                        "mv -l"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "ln -s creates a symbolic\/soft link, while link or ln creates a hard link."
+                }
+            ]
+        }
+    ],
+    "encyclopedia": [
+        {
+            "chapterId": "ch1",
+            "term": "Kernel",
+            "definition": "The core of the operating system that establishes communication between user-level applications and hardware, and manages CPU\/GPU, memory, I\/O devices, resources, devices, system calls, and security and protection."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "LAMP",
+            "definition": "A software stack abbreviation for Linux, Apache, MySQL, and Perl\/PHP\/Python."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "GNU",
+            "definition": "A recursive acronym for GNU's Not Unix, supported by the Free Software Foundation (FSF)."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "Monolithic kernel",
+            "definition": "One of the kernel types listed in the reference, together with microkernel, hybrid, exo kernel, nano kernel, VM kernel or hypervisor, and embedded kernel."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "bash",
+            "definition": "The GNU Bourne-Again Shell; its root prompt is bash-VersionNumber# and its non-root prompt is bash-VersionNumber$."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "Inter-Process Communication",
+            "definition": "A kernel function that handles communication between running processes."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "Filesystem Hierarchy Standard (FHS)",
+            "definition": "The standard that defines the Linux directory structure, such as \/etc for configuration, \/home for user homes, \/dev for device files, \/proc for process and kernel information, and \/var for variable data."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "ZFS",
+            "definition": "The Zettabyte File System; common use cases include Enterprise Storage Solutions, Backup and Disaster Recovery, and File Server and NAS."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "NFS",
+            "definition": "Network File System, composed of an NFS Server and an NFS Client."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "Btrfs",
+            "definition": "The B-tree File System, listed among the Linux file systems alongside Minix, the ext family, ReiserFS, XFS, ZFS, and JFS."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "ReFS",
+            "definition": "The Resilient File System, a Microsoft Windows file system."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "Slackware",
+            "definition": "The earliest distribution in the reference timeline, released in July 1993."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "Mageia",
+            "definition": "The most recent distribution in the reference timeline, released in June 2011."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "Display manager",
+            "definition": "Software that provides a graphical login; examples include GDM, SDDM, LightDM, LXDM, XDM, Ly, KDM, WDM, MDM, CDM, SLiM, Entrance, XDMCP, emptty, and greetd."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "RPM",
+            "definition": "The RPM Package Manager (originally Red Hat Package Manager), used by Red Hat Enterprise Linux, Fedora, CentOS, SUSE Linux Enterprise Server, and openSUSE."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "GRUB",
+            "definition": "The GRand Unified Bootloader, one of the boot loaders listed in the reference along with LILO, rEFInd, BootX, NTLDR, BURG, and SYSLINUX."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "UEFI",
+            "definition": "The Unified Extensible Firmware Interface, which replaces the traditional BIOS-based boot environment."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "pwd",
+            "definition": "The command that prints the working directory; a Linux directory command along with mkdir, rmdir, ls, and cd."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "\/etc\/passwd",
+            "definition": "A file whose fields are the username, password (x marker), UID, GID, GECOS or user info, home directory, and shell."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "tar options",
+            "definition": "Options such as -c (create), -x (extract), -v (verbose), -f (filename), -t (view), -j (bzip2), -z (gzip), -r (append), -W (verify), and -C (extract to a different directory)."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "UID ranges",
+            "definition": "UID 0 is the root user, UID 1-99 are predefined system accounts, UID 100-999 are system accounts and groups, and UID 1000 and above are regular user accounts."
+        }
+    ]
+}

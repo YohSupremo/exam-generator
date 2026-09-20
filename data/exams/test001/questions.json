@@ -1,0 +1,3183 @@
+{
+    "title": "SAI 1 — System Architecture and Integration (Complete Review)",
+    "subject": "System Architecture and Integration 1 (ITNET312-T)",
+    "summary": "A comprehensive examination built from the SAI 1 reviewer (Lessons L2–L8). It covers enterprise architecture components and frameworks (Zachman, TOGAF, FEAF, Gartner), developing and using an EA, service-oriented architecture, integration technology (XML and web services), application integration styles, and enterprise integration best practices. Each chapter offers ~30 challenging questions with timed and untimed modes.",
+    "chapters": [
+        {
+            "chapterId": "ch1",
+            "title": "L2 — Enterprise Architecture Components",
+            "description": "EA implementation methodology, frameworks (Zachman, TOGAF, FEAF, Gartner), the four core architectural domains, artifacts, and cross-layer traceability.",
+            "questions": [
+                {
+                    "id": "ch1-q01",
+                    "question": "Which statement best describes an EA Implementation Methodology?",
+                    "choices": [
+                        "A structured set of tools, models, and guidelines used to design an architecture",
+                        "A classification schema that organizes architectural artifacts into a grid",
+                        "A list of approved hardware and software standards for an enterprise",
+                        "A detailed, step-by-step approach for establishing and managing an EA program"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The EA Implementation Methodology is a detailed, step-by-step approach describing how an EA program is established, developed, managed, maintained, and used."
+                },
+                {
+                    "id": "ch1-q02",
+                    "question": "Which of the following is a key benefit of using a structured EA implementation methodology?",
+                    "choices": [
+                        "It eliminates the need for documentation",
+                        "It provides clear direction for the EA's scope and goals",
+                        "It replaces the organization's governance structure",
+                        "It guarantees that all projects are completed on budget"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "One of the six key benefits is clear direction: defining the EA's scope, goals, and overall approach."
+                },
+                {
+                    "id": "ch1-q03",
+                    "question": "Which of the following is NOT one of the six FEAF reference models?",
+                    "choices": [
+                        "Data Reference Model",
+                        "Network Reference Model",
+                        "Technical Reference Model",
+                        "Performance Reference Model"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "FEAF's six reference models are PRM, DRM, SRM, BRM, ARM, and TRM. There is no Network Reference Model."
+                },
+                {
+                    "id": "ch1-q04",
+                    "question": "In the four phases of EA implementation, which phase involves selecting the EA documentation framework and establishing an EA repository?",
+                    "choices": [
+                        "Defining the scope, goals, and overall approach",
+                        "Phase I — EA Program Establishment",
+                        "Phase II — Framework and Tool Selection",
+                        "Phase IV — Use and Maintain the EA"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Phase II, Framework and Tool Selection, includes identifying Lines of Business and Crosscuts, selecting documentation methods and tools, and establishing the EA repository."
+                },
+                {
+                    "id": "ch1-q05",
+                    "question": "Every cell in the Zachman Framework represents a unique intersection of a column and a row. To what does each cell correspond?",
+                    "choices": [
+                        "A phase in the EA implementation cycle",
+                        "An approved technology standard",
+                        "A department within the enterprise",
+                        "A specific architectural artifact or model"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Each of the 36 cells represents a specific artifact or model relevant to that intersection of perspective (row) and focus (column)."
+                },
+                {
+                    "id": "ch1-q06",
+                    "question": "An enterprise needs to organize and classify its EA information using a framework that acts as a reference checklist rather than a step-by-step process. Which framework best fits this need?",
+                    "choices": [
+                        "TOGAF",
+                        "FEAF",
+                        "Zachman",
+                        "Gartner"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The comparison table states that Zachman is the suitable framework when there is a need to organize and classify EA information."
+                },
+                {
+                    "id": "ch1-q07",
+                    "question": "Which category of artifacts answers the question, 'What inventory do we have?'",
+                    "choices": [
+                        "Catalogs",
+                        "Diagrams",
+                        "Models",
+                        "Matrices"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Catalogs are hierarchical lists or inventories of things; they answer 'What inventory do we have?'"
+                },
+                {
+                    "id": "ch1-q08",
+                    "question": "A planning team wants to assess the impact of retiring an AWS server instance on business processes. Which part of cross-layer traceability should it inspect FIRST to understand the disruption?",
+                    "choices": [
+                        "The principles and standards registry",
+                        "The Business layer to review capability maps",
+                        "The Data layer to review ERDs",
+                        "The Technology layer to review deployment diagrams"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "An AWS server belongs to the Technology layer, so network topology and deployment diagrams there reveal which applications, data entities, and processes depend on it."
+                },
+                {
+                    "id": "ch1-q09",
+                    "question": "Which statement correctly distinguishes an EA methodology from an EA framework?",
+                    "choices": [
+                        "A methodology answers HOW the EA program is managed; a framework defines WHAT structure organizes it",
+                        "A methodology and a framework both focus exclusively on documenting artifacts",
+                        "A framework is used by public agencies, while a methodology is used only by private firms",
+                        "A methodology defines WHAT structure organizes the EA; a framework defines HOW it is managed"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "An EA Implementation Methodology answers HOW the EA program is established and managed, while an EA Framework defines WHAT structure is used to organize the EA."
+                },
+                {
+                    "id": "ch1-q10",
+                    "question": "Which ADM phase focuses on defining the goals and scope of the architecture effort and creating the overall architecture vision?",
+                    "choices": [
+                        "Phase F — Migration Planning",
+                        "Phase E — Opportunities & Solutions",
+                        "Phase A — Architecture Vision",
+                        "Preliminary Phase — Preparation"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Phase A, Architecture Vision, defines goals and scope, identifies stakeholders, and creates the overall architecture vision."
+                },
+                {
+                    "id": "ch1-q11",
+                    "question": "Which EA framework was developed by the U.S. Federal Government for public-sector use?",
+                    "choices": [
+                        "TOGAF",
+                        "Zachman",
+                        "FEAF",
+                        "Gartner"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "FEAF, the Federal Enterprise Architecture Framework, was developed by the U.S. Federal Government to organize and manage enterprise architecture."
+                },
+                {
+                    "id": "ch1-q12",
+                    "question": "Which FEAF reference model organizes IT services and application components that support business functions?",
+                    "choices": [
+                        "PRM",
+                        "ARM",
+                        "BRM",
+                        "SRM"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "ARM, the Application Reference Model, organizes IT services and application components that support business functions."
+                },
+                {
+                    "id": "ch1-q13",
+                    "question": "A systems architect claims the Zachman Framework is a methodology for developing enterprise architectures. How should this claim be evaluated?",
+                    "choices": [
+                        "Incorrect, because the Zachman Framework is a classification schema, not a methodology",
+                        "Incorrect, because the Zachman Framework only covers technology architecture",
+                        "Correct, because it defines implementation steps in sequence",
+                        "Correct, because it replaced earlier methodologies like ADM"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The Zachman Framework is not a methodology; it is a classification schema used as a reference or checklist for organizing architectural artifacts."
+                },
+                {
+                    "id": "ch1-q14",
+                    "question": "Which of the following is one of the challenges associated with using an EA implementation methodology?",
+                    "choices": [
+                        "Governance difficulties",
+                        "Reduced maintenance issues",
+                        "Better coordination of planning activities",
+                        "Improved stakeholder alignment"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Challenges include complexity, governance difficulties, requirements gaps, implementation problems, and maintenance issues."
+                },
+                {
+                    "id": "ch1-q15",
+                    "question": "A company needs a detailed, structured process for developing its enterprise architecture rather than a classification schema. Which framework should it use?",
+                    "choices": [
+                        "Gartner",
+                        "FEAF",
+                        "TOGAF",
+                        "Zachman"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The comparison table states that TOGAF is suitable when there is a need for a detailed EA development process."
+                },
+                {
+                    "id": "ch1-q16",
+                    "question": "Which ADM phase monitors implementation, checks architecture compliance, and manages implementation issues?",
+                    "choices": [
+                        "Phase D — Technology Architecture",
+                        "Phase C — Information Systems Architecture",
+                        "Phase H — Architecture Change Management",
+                        "Phase G — Implementation Governance"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Phase G, Implementation Governance, monitors implementation, checks architecture compliance, and manages implementation issues."
+                },
+                {
+                    "id": "ch1-q17",
+                    "question": "Which architectural domain is described as the foundation of the EA framework?",
+                    "choices": [
+                        "Data Architecture",
+                        "Business Architecture",
+                        "Technology Architecture",
+                        "Application Architecture"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Business Architecture is the foundation of the EA framework and defines strategy, governance, structure, and key business processes."
+                },
+                {
+                    "id": "ch1-q18",
+                    "question": "Which of the following artifacts would best display the relationships and cardinality among data entities?",
+                    "choices": [
+                        "An Entity-Relationship Diagram",
+                        "A Technology Standards Catalog",
+                        "An Application Portfolio Catalog",
+                        "An Application-to-Function Matrix"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "An Entity-Relationship Diagram is a Data-layer Diagram that visually models data entities and their relationships and cardinality."
+                },
+                {
+                    "id": "ch1-q19",
+                    "question": "Which FEAF reference model measures how well an organization and its IT systems achieve strategic goals and desired outcomes?",
+                    "choices": [
+                        "PRM",
+                        "DRM",
+                        "SRM",
+                        "TRM"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "PRM, the Performance Reference Model, measures how well the organization and its IT systems achieve strategic goals and outcomes."
+                },
+                {
+                    "id": "ch1-q20",
+                    "question": "In the Zachman Framework, which row represents the perspective of the 'Enterprise (Actual System)'?",
+                    "choices": [
+                        "Designer",
+                        "Enterprise",
+                        "Builder",
+                        "Sub-Contractor"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The six rows are Planner, Owner, Designer, Builder, Sub-Contractor, and Enterprise (Actual System)."
+                },
+                {
+                    "id": "ch1-q21",
+                    "question": "Which statement best describes the role of Requirements Management within the TOGAF ADM cycle?",
+                    "choices": [
+                        "It is applied only once after Phase H ends",
+                        "It operates only during Phase A, Architecture Vision",
+                        "It operates throughout all ADM phases and tracks changing requirements",
+                        "It replaces the Preliminary Phase entirely"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Requirements Management operates throughout all ADM phases, tracking, evaluating, and managing changing requirements."
+                },
+                {
+                    "id": "ch1-q22",
+                    "question": "The technology layer of the EA framework answers which question?",
+                    "choices": [
+                        "What information does the enterprise need to operate?",
+                        "What infrastructure is required to run applications securely?",
+                        "What does the business do to achieve its goals?",
+                        "What software applications are needed to automate processes?"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Technology Architecture answers, 'What physical and virtual infrastructure is required to run the application architecture securely and scalably?'"
+                },
+                {
+                    "id": "ch1-q23",
+                    "question": "Which phase of the EA implementation develops future operating scenarios and defines future planning assumptions?",
+                    "choices": [
+                        "Phase IV — Use and Maintain the EA",
+                        "Phase III — Documentation of the EA",
+                        "Phase I — EA Program Establishment",
+                        "Phase II — Framework and Tool Selection"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Phase III, Documentation of the EA, includes developing future operating scenarios, defining future planning assumptions, and documenting the future state."
+                },
+                {
+                    "id": "ch1-q24",
+                    "question": "Which FEAF reference model defines security-related capabilities, controls, and requirements for protecting enterprise information?",
+                    "choices": [
+                        "TRM",
+                        "BRM",
+                        "DRM",
+                        "SRM"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "SRM, the Security Reference Model, defines security-related capabilities, controls, and requirements for protecting enterprise systems and information."
+                },
+                {
+                    "id": "ch1-q25",
+                    "question": "Which ADM phase identifies possible solutions, groups changes into projects, and defines the implementation approach?",
+                    "choices": [
+                        "Phase C — Information Systems Architecture",
+                        "Phase B — Business Architecture",
+                        "Phase F — Migration Planning",
+                        "Phase E — Opportunities & Solutions"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Phase E, Opportunities & Solutions, identifies possible solutions, groups changes into projects, and defines the implementation approach."
+                },
+                {
+                    "id": "ch1-q26",
+                    "question": "Which chain represents the correct cross-layer traceability order that enables impact analysis?",
+                    "choices": [
+                        "Business -> Data -> Application -> Technology",
+                        "Technology -> Application -> Data -> Business",
+                        "Data -> Business -> Application -> Technology",
+                        "Application -> Technology -> Data -> Business"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Traceability runs Business -> Data -> Application -> Technology so every technical asset maps back to a business need."
+                },
+                {
+                    "id": "ch1-q27",
+                    "question": "Which statement is TRUE about the Gartner EA methodology?",
+                    "choices": [
+                        "It is mandatory for U.S. government agencies",
+                        "It views EA as a continuous process of change and improvement",
+                        "It views EA as a one-time project completed at implementation",
+                        "It focuses purely on technology rather than business outcomes"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Gartner views Enterprise Architecture as a continuous process of change and improvement, not a one-time project."
+                },
+                {
+                    "id": "ch1-q28",
+                    "question": "Which pair of Zachman Framework columns is correctly identified?",
+                    "choices": [
+                        "Where — captures motivation and strategy",
+                        "Who — addresses how the work is performed",
+                        "When — identifies the people and actors",
+                        "What — answers what data or things exist"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The columns are the interrogatives What, How, Where, Who, When, Why. 'What' focuses on the data or physical things."
+                },
+                {
+                    "id": "ch1-q29",
+                    "question": "Which artifact category is an Application-to-Function Matrix an example of?",
+                    "choices": [
+                        "A Matrix",
+                        "A Diagram",
+                        "A Model",
+                        "A Catalog"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Matrices are grids that show the relationship between two or more architectural elements; the Application-to-Function Matrix is a listed example."
+                },
+                {
+                    "id": "ch1-q30",
+                    "question": "Why does the reference describe siloed or disconnected artifacts as a critical pitfall in EA?",
+                    "choices": [
+                        "They are cheaper to produce than integrated models",
+                        "They reduce the number of approved tools",
+                        "They lose alignment between strategic goals and technical execution",
+                        "They prevent stakeholders from joining review meetings"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "When architectural components are isolated, organizations lose alignment between strategic goals and technical execution."
+                }
+            ]
+        },
+        {
+            "chapterId": "ch2",
+            "title": "L3 — Developing an Enterprise Architecture",
+            "description": "Current and future architectural views, documentation techniques (EACR, IDEF-O, ERDs), CONOPS scenarios, future artifact levels, freeze periods, and the EA Management Plan.",
+            "questions": [
+                {
+                    "id": "ch2-q01",
+                    "question": "Why does the reference argue that documentation must come before planning?",
+                    "choices": [
+                        "Because stakeholders require blueprints before operational data",
+                        "Because auditors prefer future scenarios over current records",
+                        "Because planning documents are shorter and easier to review",
+                        "Because plans built without an accurate baseline underestimate cost, timeline, and complexity"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Plans built without an accurate baseline tend to underestimate cost, timeline, and complexity, so planning starts with an accurate assessment of the current situation."
+                },
+                {
+                    "id": "ch2-q02",
+                    "question": "Systems and processes change regularly, but documentation is often updated far less frequently. What does this produce?",
+                    "choices": [
+                        "Faster change approvals",
+                        "A gap between documentation and reality",
+                        "Stronger regulatory compliance",
+                        "More accurate system inventories"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Because documentation is often treated as a one-time deliverable, documentation and reality drift apart over time."
+                },
+                {
+                    "id": "ch2-q03",
+                    "question": "Which stakeholder group needs a documented record of what changed, when, and why?",
+                    "choices": [
+                        "Software vendors",
+                        "End users",
+                        "Help desk staff",
+                        "Audit and Compliance"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Audit and Compliance need a documented record of what changed, when, and why, while technical staff need accurate detail and leadership needs comparable information."
+                },
+                {
+                    "id": "ch2-q04",
+                    "question": "Which statement best describes the 'As-Is' or current architectural view?",
+                    "choices": [
+                        "A scenario of worst-case operating conditions",
+                        "A snapshot of the company's technology and processes right now",
+                        "A design of the target systems five years ahead",
+                        "A list of approved cloud vendors"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Current Architectural Views are like taking a complete snapshot of a company's technology and processes right now."
+                },
+                {
+                    "id": "ch2-q05",
+                    "question": "An EA Change Request (EACR) primarily helps companies to:",
+                    "choices": [
+                        "Approve annual IT budgets",
+                        "Select new hardware for the data center",
+                        "Update systems smoothly with an archived history for implementers",
+                        "Retire outdated business processes permanently"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "An EACR is the standard format used to update systems smoothly, and archiving these requests creates a history guide for developers."
+                },
+                {
+                    "id": "ch2-q06",
+                    "question": "In an IDEF-O diagram, which element represents the 'Controls' or rules to follow?",
+                    "choices": [
+                        "The inputs that enter the function",
+                        "The outputs produced by the function",
+                        "The guidelines constraining how the activity runs",
+                        "The mechanisms or tools used"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "IDEF-O explicitly defines 'Controls' (rules to follow) and 'Mechanisms' (tools to use), with inputs and outputs shown clearly."
+                },
+                {
+                    "id": "ch2-q07",
+                    "question": "What does the tech inventory in EA enable leadership to do?",
+                    "choices": [
+                        "Automatically delete unused servers",
+                        "Justify upgrades with concrete proof when authorizing purchases",
+                        "Rewrite legacy applications in new languages",
+                        "Schedule routine maintenance windows"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The tech inventory supports smart budgeting, provides concrete proof when justifying upgrades, and uses automated tracking like barcodes."
+                },
+                {
+                    "id": "ch2-q08",
+                    "question": "Why are future enterprise architectural views important?",
+                    "choices": [
+                        "They replace the EA Management Plan",
+                        "They document exactly what already exists today",
+                        "They support resource planning, decision-making, and enterprise-wide communication",
+                        "They eliminate the need for current-state documentation"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Future views support resource planning, decision-making support, enterprise-wide communication, and upward and downward alignment."
+                },
+                {
+                    "id": "ch2-q09",
+                    "question": "A CONOPS scenario is drawn from which source to plan defensive responses and offensive initiatives?",
+                    "choices": [
+                        "The Razor and Blade analysis",
+                        "The SWOT Analysis",
+                        "The Balanced Scorecard",
+                        "The IT Capital Planning Portfolio"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "CONOPS scenarios document good and bad operating environments drawn from the SWOT Analysis so the enterprise can plan responses in advance."
+                },
+                {
+                    "id": "ch2-q10",
+                    "question": "The Storytelling Technique used in CONOPS development was introduced by:",
+                    "choices": [
+                        "Steven Spewak",
+                        "The Open Group",
+                        "John Zachman",
+                        "Dr. Robert Neilson"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The Storytelling Technique by Dr. Robert Neilson tells a short story through a central character living through future events."
+                },
+                {
+                    "id": "ch2-q11",
+                    "question": "The Storytelling Technique ties a scenario to planning assumptions in three areas. Which of the following is one of them?",
+                    "choices": [
+                        "Technology — what tools are needed",
+                        "Governance — who approves changes",
+                        "Budget — what funds are allocated",
+                        "Training — what skills are certified"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The three areas of change are Process (how it gets done), People (who is involved), and Technology (what tools are needed)."
+                },
+                {
+                    "id": "ch2-q12",
+                    "question": "Which future-view artifact would track the goal 'Grow e-government service adoption 30% in 3 years'?",
+                    "choices": [
+                        "Balanced Scorecard",
+                        "Swim Lane Process Diagram",
+                        "System Data Flow Diagram",
+                        "Network Connectivity Diagram"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The Balanced Scorecard is the Strategic-level future-view artifact used to track adoption goals like the 30% growth example."
+                },
+                {
+                    "id": "ch2-q13",
+                    "question": "A Swim Lane Process Diagram tracing an application from Citizen to Records Office belongs to which future artifact level?",
+                    "choices": [
+                        "Infrastructure Level",
+                        "Strategic Level",
+                        "Business Level",
+                        "Information Level"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Swim Lane Process Diagrams are future-view artifacts at the Business Level, which documents services and processes."
+                },
+                {
+                    "id": "ch2-q14",
+                    "question": "An Activity\/Entity (CRUD) Matrix defines which systems create, read, update, or delete data. At which level does this artifact belong?",
+                    "choices": [
+                        "Systems \/ Services Level",
+                        "Strategic Level",
+                        "Infrastructure Level",
+                        "Information Level"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The CRUD Matrix is an Information-level artifact, documenting data, knowledge, and information flows."
+                },
+                {
+                    "id": "ch2-q15",
+                    "question": "A System Interface Diagram showing the Permit Portal calling a Payment Gateway API belongs to which future artifact level?",
+                    "choices": [
+                        "Infrastructure Level",
+                        "Systems \/ Services Level",
+                        "Business Level",
+                        "Information Level"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The Systems \/ Services Level documents applications and services; its artifacts include System Interface Diagrams and Web Application Diagrams."
+                },
+                {
+                    "id": "ch2-q16",
+                    "question": "A Network Connectivity Diagram showing a new fiber link between City Hall and the Data Center belongs to which future artifact level?",
+                    "choices": [
+                        "Infrastructure Level",
+                        "Systems \/ Services Level",
+                        "Business Level",
+                        "Strategic Level"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The Infrastructure Level documents physical networks, hardware, and facilities, including Network Connectivity Diagrams."
+                },
+                {
+                    "id": "ch2-q17",
+                    "question": "What is the purpose of freeze periods in maintaining trustworthy future views?",
+                    "choices": [
+                        "To prevent any new changes from ever being approved",
+                        "To permanently lock the EA repository at go-live",
+                        "To freeze budgets for the fiscal year",
+                        "To keep current and future views frozen at regular intervals so changes are published in releases"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Freeze periods freeze current and future views at regular intervals (e.g., twice a year); changes accumulate for 4-5 months, then publish as a new release in month six."
+                },
+                {
+                    "id": "ch2-q18",
+                    "question": "In TOGAF's view, an intermediate state that bridges the gap between baseline and target on a realistic timeline is called:",
+                    "choices": [
+                        "Transition Architecture",
+                        "Baseline Architecture",
+                        "Future Operating Scenario",
+                        "Target Architecture"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Transition Architecture is one or more intermediate states that bridge the gap between baseline and target on a realistic timeline."
+                },
+                {
+                    "id": "ch2-q19",
+                    "question": "Which of these is one of the four main parts of an EA Management Plan?",
+                    "choices": [
+                        "Current Architecture Summary",
+                        "Architecture Review Calendar",
+                        "TOGAF Requirements Log",
+                        "Enterprise Architecture Repository"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The four parts are EA Program Management, Current Architecture Summary, Future Architecture Summary, and Glossary and References."
+                },
+                {
+                    "id": "ch2-q20",
+                    "question": "Which role is responsible for managing the EA program, documentation, standards, and configuration management?",
+                    "choices": [
+                        "Service Owner",
+                        "Business Analyst",
+                        "Chief Architect",
+                        "Project Manager"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The Chief Architect manages the EA program, documentation, standards, and configuration management."
+                },
+                {
+                    "id": "ch2-q21",
+                    "question": "Improvements in integration, user satisfaction, or IT investment decisions are examples of which type of performance measure?",
+                    "choices": [
+                        "Outcome measures",
+                        "Cost measures",
+                        "Sprint measures",
+                        "Output measures"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Outcome measures are improvements in integration, user satisfaction, or IT investment decisions; Output measures include projects completed and scope changes."
+                },
+                {
+                    "id": "ch2-q22",
+                    "question": "The number of projects completed, scope changes, or planning activities are examples of which type of measure?",
+                    "choices": [
+                        "Benefit measures",
+                        "Output measures",
+                        "Governance measures",
+                        "Outcome measures"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Output measures count things like projects completed, scope changes, or planning activities."
+                },
+                {
+                    "id": "ch2-q23",
+                    "question": "What should be documented in a separate IT Security Plan instead of the main architecture summary?",
+                    "choices": [
+                        "Workforce skills",
+                        "Sensitive security details",
+                        "Business capabilities",
+                        "Technology standards"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Sensitive security details should be documented in a separate IT Security Plan to avoid exposing vulnerabilities."
+                },
+                {
+                    "id": "ch2-q24",
+                    "question": "The EA Sequencing Plan primarily ensures that:",
+                    "choices": [
+                        "Projects occur in the correct order and dependent systems are not implemented too early",
+                        "Every project receives equal funding",
+                        "Only one technology vendor is used",
+                        "Security controls replace testing"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The EA Sequencing Plan lists projects, tasks, milestones, dependencies, and timeframes to ensure projects occur in the correct order."
+                },
+                {
+                    "id": "ch2-q25",
+                    "question": "Which practice reviews and controls proposed EA changes, applies technical standards, and manages waivers?",
+                    "choices": [
+                        "Capacity Planning",
+                        "Service Desk",
+                        "Configuration Management",
+                        "Release Management"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Configuration Management reviews and controls proposed changes, applies technical standards, manages waivers, and maintains version control."
+                },
+                {
+                    "id": "ch2-q26",
+                    "question": "Which statement reflects the reference's analogy for EA future views?",
+                    "choices": [
+                        "Having a full set of blueprints for modifying an existing home",
+                        "Playing chess against an unknown opponent",
+                        "Writing a standardized college paper",
+                        "Keeping a giant checklist of all hardware"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The reference analogizes future EA views to having a full set of blueprints for the modification of an existing home."
+                },
+                {
+                    "id": "ch2-q27",
+                    "question": "What does the Current Architecture Summary primarily describe?",
+                    "choices": [
+                        "The approved technology standards list",
+                        "The enterprise's annual budget allocation",
+                        "The desired future direction of the enterprise",
+                        "How existing resources support the organization"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The Current Architecture Summary describes how existing resources support the organization, including roles, strengths, weaknesses, and performance gaps."
+                },
+                {
+                    "id": "ch2-q28",
+                    "question": "Which of the following is a future operating scenario mentioned in the reference?",
+                    "choices": [
+                        "Vendor consolidation",
+                        "Data center shutdown",
+                        "Aggressive growth",
+                        "Quarterly audits"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Future operating scenarios include the status quo, aggressive growth, or responding defensively to a market downturn."
+                },
+                {
+                    "id": "ch2-q29",
+                    "question": "The EA Management Plan is best described as:",
+                    "choices": [
+                        "A compliance report for auditors",
+                        "A list of all IT project budgets",
+                        "A one-time document delivered when the EA is built",
+                        "A living document that guides the transition from current to future architecture"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The EA Management Plan directs the transition from current to future architecture and is a living document that is regularly updated."
+                },
+                {
+                    "id": "ch2-q30",
+                    "question": "Why does the reference say future artifacts must use the same methods and levels as current artifacts?",
+                    "choices": [
+                        "So future plans fit one standardized format",
+                        "So change is always traceable from current to future state",
+                        "So auditors can compare payroll records",
+                        "So vendors can reuse existing licenses"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Future artifacts are built with the same planning assumptions, documentation, and modeling techniques as current views, at every level, so change is always traceable."
+                }
+            ]
+        },
+        {
+            "chapterId": "ch3",
+            "title": "L4 — Using an Enterprise Architecture",
+            "description": "Planning and project management, EAP, sequencing and prioritization, security areas, the EA repository, support tools, and integrating EA with operational IT.",
+            "questions": [
+                {
+                    "id": "ch3-q01",
+                    "question": "Which statement best describes what Enterprise Architecture provides to an organization?",
+                    "choices": [
+                        "A replacement for all legacy applications",
+                        "A mandatory federal compliance framework",
+                        "A pricing model for cloud services",
+                        "A blueprint showing how parts of the organization work together"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "EA provides a blueprint showing how different parts of an organization work together and how technology supports business goals."
+                },
+                {
+                    "id": "ch3-q02",
+                    "question": "The three main areas of using an EA are commonly remembered as the sequence:",
+                    "choices": [
+                        "Design, Build, Test",
+                        "Plan, Protect, and Manage",
+                        "Analyze, Document, Govern",
+                        "Budget, Deploy, Monitor"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The three areas are Planning & Project Management, Security, and Repository & Support Tools — remembered as Plan, Protect, and Manage."
+                },
+                {
+                    "id": "ch3-q03",
+                    "question": "In the Amazon order-fulfillment example, which system processes payment after the e-commerce system receives an order?",
+                    "choices": [
+                        "Inventory System",
+                        "Logistics System",
+                        "Payment System",
+                        "Fulfillment System"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The flow is Customer Places Order -> E-Commerce System -> Payment System -> Inventory System -> Fulfillment System -> Logistics System."
+                },
+                {
+                    "id": "ch3-q04",
+                    "question": "Which statement best describes the Planning step in using an EA?",
+                    "choices": [
+                        "It stores all EA diagrams and models",
+                        "It converts the gap between As-Is and To-Be into a prioritized list of initiatives",
+                        "It controls project scope, schedule, cost, and risk",
+                        "It protects systems from unauthorized access"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Planning (What & Why) converts the gap between the As-Is and To-Be architecture into a list of initiatives and decides which goes first."
+                },
+                {
+                    "id": "ch3-q05",
+                    "question": "EAP is defined by Spewak (1992) as:",
+                    "choices": [
+                        "Defining the architectures needed for the business use of information and the plan to implement them",
+                        "Documenting every hardware asset in the enterprise",
+                        "Standardizing all communication protocols",
+                        "Designing databases for transactional systems"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Spewak (1992) defines EAP as defining the architectures needed for the business use of information — and the plan to implement them."
+                },
+                {
+                    "id": "ch3-q06",
+                    "question": "What is the guiding principle of EAP?",
+                    "choices": [
+                        "Data -> Technology -> Business -> Application",
+                        "Application -> Business -> Technology -> Data",
+                        "Technology -> Application -> Data -> Business",
+                        "Business -> Data -> Applications -> Technology"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The guiding principle is BUSINESS -> DATA -> APPLICATIONS -> TECHNOLOGY: applications manage data, technology supports applications, and everything serves a business process."
+                },
+                {
+                    "id": "ch3-q07",
+                    "question": "Which choice best states the consequence of reversing the EAP order?",
+                    "choices": [
+                        "You get a solution hunting for a problem",
+                        "You get better data governance",
+                        "You eliminate technical debt",
+                        "You accelerate time-to-market"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Reverse the order and you get a solution hunting for a problem; EAP must be business-driven and data-driven, never technology-driven."
+                },
+                {
+                    "id": "ch3-q08",
+                    "question": "In the 'Where we want to be' layer of EAP, which architecture is defined first?",
+                    "choices": [
+                        "Application architecture",
+                        "Technology architecture",
+                        "Network architecture",
+                        "Data architecture"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "In 'Where we want to be,' data architecture comes first, then applications, then technology; these describe WHAT is needed, not how it will be coded."
+                },
+                {
+                    "id": "ch3-q09",
+                    "question": "An enterprise must enforce a compliance deadline from the Data Privacy Act. Based on sequencing tests, how should this work be treated?",
+                    "choices": [
+                        "As non-negotiable work that must be scheduled",
+                        "As a dependency for every dashboard",
+                        "As an optional enhancement",
+                        "As a pilot first, then a rollout"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Compliance deadlines are a sequencing test: non-negotiable work, such as the Data Privacy Act, must be scheduled."
+                },
+                {
+                    "id": "ch3-q10",
+                    "question": "What is the rule of thumb the reference gives about projects that change the same system?",
+                    "choices": [
+                        "Always run two parallel projects to save time",
+                        "Never run two projects that change the same system at the same time",
+                        "Only change the system when it is down",
+                        "Assign both projects to the same owner"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The rule of thumb is to never run two projects that change the same system at the same time."
+                },
+                {
+                    "id": "ch3-q11",
+                    "question": "In the 'From Architecture to Projects' process, what does Gap Analysis do?",
+                    "choices": [
+                        "Attaches cost, benefit, and risk to each package",
+                        "Places packages on a timeline with transition architectures",
+                        "Compares As-Is against To-Be to find what is missing, duplicated, and obsolete",
+                        "Assigns a single owner to each deliverable"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Gap Analysis compares As-Is against To-Be to find what is missing, duplicated, and obsolete; every project must trace back to a proven gap."
+                },
+                {
+                    "id": "ch3-q12",
+                    "question": "What does a Work Package in EA planning consist of?",
+                    "choices": [
+                        "A carved-out project scope with an assigned owner and aligned business outcome",
+                        "A business case attached to cost and benefit",
+                        "Two projects changing the same system",
+                        "A comparison of current and target states"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Work Packages group related gaps into small deliverables, each with clear scope, a single owner, and one concrete outcome."
+                },
+                {
+                    "id": "ch3-q13",
+                    "question": "Why does leadership fund a Business Case rather than diagrams?",
+                    "choices": [
+                        "Because business cases are shorter to review",
+                        "Because leadership funds outcomes, not diagrams",
+                        "Because diagrams lack legal sign-off",
+                        "Because a business case only reports status"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The Business Case attaches cost, benefit, and risk to each package; leadership funds outcomes, not diagrams."
+                },
+                {
+                    "id": "ch3-q14",
+                    "question": "Which role's question is 'Are we on scope, schedule, and budget?'",
+                    "choices": [
+                        "Service Registry",
+                        "Enterprise Architecture Team",
+                        "Project Manager \/ PMO",
+                        "Architecture Review Board"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The Project Manager \/ PMO cares about delivering this one project and asks whether the team is on scope, schedule, and budget."
+                },
+                {
+                    "id": "ch3-q15",
+                    "question": "What is required to document an ARB deviation so a 'temporary fix' does not become permanent technical debt?",
+                    "choices": [
+                        "A written executive memo",
+                        "A documented exception with an expiry date",
+                        "A quarterly stakeholder meeting",
+                        "A new business case"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Any deviation needs a documented exception with an expiry date; otherwise the temporary fix becomes permanent technical debt."
+                },
+                {
+                    "id": "ch3-q16",
+                    "question": "Which of the following is one of the four common EA pitfalls described in the reference?",
+                    "choices": [
+                        "Excessive stakeholder reviews",
+                        "Excessive documentation updates",
+                        "Ivory-tower architecture",
+                        "Overfunded business cases"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The four pitfalls are ivory-tower architecture, no executive sponsor, big-bang scope, and stale artifacts."
+                },
+                {
+                    "id": "ch3-q17",
+                    "question": "A business capability map describes what the firm does, such as Marketing -> Lead Generation -> Campaign Management. Which artifact class does it belong to?",
+                    "choices": [
+                        "A Diagram \/ Model",
+                        "A Catalog",
+                        "A Matrix",
+                        "A Roadmap"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The Business Capability Map is a Catalog: a hierarchical decomposition of what the business does to fulfill its mission."
+                },
+                {
+                    "id": "ch3-q18",
+                    "question": "Which success factor emphasizes that architecture reviews must be part of approval, not optional?",
+                    "choices": [
+                        "Small increments",
+                        "Reviews at project gates",
+                        "Active sponsor",
+                        "A living repository"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Reviews at project gates are a success factor: they are part of approval, not optional."
+                },
+                {
+                    "id": "ch3-q19",
+                    "question": "Which of the following is one of the four main areas of security in the reference?",
+                    "choices": [
+                        "Vendor Security",
+                        "Sprint Security",
+                        "Data Security",
+                        "Budget Security"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The four areas are Data Security, Network\/Technology Security, Application Security, and Physical Security."
+                },
+                {
+                    "id": "ch3-q20",
+                    "question": "HR staff should only access HR data, not finance data. Which concept does this scenario illustrate?",
+                    "choices": [
+                        "Encryption at rest",
+                        "Authentication",
+                        "Role-based access control (RBAC)",
+                        "Physical security"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "RBAC means people only get access to what they need for their job, as in the HR staff vs finance data example."
+                },
+                {
+                    "id": "ch3-q21",
+                    "question": "Which of the following is TRUE about security in enterprise architecture?",
+                    "choices": [
+                        "Security is handled by a separate department with no EA input",
+                        "Security only matters for physical hardware",
+                        "Security should be considered after implementation to avoid delays",
+                        "Security tasks should be part of the project timeline, not an afterthought"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Security should be considered while implementing the architecture, and security tasks should be part of the project timeline, not an afterthought."
+                },
+                {
+                    "id": "ch3-q22",
+                    "question": "Which core repository component defines the schema, entity types, taxonomy, and relationship rules for artifacts?",
+                    "choices": [
+                        "Governance & Standards",
+                        "Reference Architecture",
+                        "Architecture Landscape",
+                        "Architecture Metamodel"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The Architecture Metamodel defines the underlying schema, entity types, taxonomy, and relationship rules for how artifacts connect."
+                },
+                {
+                    "id": "ch3-q23",
+                    "question": "Which EA support tool capability generates dynamic visual models directly from repository data?",
+                    "choices": [
+                        "Impact & Risk Analysis",
+                        "Automated Diagramming & Layout",
+                        "Collaborative Governance",
+                        "Automated Data Ingestion"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Automated Diagramming & Layout generates dynamic visual models directly from repository data, keeping diagrams synchronized."
+                },
+                {
+                    "id": "ch3-q24",
+                    "question": "Which support tool is the free, open-source, lightweight option known for ArchiMate modeling?",
+                    "choices": [
+                        "Archi",
+                        "Sparx Enterprise Architect",
+                        "LeanIX",
+                        "Software AG Alfabet"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Archi is the free, open-source, lightweight graphical modeling tool for ArchiMate modeling."
+                },
+                {
+                    "id": "ch3-q25",
+                    "question": "Which EA support tool is focused on strategic IT governance and portfolio management for large enterprises and financial institutions?",
+                    "choices": [
+                        "Software AG Alfabet",
+                        "Archi",
+                        "LeanIX",
+                        "Sparx Enterprise Architect"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Software AG Alfabet focuses on strategic IT governance and portfolio management, with robust financial planning and risk alignment for large\/financial firms."
+                },
+                {
+                    "id": "ch3-q26",
+                    "question": "Which statement best describes the 'impact & risk analysis' capability of EA support tools?",
+                    "choices": [
+                        "It runs traceability queries to evaluate how modifying an application impacts connected systems",
+                        "It automatically draws network diagrams from cloud data",
+                        "It connects via APIs to CMDBs to refresh landscape data",
+                        "It provides role-based access for review boards"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Impact & Risk Analysis performs traceability queries to evaluate how replacing or modifying an application impacts connected systems and operations."
+                },
+                {
+                    "id": "ch3-q27",
+                    "question": "In the repository governance lifecycle, what does the 'Compliance Check' stage perform?",
+                    "choices": [
+                        "Connects to cloud platforms to refresh data",
+                        "Provides approval workflows and audit trails for ARB approvals",
+                        "Generates dynamic visual models from repository data",
+                        "Runs traceability queries to evaluate the impact of modifying applications"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The Compliance Check stage performs traceability queries to evaluate how replacing or modifying an application impacts connected systems and operations."
+                },
+                {
+                    "id": "ch3-q28",
+                    "question": "What does integrating the EA repository with Jira, Confluence, and CI\/CD pipelines achieve?",
+                    "choices": [
+                        "Cloud resources are automatically procured",
+                        "Repository data is encrypted at rest",
+                        "Stakeholder meetings are scheduled automatically",
+                        "Planned architecture guards are pushed into developer workflows"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "SDLC & DevOps alignment ensures developer compliance; architectural guardrails are pushed directly into developer workflows."
+                },
+                {
+                    "id": "ch3-q29",
+                    "question": "Which scenario best illustrates CMDB & ITSM synchronization?",
+                    "choices": [
+                        "Reconciling planned architecture with actual runtime reality via ServiceNow or AWS Config",
+                        "Publishing the future view every six months",
+                        "Assigning RBAC roles to HR staff",
+                        "Running a CONOPS storytelling session"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Bi-directional CMDB integration reconciles planned architecture with actual runtime reality, verifying deployed assets match strategic models."
+                },
+                {
+                    "id": "ch3-q30",
+                    "question": "According to the reference, what happens to IT spend when projects must trace back to business goals?",
+                    "choices": [
+                        "Spending is capped at the infrastructure layer",
+                        "IT spending increases for all departments",
+                        "Duplicate and siloed systems stop being bought and built",
+                        "Budgets are tied to vendor offerings"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Tying every peso of IT spending to a business goal stops duplicate and siloed systems from being bought and built."
+                }
+            ]
+        },
+        {
+            "chapterId": "ch4",
+            "title": "L5 — All About Service-Oriented Architecture (SOA)",
+            "description": "SOA principles, components, communication patterns, REST vs SOAP, the Enterprise Service Bus, and the evolution from monolithic to SOA to microservices.",
+            "questions": [
+                {
+                    "id": "ch4-q01",
+                    "question": "What is a 'service' in the context of SOA?",
+                    "choices": [
+                        "A software component assigned a task that is reusable and modular",
+                        "A database table shared across all consumers",
+                        "A one-time integration between two systems",
+                        "A computer program that exposes full internal logic"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "A service is a software component assigned a task, used to make components reusable and modular for faster development."
+                },
+                {
+                    "id": "ch4-q02",
+                    "question": "Which scenario best illustrates the SOA principle of Reusability?",
+                    "choices": [
+                        "A service stores state from past transactions",
+                        "A payment service is used by both a website and a mobile app",
+                        "A service hides its internal implementation from consumers",
+                        "A large system is split into several small services"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Reusability means using a service in multiple parts of the system, as with the Website -> Payment Service <- Mobile App example."
+                },
+                {
+                    "id": "ch4-q03",
+                    "question": "Which SOA principle requires that a service change should not affect other components using it?",
+                    "choices": [
+                        "Abstraction",
+                        "Modularity",
+                        "Loose Coupling",
+                        "Reusability"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Loose coupling ensures changes in one service do not affect other components using it; services should also be stateless."
+                },
+                {
+                    "id": "ch4-q04",
+                    "question": "Which statement best describes the Abstraction principle in SOA?",
+                    "choices": [
+                        "Consumers see the full implementation so they can debug",
+                        "Clients cannot see the important logic or code behind a service",
+                        "Each service manages its own database",
+                        "Services communicate through a central bus"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Abstraction means customers and clients should not be able to see important logic or code; the app only needs the interface details."
+                },
+                {
+                    "id": "ch4-q05",
+                    "question": "Which SOA component creates, maintains, and provides a service?",
+                    "choices": [
+                        "Service Registry",
+                        "Service Provider",
+                        "Service Broker",
+                        "Service Consumer"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The Service Provider creates, maintains, and provides a service, such as a company providing a Payment Service."
+                },
+                {
+                    "id": "ch4-q06",
+                    "question": "Which SOA component acts as a directory of available services and how to access them?",
+                    "choices": [
+                        "Service Consumer",
+                        "Service Registry",
+                        "Service Provider",
+                        "Service Mesh"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The Service Registry acts as a directory of available services, containing information about what is available and how consumers can access them."
+                },
+                {
+                    "id": "ch4-q07",
+                    "question": "In which communication mode does the caller send a request and wait for an immediate reply before continuing?",
+                    "choices": [
+                        "Synchronous",
+                        "Event-driven streaming",
+                        "Batch processing",
+                        "Asynchronous \/ Message-Based"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Synchronous communication sends a request and waits for an immediate reply before continuing; it is common with REST APIs."
+                },
+                {
+                    "id": "ch4-q08",
+                    "question": "Which mechanism lets consumers locate providers at runtime instead of a hard-coded address?",
+                    "choices": [
+                        "Fair queuing",
+                        "Service Discovery",
+                        "Load Balancing",
+                        "Protocol Mediation"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Service Discovery lets consumers locate providers at runtime through a service registry (e.g., UDDI) instead of a hard-coded address."
+                },
+                {
+                    "id": "ch4-q09",
+                    "question": "Which statement about REST is TRUE according to the reference?",
+                    "choices": [
+                        "It requires WS-Security for every message",
+                        "It is a strict, formal messaging standard",
+                        "It always uses XML envelopes",
+                        "It is an architectural style that uses standard HTTP verbs"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "REST is an architectural style, not a strict standard, and typically uses JSON over standard HTTP verbs."
+                },
+                {
+                    "id": "ch4-q10",
+                    "question": "Which statement about SOAP is TRUE according to the reference?",
+                    "choices": [
+                        "It has built-in standards for security and transactions",
+                        "It is stateless by design with no security options",
+                        "It only works over HTTP",
+                        "It is lighter than REST and uses JSON"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "SOAP is a strict, formal messaging standard with built-in standards for security (WS-Security) and transactions; it works over multiple transports."
+                },
+                {
+                    "id": "ch4-q11",
+                    "question": "Which system type would MOST appropriately use SOAP over REST based on the reference?",
+                    "choices": [
+                        "A banking system requiring high reliability",
+                        "A simple contact form",
+                        "A mobile game leaderboard",
+                        "A public news feed website"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "SOAP best suits enterprise systems needing high reliability such as banking and finance, while REST suits simpler, faster web and mobile APIs."
+                },
+                {
+                    "id": "ch4-q12",
+                    "question": "Which of the following is a core function of the Enterprise Service Bus (ESB)?",
+                    "choices": [
+                        "Replacing the service registry",
+                        "Transformation of data formats like XML to JSON",
+                        "Creating new business processes",
+                        "Storing all service credentials"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The six ESB functions include routing, transformation, protocol mediation, orchestration, monitoring & logging, and security enforcement."
+                },
+                {
+                    "id": "ch4-q13",
+                    "question": "Which ESB function coordinates calls to multiple services in sequence to complete a single business process?",
+                    "choices": [
+                        "Protocol Mediation",
+                        "Transformation",
+                        "Routing",
+                        "Orchestration"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Orchestration coordinates calls to multiple services in sequence to complete a single business process."
+                },
+                {
+                    "id": "ch4-q14",
+                    "question": "Which ESB function bridges services that use different transport protocols such as HTTP, JMS, or FTP?",
+                    "choices": [
+                        "Protocol Mediation",
+                        "Routing",
+                        "Monitoring & Logging",
+                        "Security Enforcement"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Protocol Mediation bridges services that use different transport protocols, such as HTTP, JMS, or FTP."
+                },
+                {
+                    "id": "ch4-q15",
+                    "question": "In the ESB architecture diagram, how do the Web App, Mobile App, CRM, and Legacy System communicate with the Payment, Inventory, and Shipping services?",
+                    "choices": [
+                        "The CRM connects only to the Payment service",
+                        "Each app connects directly to the service it needs",
+                        "All communication flows through the ESB, and no service calls another directly",
+                        "The legacy system bypasses the bus for speed"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "All communication flows through the Enterprise Service Bus; no service calls another directly."
+                },
+                {
+                    "id": "ch4-q16",
+                    "question": "Which benefit of SOA refers to teams developing, updating, and deploying individual services independently?",
+                    "choices": [
+                        "Scalability",
+                        "Agility",
+                        "Modularity",
+                        "Reusability"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Agility lets teams develop, update, and deploy individual services independently, drastically reducing time to bring features to market."
+                },
+                {
+                    "id": "ch4-q17",
+                    "question": "Which technical advantage of SOA allows services to be written in entirely different programming languages?",
+                    "choices": [
+                        "Technology Diversity",
+                        "Independent Deployment",
+                        "Streamlined Maintenance",
+                        "Fault Isolation"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Technology Diversity (polyglot programming) allows services in different languages because they communicate over standard protocols like HTTP."
+                },
+                {
+                    "id": "ch4-q18",
+                    "question": "If one service crashes, the rest of the application can often continue functioning. Which SOA advantage does this describe?",
+                    "choices": [
+                        "Technology Diversity",
+                        "Reusability",
+                        "Agility",
+                        "Fault Isolation"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Fault Isolation means a crash in one service often leaves the rest of the application functioning."
+                },
+                {
+                    "id": "ch4-q19",
+                    "question": "Which of the following is an inherent drawback of SOA?",
+                    "choices": [
+                        "Services cannot be reused across applications",
+                        "All services must share one database",
+                        "Network overhead introduces unavoidable latency",
+                        "Every service must be written in the same language"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "SOA's heavy reliance on network communication introduces unavoidable latency and complex security challenges."
+                },
+                {
+                    "id": "ch4-q20",
+                    "question": "In a monolithic architecture, how does a bug in one module affect the system?",
+                    "choices": [
+                        "It slows only the payment function",
+                        "It is automatically contained by the ESB",
+                        "It is isolated to that module only",
+                        "It can crash the entire system"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "In a monolithic architecture, failures are not isolated; a bug in one module can crash the entire system."
+                },
+                {
+                    "id": "ch4-q21",
+                    "question": "Which statement best contrasts monolithic scaling with SOA scaling?",
+                    "choices": [
+                        "Both scale only the specific service under load",
+                        "Monoliths scale specific services; SOA duplicates the full app",
+                        "Both must duplicate the entire application to scale",
+                        "Monoliths duplicate the entire app; SOA scales only the services under load"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Monolithic architecture must duplicate the entire application to scale, while SOA scales only the specific services under heavy load."
+                },
+                {
+                    "id": "ch4-q22",
+                    "question": "Which era of software architecture is described as 'one codebase, one development, simple to start, hard to scale'?",
+                    "choices": [
+                        "Microservices (2010s)",
+                        "SOA (2000s)",
+                        "Monolithic (1990s)",
+                        "Cloud Native (2020s)"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The monolithic era (1990s) had one codebase and one development line: simple to start, hard to scale or change safely."
+                },
+                {
+                    "id": "ch4-q23",
+                    "question": "What problem of monolithic systems forced SOA's invention?",
+                    "choices": [
+                        "Too many independent services to manage",
+                        "The entire application had to scale as one unit even if only one function was under load",
+                        "Every service needed its own database",
+                        "The ESB became a performance bottleneck"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Scalability bottlenecks occurred because the entire application had to scale as one unit, and a small change could break unrelated functionality."
+                },
+                {
+                    "id": "ch4-q24",
+                    "question": "In SOA, how was interoperability between a Java service and a .NET or mainframe service achieved?",
+                    "choices": [
+                        "By requiring identical hardware",
+                        "By copying each other's source code",
+                        "By using standardized contracts described with WSDL\/SOAP",
+                        "By storing all data in one shared database"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Standardized contracts described with WSDL\/SOAP let services on different platforms interoperate."
+                },
+                {
+                    "id": "ch4-q25",
+                    "question": "Which of the following is cited as a reason SOA evolved into microservices?",
+                    "choices": [
+                        "Developers preferred one large codebase",
+                        "REST APIs were not yet invented",
+                        "The ESB became a single point of failure and a performance bottleneck",
+                        "Services were too small and too numerous"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "SOA growing pains included the ESB becoming a single point of failure and performance bottleneck as message volume grew."
+                },
+                {
+                    "id": "ch4-q26",
+                    "question": "Which statement correctly contrasts SOA and microservices communication?",
+                    "choices": [
+                        "SOA uses direct calls with no middleware",
+                        "Microservices require centralized governance",
+                        "Both use an ESB to mediate every message",
+                        "Microservices use direct REST\/gRPC calls between services"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "SOA uses an ESB to mediate messages, while microservices make direct REST\/gRPC calls straight between services."
+                },
+                {
+                    "id": "ch4-q27",
+                    "question": "How does data ownership typically differ between SOA and microservices?",
+                    "choices": [
+                        "SOA services each own private data; microservices share one database",
+                        "Both share a single enterprise database",
+                        "SOA often shares databases; each microservice owns its own data",
+                        "Both require one table per service"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "SOA often uses shared databases across services, while each microservice owns and manages its own data."
+                },
+                {
+                    "id": "ch4-q28",
+                    "question": "Which is the modern successor to the ESB for cloud APIs?",
+                    "choices": [
+                        "Service Registry",
+                        "WSDL contract",
+                        "Message queue",
+                        "API Gateway"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "API gateways are the modern successor to the ESB, providing routing, auth, and rate-limiting for cloud APIs."
+                },
+                {
+                    "id": "ch4-q29",
+                    "question": "Tools like Istio that manage service-to-service communication with retries, encryption, and observability are examples of:",
+                    "choices": [
+                        "Service Mesh",
+                        "Enterprise Service Bus",
+                        "Integration Platform as a Service",
+                        "Content Delivery Network"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "A service mesh (like Istio) manages service-to-service communication, echoing SOA's mediation layer with added observability."
+                },
+                {
+                    "id": "ch4-q30",
+                    "question": "Which statement best summarizes SOA's key takeaway about how it solved enterprise problems?",
+                    "choices": [
+                        "SOA split logic into reusable services connected through a central ESB",
+                        "SOA removed the need for any middleware",
+                        "SOA made all enterprises use one coding language",
+                        "SOA rebuilt every application from scratch"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "SOA split business logic into reusable services integrated over a central ESB, letting large organizations reuse capabilities instead of rebuilding logic."
+                }
+            ]
+        },
+        {
+            "chapterId": "ch5",
+            "title": "L6 — Integrating Technology",
+            "description": "XML foundations, document structure, DTD vs XSD, XPath\/XQuery\/XSLT, XML parsing approaches, storage techniques, and web service technologies.",
+            "questions": [
+                {
+                    "id": "ch5-q01",
+                    "question": "Which phrase best describes XML according to the reference?",
+                    "choices": [
+                        "A standard for writing data as plain text using tags that describe meaning",
+                        "A compiled programming language for web servers",
+                        "A relational database management system",
+                        "A file compression format for images"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "XML is a standard for writing data as plain text, using tags that describe what the data means."
+                },
+                {
+                    "id": "ch5-q02",
+                    "question": "Which property means XML tags tell you what each value is?",
+                    "choices": [
+                        "Self-describing",
+                        "Platform neutral",
+                        "Data, not design",
+                        "Extensible"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Self-describing means tags tell you what each value is, e.g., <name> clearly labels a name value."
+                },
+                {
+                    "id": "ch5-q03",
+                    "question": "Which of the following is NOT a listed property of XML?",
+                    "choices": [
+                        "Binary encoding",
+                        "Extensible",
+                        "Platform neutral",
+                        "Data, not design"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "XML is plain text, not binary. Its four properties are self-describing, extensible, platform neutral, and data not design."
+                },
+                {
+                    "id": "ch5-q04",
+                    "question": "In the sample document <?xml version=\"1.0\" encoding=\"UTF-8\"?>, what is this first line called?",
+                    "choices": [
+                        "Prolog",
+                        "Attribute",
+                        "Element content",
+                        "Root element"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The prolog is always the very first line and declares the XML version and encoding."
+                },
+                {
+                    "id": "ch5-q05",
+                    "question": "Having exactly one outermost element with everything else inside it is a requirement for:",
+                    "choices": [
+                        "The attribute",
+                        "The root element",
+                        "The prolog",
+                        "The namespace"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The root element is the outermost element; there is exactly one per document and everything else sits inside it."
+                },
+                {
+                    "id": "ch5-q06",
+                    "question": "In <book isbn=\"978-0-13-235088\">, what is isbn?",
+                    "choices": [
+                        "A child element",
+                        "An attribute",
+                        "The root element",
+                        "A namespace"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "An attribute is written inside the opening tag in the format name=\"value\", and its name cannot repeat on the same element."
+                },
+                {
+                    "id": "ch5-q07",
+                    "question": "Which document is well-formed but NOT valid?",
+                    "choices": [
+                        "<student><name>Ana<\/name><age>19<\/age><\/student>",
+                        "<student><name><\/student>",
+                        "<student><name>Ana<age>19<\/name><\/age><\/student>",
+                        "<student><name>Ana<\/name><age>banana<\/age><\/student>"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "It is well-formed (syntax correct) but not valid because <age> contains 'banana', which does not match its declared integer data type."
+                },
+                {
+                    "id": "ch5-q08",
+                    "question": "Which statement correctly compares DTD and XSD?",
+                    "choices": [
+                        "DTD is written in XML and XSD uses its own syntax",
+                        "Both support data types like integer and date",
+                        "DTD is the modern standard and XSD is the old way",
+                        "XSD supports namespaces and real data types; DTD has neither"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "XSD is a W3C standard written in XML itself with real data types and namespace support; DTD is older, uses its own syntax, and has no data types."
+                },
+                {
+                    "id": "ch5-q09",
+                    "question": "Which XML tool FINDS or locates one specific part of the document, written like a folder path?",
+                    "choices": [
+                        "XQuery",
+                        "XSLT",
+                        "XPath",
+                        "XSD"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "XPath finds and locates one specific part of the document, written like a folder path, without changing anything."
+                },
+                {
+                    "id": "ch5-q10",
+                    "question": "Which XML tool SEARCHES XML and returns only the parts you ask for, similar to what SQL does for tables?",
+                    "choices": [
+                        "StAX",
+                        "XQuery",
+                        "XPath",
+                        "XSLT"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "XQuery searches XML and returns only the parts requested, like SQL for tables, e.g., querying books published after 2005."
+                },
+                {
+                    "id": "ch5-q11",
+                    "question": "Which XML tool CONVERTS an XML file into a different format such as HTML, plain text, or other XML?",
+                    "choices": [
+                        "XQuery",
+                        "SAX",
+                        "XPath",
+                        "XSLT"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "XSLT converts XML into a different format like HTML, plain text, or other XML; the original file is never changed."
+                },
+                {
+                    "id": "ch5-q12",
+                    "question": "Which parsing approach loads the whole document into memory as a tree, using memory equal to the file size?",
+                    "choices": [
+                        "JAXB",
+                        "SAX",
+                        "StAX",
+                        "DOM"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "DOM loads the whole document into memory as a tree, best for small files you need to modify."
+                },
+                {
+                    "id": "ch5-q13",
+                    "question": "A developer needs to read a very large XML file once, forward only, with minimal memory. Which approach fits best?",
+                    "choices": [
+                        "SAX",
+                        "Hybrid column",
+                        "DOM",
+                        "JAXB"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "SAX streams through and fires events with very little memory; it is read once, forward only, and best for very large files."
+                },
+                {
+                    "id": "ch5-q14",
+                    "question": "Which approach converts XML directly into objects, best for when the schema is stable?",
+                    "choices": [
+                        "SAX",
+                        "CLOB storage",
+                        "Data Binding (JAXB)",
+                        "StAX"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Data Binding (JAXB) converts XML directly into objects and is best for when the schema is stable."
+                },
+                {
+                    "id": "ch5-q15",
+                    "question": "The gap between the XML tree and a relational database's flat tables is called:",
+                    "choices": [
+                        "The schema drift",
+                        "The impedance mismatch",
+                        "The normalization gap",
+                        "The cardinality error"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The impedance mismatch is the gap between the XML tree structure and relational database tables."
+                },
+                {
+                    "id": "ch5-q16",
+                    "question": "Invoices, purchase orders, and config files have a regular, predictable structure where order does not matter. How are these XML documents classified?",
+                    "choices": [
+                        "Native XML",
+                        "Document-centric XML",
+                        "Data-centric XML",
+                        "Mixed content XML"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Data-centric XML has a regular, predictable structure where order doesn't matter, so it suits a relational database."
+                },
+                {
+                    "id": "ch5-q17",
+                    "question": "Manuals, contracts, and articles have irregular, mixed content where order matters. These are best stored in:",
+                    "choices": [
+                        "A native XML database",
+                        "A relational table",
+                        "A spreadsheet",
+                        "A content-addressed store"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Document-centric XML with irregular content and order sensitivity is best stored in a native XML database."
+                },
+                {
+                    "id": "ch5-q18",
+                    "question": "Which XML storage technique breaks the tree into rows and columns, making the original document no longer exist?",
+                    "choices": [
+                        "CLOB \/ text column",
+                        "Shredding",
+                        "BLOB storage",
+                        "Native tree"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Shredding breaks the XML tree into rows and columns, enabling fast joins and reports, but the original document no longer exists."
+                },
+                {
+                    "id": "ch5-q19",
+                    "question": "Which storage approach keeps the whole document in one column while also copying key fields into normal columns?",
+                    "choices": [
+                        "XML-enabled database",
+                        "Hybrid \/ XML column",
+                        "Native XML database",
+                        "Shredded tables"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The hybrid \/ XML column approach keeps the whole document in one column and copies key fields into normal columns, trading fidelity and speed at the cost of duplication."
+                },
+                {
+                    "id": "ch5-q20",
+                    "question": "Which standardized format family does the reference associate with global interbank payments?",
+                    "choices": [
+                        "HL7 \/ CDA",
+                        "RosettaNet \/ ebXML",
+                        "ISO 20022",
+                        "OpenAPI"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "ISO 20022 is the standardized format for global interbank payments."
+                },
+                {
+                    "id": "ch5-q21",
+                    "question": "Which standardized format family is used for healthcare and clinical data?",
+                    "choices": [
+                        "SMTP",
+                        "HL7 \/ CDA",
+                        "ISO 20022",
+                        "RosettaNet \/ ebXML"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "HL7 \/ CDA is the standardized format family for healthcare and clinical data."
+                },
+                {
+                    "id": "ch5-q22",
+                    "question": "What was UDDI created for?",
+                    "choices": [
+                        "To define the XML vocabulary for banking",
+                        "To convert XML into HTML",
+                        "To encrypt SOAP messages in transit",
+                        "To help organizations publish and discover web services"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "UDDI (Universal Description, Discovery, and Integration) was a directory where businesses could publish and discover web services."
+                },
+                {
+                    "id": "ch5-q23",
+                    "question": "What does WSDL provide for a SOAP web service?",
+                    "choices": [
+                        "A runtime registry of available instances",
+                        "An HTTP transport layer",
+                        "Encryption keys for secure messaging",
+                        "A technical contract describing services, operations, and access"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "WSDL acts like a technical contract describing what services are available, what operations they support, and how they can be accessed."
+                },
+                {
+                    "id": "ch5-q24",
+                    "question": "Which WS-* specification adds authentication, encryption, and message integrity to SOAP messages?",
+                    "choices": [
+                        "WS-Security",
+                        "UDDI",
+                        "WS-ReliableMessaging",
+                        "WSDL"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "WS-Security adds authentication, encryption, and message integrity to SOAP messages, often paired with SAML assertions."
+                },
+                {
+                    "id": "ch5-q25",
+                    "question": "Which WS-* specification ensures messages are still delivered correctly even over unstable networks?",
+                    "choices": [
+                        "WS-Policy",
+                        "WS-Security",
+                        "WS-ReliableMessaging",
+                        "WSDL"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "WS-ReliableMessaging ensures messages are delivered correctly even over unstable networks."
+                },
+                {
+                    "id": "ch5-q26",
+                    "question": "In web services integration, which approach uses a central process that directs how services interact from the top down?",
+                    "choices": [
+                        "Orchestration",
+                        "Data binding",
+                        "Choreography",
+                        "P2P federation"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Orchestration relies on a central process that directs how different services interact, coordinating them from the top down."
+                },
+                {
+                    "id": "ch5-q27",
+                    "question": "Which integration approach lets services communicate directly with one another in a peer-to-peer manner with no single controlling process?",
+                    "choices": [
+                        "Hub-and-spoke",
+                        "Orchestration",
+                        "Choreography",
+                        "Orchestration bus"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Choreography lets services communicate directly peer-to-peer with no single controlling process."
+                },
+                {
+                    "id": "ch5-q28",
+                    "question": "Why does the reference describe XML as the 'lingua franca' of enterprise integration?",
+                    "choices": [
+                        "It is the fastest binary format",
+                        "It is the official standard of one vendor",
+                        "It requires a specific operating system",
+                        "It is a vendor-neutral, self-describing common language any platform can interpret"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "XML acts as a vendor-neutral, self-describing common language with explicit tags that any hardware or software platform can interpret."
+                },
+                {
+                    "id": "ch5-q29",
+                    "question": "How does XSLT help bridge differing enterprise schemas without modifying original databases?",
+                    "choices": [
+                        "It locks the database while the schema changes",
+                        "It renames database tables for the new schema",
+                        "It converts supplier PO formats to canonical enterprise standards",
+                        "It drops incompatible rows from the database"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "XSLT transforms supplier PO formats to canonical enterprise standards, mapping incompatible field names automatically."
+                },
+                {
+                    "id": "ch5-q30",
+                    "question": "What is the primary difference between a well-formed and a valid XML document?",
+                    "choices": [
+                        "Well-formed requires a schema",
+                        "Valid means well-formed AND follows a schema",
+                        "Well-formed invalidates namespaces",
+                        "Valid requires every attribute to be repeated"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Well-formed documents meet syntax rules; valid documents are well-formed AND follow a schema (only allowed elements present, values matching types)."
+                }
+            ]
+        },
+        {
+            "chapterId": "ch6",
+            "title": "L7 — Integrating Applications",
+            "description": "Application integration styles, real-time vs batch integration, legacy system integration, enterprise integration architectures, and integration patterns.",
+            "questions": [
+                {
+                    "id": "ch6-q01",
+                    "question": "What is the goal of Application Integration according to the reference?",
+                    "choices": [
+                        "To replace every independent application with a single system",
+                        "To create a seamless flow of information and processes across systems",
+                        "To store all data in one shared spreadsheet",
+                        "To make all applications use the same programming language"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The goal is a seamless flow of information and processes across systems, reducing or eliminating manual data transfer."
+                },
+                {
+                    "id": "ch6-q02",
+                    "question": "Which of the following is a reason application integration matters?",
+                    "choices": [
+                        "It reduces manual data entry and human error",
+                        "It keeps data in isolated departmental silos",
+                        "It requires staff to copy data between systems",
+                        "It slows down organizational decision-making"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Integration eliminates data silos, reduces manual entry and human error, improves accuracy, and speeds up decision-making."
+                },
+                {
+                    "id": "ch6-q03",
+                    "question": "A website connects directly to a payment gateway without an intermediary. Which integration style does this represent?",
+                    "choices": [
+                        "Hub-and-spoke integration",
+                        "ESB integration",
+                        "Point-to-point integration",
+                        "API-based integration"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "This is point-to-point integration: a direct, custom-built connection between two systems, generally not reusable."
+                },
+                {
+                    "id": "ch6-q04",
+                    "question": "What is the main limitation of point-to-point integration as more systems are added?",
+                    "choices": [
+                        "It eliminates the need for APIs",
+                        "It requires a central integration engine",
+                        "It becomes difficult to manage and scale, leading to 'spaghetti' architecture",
+                        "It stops working entirely after five systems"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Point-to-point integration leads to a tangled 'spaghetti' architecture that is difficult to manage and scale as systems grow."
+                },
+                {
+                    "id": "ch6-q05",
+                    "question": "In hub-and-spoke integration, how do the systems connect to each other?",
+                    "choices": [
+                        "Systems connect through a peer-to-peer mesh",
+                        "Systems exchange flat files on a shared drive",
+                        "Each system connects directly to every other system",
+                        "Each system connects to a central hub that routes communication"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "In hub-and-spoke, each system connects to the central hub, reducing the total number of connections."
+                },
+                {
+                    "id": "ch6-q06",
+                    "question": "A bank uses middleware to connect core banking, a mobile app, and an ATM network using XML and JSON. Which layer does this example illustrate?",
+                    "choices": [
+                        "Point-to-point integration",
+                        "Enterprise Service Bus",
+                        "API gateway",
+                        "Direct database links"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "An ESB acts as a common communication backbone routing and transforming messages between systems with different formats and protocols."
+                },
+                {
+                    "id": "ch6-q07",
+                    "question": "A ride-sharing app uses Google Maps, Stripe, and Twilio through well-defined interfaces. Which integration approach does this use?",
+                    "choices": [
+                        "Point-to-point wire transfer",
+                        "API-based \/ microservices integration",
+                        "Hub-and-spoke integration",
+                        "Batch data sync"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "API-based integration lets independent components communicate through well-defined APIs, as with the ride-sharing example."
+                },
+                {
+                    "id": "ch6-q08",
+                    "question": "Which integration timing best suits a stock trading platform that updates balances right after every trade?",
+                    "choices": [
+                        "Quarterly reconciliation",
+                        "Batch integration",
+                        "Real-time integration",
+                        "Scheduled night sync"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Real-time integration syncs data immediately; stock trading updates balances right after every trade."
+                },
+                {
+                    "id": "ch6-q09",
+                    "question": "A payroll system syncs attendance data overnight in large volumes. Which timing approach does this use?",
+                    "choices": [
+                        "Event-driven integration",
+                        "Real-time integration",
+                        "Batch integration",
+                        "Streaming integration"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Batch integration collects and transfers data at scheduled intervals, reducing processing overhead and system load."
+                },
+                {
+                    "id": "ch6-q10",
+                    "question": "Which of the following is a common challenge in application integration?",
+                    "choices": [
+                        "Simpler monitoring across fewer systems",
+                        "Fewer points of failure as systems grow",
+                        "Data format mismatches that require transformation",
+                        "Decreased security risk from fewer entry points"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Common challenges include data format mismatches, security risks from more entry points, system downtime\/dependency, and growing complexity."
+                },
+                {
+                    "id": "ch6-q11",
+                    "question": "Which of the following is one of the core approaches to legacy system integration?",
+                    "choices": [
+                        "API Wrapping",
+                        "Full database replacement",
+                        "Manual double entry",
+                        "Deployment retirement"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The five core approaches are API Wrapping, Middleware Connectivity, ESB, iPaaS, and ETL & Data Synchronization."
+                },
+                {
+                    "id": "ch6-q12",
+                    "question": "Why do businesses still keep and integrate legacy systems?",
+                    "choices": [
+                        "Because they already run on modern APIs",
+                        "To avoid the massive expense and risk of rebuilding core databases",
+                        "Because legacy systems are the most scalable",
+                        "To eliminate the need for staff training"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Businesses keep legacy systems for cost savings, avoiding the huge expense and risk of rebuilding core databases."
+                },
+                {
+                    "id": "ch6-q13",
+                    "question": "Which statement best contrasts legacy integration with implementing a new system?",
+                    "choices": [
+                        "Legacy integration minimizes disruption; new systems risk downtime during transition",
+                        "Legacy systems are more easily customizable than new ones",
+                        "New systems require less training than legacy ones",
+                        "New systems offer lower upfront cost than integration"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Legacy integration causes minimal disruption, while new system implementation carries high risk of downtime and requires extensive training."
+                },
+                {
+                    "id": "ch6-q14",
+                    "question": "Which of the following is a challenge of integrating legacy systems?",
+                    "choices": [
+                        "Consistent, well-governed schemas",
+                        "Data inconsistency due to proprietary formats",
+                        "Fully documented modern interfaces",
+                        "Lightweight authentication protocols"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Legacy databases use proprietary formats requiring complex translation logic, causing data inconsistency challenges."
+                },
+                {
+                    "id": "ch6-q15",
+                    "question": "Which incremental modernization pattern minimizes operational risk when migrating legacy systems?",
+                    "choices": [
+                        "Full mirror cutover",
+                        "Parallel code forks",
+                        "Big-bang replacement",
+                        "Strangler Fig pattern"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The Strangler Fig pattern is an incremental approach that minimizes operational risk during legacy migration."
+                },
+                {
+                    "id": "ch6-q16",
+                    "question": "Which pattern protects a legacy system from a new system's data model changes?",
+                    "choices": [
+                        "Event Sourcing",
+                        "Canary deployment",
+                        "Anti-Corruption Layer (ACL)",
+                        "Strangler Fig pattern"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "An Anti-Corruption Layer (ACL) protects a legacy system from a new system's data model changes."
+                },
+                {
+                    "id": "ch6-q17",
+                    "question": "Which of the following is a key objective of Enterprise Integration (EAI)?",
+                    "choices": [
+                        "Increasing manual end-to-end processes",
+                        "Data consistency to establish a single source of truth",
+                        "Keeping data isolated across departments",
+                        "Eliminating cloud interoperability"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "EAI objectives include data consistency, system interoperability, business process automation, and real-time visibility."
+                },
+                {
+                    "id": "ch6-q18",
+                    "question": "Which enterprise integration architecture lets subscribing services react asynchronously in near-real time to published events?",
+                    "choices": [
+                        "Event-Driven Architecture (EDA)",
+                        "Hub-and-Spoke Model",
+                        "Enterprise Service Bus",
+                        "Service-Oriented Architecture"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "EDA publishes event messages to an enterprise broker, letting subscribing services react asynchronously in near-real time."
+                },
+                {
+                    "id": "ch6-q19",
+                    "question": "Which enterprise integration pattern inspects incoming message contents and routes data based on business rules?",
+                    "choices": [
+                        "Message Translator",
+                        "Content-Based Router",
+                        "Messaging Channels",
+                        "Publish-Subscribe Channel"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "A Content-Based Router inspects incoming message contents and routes data to the correct destination based on business rules."
+                },
+                {
+                    "id": "ch6-q20",
+                    "question": "Which pattern converts data payloads between incompatible structures, such as XML to JSON or EDI to SQL?",
+                    "choices": [
+                        "Message Translator",
+                        "Request-Reply Channel",
+                        "Content-Based Router",
+                        "Publish-Subscribe Channel"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "A Message Translator converts data payloads between incompatible structures and formats."
+                },
+                {
+                    "id": "ch6-q21",
+                    "question": "Which pattern delivers messages from a single sender to multiple subscribed systems simultaneously without direct coupling?",
+                    "choices": [
+                        "Messaging Channels",
+                        "Message Translator",
+                        "Publish-Subscribe Channel",
+                        "Content-Based Router"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "A Publish-Subscribe Channel delivers messages from a single sender to multiple subscribed systems simultaneously."
+                },
+                {
+                    "id": "ch6-q22",
+                    "question": "Which of the following is a business benefit of enterprise integration?",
+                    "choices": [
+                        "Reduced organizational agility",
+                        "Higher chances of building duplicate tools",
+                        "Increased manual entry and error",
+                        "Operational efficiency that cuts manual entry and error"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Operational efficiency cuts manual entry and error; other benefits include agility, scalability, and cost optimization."
+                },
+                {
+                    "id": "ch6-q23",
+                    "question": "Which is a challenge in enterprise integration?",
+                    "choices": [
+                        "Unlimited scalability without planning",
+                        "Zero security compliance burden",
+                        "Single developer skill set",
+                        "High architectural complexity"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Challenges include high architectural complexity, single point of failure, data security and compliance, and resource and skill requirements."
+                },
+                {
+                    "id": "ch6-q24",
+                    "question": "Which best practice enforces that components depend on contracts rather than each other's internals?",
+                    "choices": [
+                        "Loose Coupling",
+                        "Centralized Monitoring",
+                        "Big-bang rollout",
+                        "Design for High Availability"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Enforcing loose coupling is a best practice; related practices include API standardization, centralized monitoring, and high availability design."
+                },
+                {
+                    "id": "ch6-q25",
+                    "question": "Which integration strategy is described as having a 'connection count that grows quickly'?",
+                    "choices": [
+                        "Hub-and-spoke",
+                        "ESB",
+                        "Event-driven",
+                        "Point-to-point"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Point-to-point connections grow quickly in number and are hard to manage at scale."
+                },
+                {
+                    "id": "ch6-q26",
+                    "question": "An organization needs many systems to coordinate through a central layer with better visibility. Which strategy fits best?",
+                    "choices": [
+                        "Hub-and-spoke \/ ESB",
+                        "Direct file exchange",
+                        "Peer-to-peer mesh",
+                        "Point-to-point"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Hub-and-spoke \/ ESB centralizes routing and policies, improving visibility and manageability in larger environments."
+                },
+                {
+                    "id": "ch6-q27",
+                    "question": "Which benefit of API-based integration allows the same API to serve multiple clients?",
+                    "choices": [
+                        "Rate limiting",
+                        "Protocol mediation",
+                        "Session locking",
+                        "Reusability"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "API-based integration is reusable — the same API can serve multiple clients while auth is controlled at the interface."
+                },
+                {
+                    "id": "ch6-q28",
+                    "question": "In event-driven integration, who publishes an e.g. 'Order Created' event?",
+                    "choices": [
+                        "The API Gateway",
+                        "The Event Broker",
+                        "The Consumer",
+                        "The Event Producer"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The Event Producer publishes events (like 'Order Created'), and the Event Broker publishes\/routes them to consumers."
+                },
+                {
+                    "id": "ch6-q29",
+                    "question": "What does iPaaS (Integration Platform as a Service) provide?",
+                    "choices": [
+                        "A cloud-hosted toolset connecting applications and data across cloud and on-premises environments",
+                        "A relational database storing documents in XML columns",
+                        "A local firewall appliance protecting the internal network",
+                        "A manual file exchange service running on a shared drive"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "iPaaS provides cloud-hosted tools for connecting applications and data across cloud and on-premises environments with reusable connectors."
+                },
+                {
+                    "id": "ch6-q30",
+                    "question": "When choosing an integration strategy, large scheduled transfers best suit which approach?",
+                    "choices": [
+                        "Real-time event streaming",
+                        "Batch-oriented approaches",
+                        "Synchronous REST calls",
+                        "In-process function calls"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The reference states large scheduled transfers suit batch-oriented approaches, while real-time needs favor APIs or event-driven flows."
+                }
+            ]
+        },
+        {
+            "chapterId": "ch7",
+            "title": "L8 — Enterprise Integration",
+            "description": "Enterprise integration fundamentals, XML integration best practices, web services and APIs, SOAP vs REST, security and authentication, and the Service-Oriented Enterprise.",
+            "questions": [
+                {
+                    "id": "ch7-q01",
+                    "question": "What is the key idea behind Enterprise Integration according to the reference?",
+                    "choices": [
+                        "Deleting legacy systems entirely",
+                        "Standardizing every system's data format",
+                        "Replacing existing systems with one platform",
+                        "Connecting, not replacing, existing systems"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The key idea is that integration is about connecting, not replacing, existing systems."
+                },
+                {
+                    "id": "ch7-q02",
+                    "question": "Why do companies need integration even though each system works on its own?",
+                    "choices": [
+                        "Because data silos cause duplicate entries and inconsistent records",
+                        "Because every system uses a common database",
+                        "Because manual copying is always accurate",
+                        "Because systems already share consistent records"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Many systems don't talk to each other, producing data silos, duplicate entries, and inconsistent records that integration removes."
+                },
+                {
+                    "id": "ch7-q03",
+                    "question": "Which of the following is a benefit of enterprise integration?",
+                    "choices": [
+                        "Slower decision-making",
+                        "Real-time data sharing",
+                        "Reduced customer service",
+                        "More manual work and errors"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Benefits include real-time data sharing, faster decisions, reduced manual work\/errors, cost savings, and better customer service."
+                },
+                {
+                    "id": "ch7-q04",
+                    "question": "Which failure mode results from one field using different tags across systems?",
+                    "choices": [
+                        "Mapping breaks silently",
+                        "Payloads compress faster",
+                        "Schemas always validate",
+                        "Monitoring improves automatically"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Inconsistent data — the same field with different tags across systems — causes mapping to break silently."
+                },
+                {
+                    "id": "ch7-q05",
+                    "question": "Which practice helps maintain clear structure in XML?",
+                    "choices": [
+                        "Nesting every element five levels deep",
+                        "Using short cryptic tags to reduce file size",
+                        "Using meaningful names like <shippingAddress> and a logical hierarchy",
+                        "Duplicating values for every recipient"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Clear structure uses meaningful names (e.g., <shippingAddress>, not <sa>) and a logical hierarchy with flat, DRY content."
+                },
+                {
+                    "id": "ch7-q06",
+                    "question": "Which layered validation is recommended before accepting an XML payload?",
+                    "choices": [
+                        "File size and read speed only",
+                        "Compression ratio and encoding only",
+                        "Storage cost and backup count",
+                        "Well-formed syntax, schema (XSD) check, required fields and types"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Recommended validation is layered: well-formed syntax, schema (XSD) check, matching tags and root, and required fields and types."
+                },
+                {
+                    "id": "ch7-q07",
+                    "question": "Which security measure protects XML data in transit?",
+                    "choices": [
+                        "Disabling authentication",
+                        "Using HTTPS",
+                        "Increasing file nesting",
+                        "Removing all tags"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "SSL\/TLS (HTTPS) encrypts the XML in transit; the reference says to protect every hop."
+                },
+                {
+                    "id": "ch7-q08",
+                    "question": "Why should seemingly harmless external entities in XML be disabled?",
+                    "choices": [
+                        "To reduce the number of tags",
+                        "To block XML injection attacks",
+                        "To speed up gzip compression",
+                        "To make messages more readable"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Blocking XML attacks includes disabling external entities and capping size\/depth to prevent injection and disclosure."
+                },
+                {
+                    "id": "ch7-q09",
+                    "question": "For large XML collections, which performance approach is recommended?",
+                    "choices": [
+                        "Always load the full DOM",
+                        "Paginate or stream large payloads, and gzip when useful",
+                        "Send the entire file uncompressed",
+                        "Embed all data into one attribute"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Performance guidance: send only necessary data, keep XML reasonably sized, paginate\/stream large collections, and gzip when useful."
+                },
+                {
+                    "id": "ch7-q10",
+                    "question": "What should an error response provide for good XML error handling?",
+                    "choices": [
+                        "A generic error code",
+                        "A specific, actionable message",
+                        "The full stack trace",
+                        "No message at all"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Error handling should give clear, specific, actionable feedback rather than a generic error code."
+                },
+                {
+                    "id": "ch7-q11",
+                    "question": "Which comparison correctly describes authentication vs authorization?",
+                    "choices": [
+                        "Authentication asks 'what can you do?'; authorization asks 'who are you?'",
+                        "Authentication asks 'who are you?'; authorization asks 'what can you do?'",
+                        "Both ask who the user is",
+                        "Both ask what the user can do"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "Authentication = 'who are you?'; Authorization = 'what can you do?'"
+                },
+                {
+                    "id": "ch7-q12",
+                    "question": "Which statement about REST and SOAP is TRUE in the L8 comparison?",
+                    "choices": [
+                        "REST supports only XML",
+                        "SOAP is an architectural style",
+                        "SOAP is slower because of heavier messages",
+                        "REST must always use XML and JSON together"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "SOAP is a protocol with built-in security and heavier XML messages, making it slower; REST is a lighter architectural style."
+                },
+                {
+                    "id": "ch7-q13",
+                    "question": "Which example best fits where SOAP should be used over REST?",
+                    "choices": [
+                        "A weather widget",
+                        "A social media feed",
+                        "An interbank transfer system",
+                        "A mobile game leaderboard"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "SOAP fits banking, enterprise, and government use, such as interbank transfer systems; REST suits web and mobile apps."
+                },
+                {
+                    "id": "ch7-q14",
+                    "question": "Which mechanism is commonly used for authentication in modern APIs?",
+                    "choices": [
+                        "OAuth 2.0 and JWT",
+                        "gzip compression",
+                        "CDN caching",
+                        "Load balancing"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Authentication approaches include API keys, OAuth 2.0, JWT, and Multi-Factor Authentication (MFA)."
+                },
+                {
+                    "id": "ch7-q15",
+                    "question": "Which practice helps prevent SQL injection and XSS?",
+                    "choices": [
+                        "GZIP compression",
+                        "Rate limiting",
+                        "Input validation",
+                        "Pagination"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Input validation prevents SQL Injection and XSS; rate limiting and firewalls prevent abuse and DDoS."
+                },
+                {
+                    "id": "ch7-q16",
+                    "question": "Which mechanism used by tools such as RabbitMQ and Kafka supports reliability?",
+                    "choices": [
+                        "Message queuing",
+                        "GZIP pagination",
+                        "CDN content delivery",
+                        "HTTP request polling"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Reliability includes redundant\/failover systems, retries, message queuing (RabbitMQ, Kafka), and health monitoring with SLA."
+                },
+                {
+                    "id": "ch7-q17",
+                    "question": "Which of the following is a performance optimization for web services?",
+                    "choices": [
+                        "Caching and load balancing",
+                        "Failover systems",
+                        "Message retry queues",
+                        "Health monitoring"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Performance optimizations include caching, load balancing, data compression (GZIP), pagination, and CDNs."
+                },
+                {
+                    "id": "ch7-q18",
+                    "question": "Which of the following is a web services best practice from the checklist?",
+                    "choices": [
+                        "Use HTTP instead of HTTPS",
+                        "Skip authentication for public endpoints",
+                        "Cache without invalidation",
+                        "Version your APIs, e.g., \/api\/v1\/"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Best practices include using HTTPS always, proper authentication, validating inputs, designing for failure, and versioning APIs like \/api\/v1\/."
+                },
+                {
+                    "id": "ch7-q19",
+                    "question": "What is a Service-Oriented Enterprise (SOE)?",
+                    "choices": [
+                        "An enterprise that runs all systems on one mainframe",
+                        "An enterprise with no system integration",
+                        "An enterprise that only uses SOAP web services",
+                        "An enterprise that connects business systems through reusable services"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "An SOE connects business systems through reusable services, focusing on integration, flexibility, and reuse of existing systems."
+                },
+                {
+                    "id": "ch7-q20",
+                    "question": "Which of the following is NOT one of the five main components of a Service-Oriented Enterprise?",
+                    "choices": [
+                        "Service Database",
+                        "Service Provider",
+                        "Service Consumer",
+                        "Service Registry \/ Broker"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "The five components are Service Provider, Service Consumer, Service Registry\/Broker, Service Interface, and Enterprise Service Bus."
+                },
+                {
+                    "id": "ch7-q21",
+                    "question": "Which SOE component defines how a service can be accessed?",
+                    "choices": [
+                        "Service Provider",
+                        "Service Interface",
+                        "Service Consumer",
+                        "Service Registry"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "The Service Interface defines how a service can be accessed."
+                },
+                {
+                    "id": "ch7-q22",
+                    "question": "Which of the following is the FIRST step in building the Service-Oriented Enterprise?",
+                    "choices": [
+                        "Design services based on specific business functions",
+                        "Create standard interfaces for communication",
+                        "Identify business processes that need integration",
+                        "Integrate, test, and monitor the services"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "The first step is to identify business processes that need integration, then identify existing systems that can be reused."
+                },
+                {
+                    "id": "ch7-q23",
+                    "question": "Which key characteristic is used to describe Service-Oriented Architecture?",
+                    "choices": [
+                        "Mandatory use of GraphQL",
+                        "Tight coupling and single use",
+                        "Standalone data stores per consumer",
+                        "Loose coupling, reusability, interoperability, and scalability"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "SOA's key characteristics include loose coupling, reusability, interoperability, and scalability, with services communicating through standard interfaces."
+                },
+                {
+                    "id": "ch7-q24",
+                    "question": "In the school example, how are the student information, payment, library, and learning platforms connected?",
+                    "choices": [
+                        "Through nightly manual exports",
+                        "Through one merged application",
+                        "Through a single shared database",
+                        "Through services, sharing data across systems"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "The school connects student info system, payment system, library system, and learning platform through services."
+                },
+                {
+                    "id": "ch7-q25",
+                    "question": "Which document format is associated specifically with SOAP?",
+                    "choices": [
+                        "XML only",
+                        "HTML only",
+                        "JSON only",
+                        "Plain text and XML"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "SOAP uses XML only, while REST supports JSON, XML, and plain text."
+                },
+                {
+                    "id": "ch7-q26",
+                    "question": "Which API type offers flexible querying so clients request only what they need?",
+                    "choices": [
+                        "REST API",
+                        "GraphQL",
+                        "EDI API",
+                        "SOAP API"
+                    ],
+                    "correctAnswer": 1,
+                    "explanation": "GraphQL offers flexible querying, letting clients request only what they need."
+                },
+                {
+                    "id": "ch7-q27",
+                    "question": "Which statement about XML integration failure modes is TRUE?",
+                    "choices": [
+                        "Vague failures give useful context",
+                        "Malformed values never corrupt downstream records",
+                        "Undocumented schema changes quietly break trading partners",
+                        "Unvalidated input always improves performance"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "Compatibility issues — undocumented schema changes — quietly break trading partners; unvalidated input opens the door to injection and disclosure."
+                },
+                {
+                    "id": "ch7-q28",
+                    "question": "What does the reference warn about processing sensitive data in XML?",
+                    "choices": [
+                        "Store credentials directly in element names",
+                        "Share access with the maximum privilege",
+                        "Leave PII visible in tags for debugging",
+                        "Mask or encrypt PII at rest and in tags"
+                    ],
+                    "correctAnswer": 3,
+                    "explanation": "Best practice guards sensitive data by masking\/encrypting PII at rest and in tags, and follows least privilege."
+                },
+                {
+                    "id": "ch7-q29",
+                    "question": "Which statement correctly describes the L8 role of SSL\/TLS encryption?",
+                    "choices": [
+                        "It prevents SQL injection attacks",
+                        "It replaces WS-Security entirely",
+                        "It protects data in transit",
+                        "It makes XML well-formed"
+                    ],
+                    "correctAnswer": 2,
+                    "explanation": "HTTPS\/SSL\/TLS encryption protects data in transit; WS-Security provides message-level security for SOAP."
+                },
+                {
+                    "id": "ch7-q30",
+                    "question": "Which of the following is a benefit of building an SOE?",
+                    "choices": [
+                        "Reuse of services reduces development time and costs",
+                        "Systems become tightly coupled to one vendor",
+                        "Security concerns are entirely eliminated",
+                        "Every service requires its own duplicate data"
+                    ],
+                    "correctAnswer": 0,
+                    "explanation": "Benefits include better integration and flexibility, reduced development time and costs via reuse, and easier maintenance and expansion."
+                }
+            ]
+        }
+    ],
+    "encyclopedia": [
+        {
+            "chapterId": "ch1",
+            "term": "EA Implementation Methodology",
+            "definition": "A detailed, step-by-step approach that describes how an Enterprise Architecture program is established, developed, managed, maintained, and used within an organization."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "EA Framework",
+            "definition": "A structured set of tools, models, and guidelines used to organize and design an enterprise's architecture, providing a common language and structure."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "Zachman Framework",
+            "definition": "A 6x6 classification schema (36 cells) developed by John Zachman in 1987; columns are What\/How\/Where\/Who\/When\/Why and rows are Planner, Owner, Designer, Builder, Sub-Contractor, Enterprise. It is a reference checklist, not a methodology."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "TOGAF",
+            "definition": "The Open Group Architecture Framework; helps organizations design, plan, implement, and manage enterprise architecture using the ADM cycle."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "ADM",
+            "definition": "Architecture Development Method: the TOGAF method that identifies business requirements, analyzes current architecture, designs the target, identifies changes, plans implementation, and manages\/reviews."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "FEAF",
+            "definition": "Federal Enterprise Architecture Framework, developed by the U.S. Federal Government to organize and manage enterprise architecture, supported by six reference models (PRM, DRM, SRM, BRM, ARM, TRM)."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "PRM",
+            "definition": "Performance Reference Model: measures how well an organization and its IT systems achieve strategic goals and desired outcomes."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "DRM",
+            "definition": "Data Reference Model: defines how data is categorized, described, shared, and managed across the enterprise."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "SRM",
+            "definition": "Security Reference Model: defines security-related capabilities, controls, and requirements for protecting enterprise systems and information."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "BRM",
+            "definition": "Business Reference Model: describes the organization's business functions, services, and activities."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "ARM",
+            "definition": "Application Reference Model: organizes IT services and application components that support business functions."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "TRM",
+            "definition": "Technical Reference Model: provides a common structure for technologies, platforms, and technical standards used by the enterprise."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "Gartner EA Methodology",
+            "definition": "An EA methodology from Gartner that views EA as a continuous process of change and improvement, focused on business strategy, stakeholders, and outcomes rather than technology alone."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "Business Architecture",
+            "definition": "The foundation of the EA framework; defines the organization's business strategy, governance, structure, and key business processes."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "Data (Information) Architecture",
+            "definition": "The structure and management of an organization's logical and physical data assets and data management resources."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "Application Architecture",
+            "definition": "A blueprint for the individual applications' deployment, their interactions, and their relationships to core business processes."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "Technology Architecture",
+            "definition": "The hardware, software, and network infrastructure that provides the hosting and runtime environment for applications."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "Architecture Artifact",
+            "definition": "An architectural work product that describes an aspect of the architecture - deliverables, documents, diagrams, models, matrices, and catalogs produced throughout the EA lifecycle."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "Catalogs (Artifact)",
+            "definition": "A hierarchical list or inventory of things that answers 'What inventory do we have?' e.g., Application Portfolio Catalog."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "Matrices (Artifact)",
+            "definition": "A grid showing the relationship between two or more architectural elements, answering 'How do elements relate?' e.g., Application-to-Function Matrix."
+        },
+        {
+            "chapterId": "ch1",
+            "term": "Diagrams \/ Models (Artifact)",
+            "definition": "Visual representations of architecture components and their topology or dynamics, answering 'What does the structure or flow look like?'"
+        },
+        {
+            "chapterId": "ch1",
+            "term": "Cross-Layer Traceability",
+            "definition": "The rigorous link across Business -> Data -> Application -> Technology layers so every technical asset maps back to a business need; enables impact analysis, cost optimization, and strategic agility."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "As-Is State",
+            "definition": "The current architectural view; a complete snapshot of a company's technology and processes right now, serving as the baseline and blueprint."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "EACR (EA Change Request)",
+            "definition": "A standard format request used to update systems smoothly; archiving these requests creates a history guide for developers."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "IDEF-O",
+            "definition": "A visual modeling technique that clearly shows inputs and outputs, the Controls (rules), and the Mechanisms (tools) of a process."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "ERD (Entity-Relationship Diagram)",
+            "definition": "A diagram that defines how different parts of the business relate, e.g., how a Buyer connects to a Listing."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "Future Architectural View",
+            "definition": "Documentation of IT resources expected to be active several years ahead, used for resource planning, decision support, and enterprise-wide communication."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "CONOPS Scenario",
+            "definition": "A Concept of Operations scenario documenting good and bad operating environments drawn from the SWOT Analysis to plan defensive and offensive initiatives in advance."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "Storytelling Technique",
+            "definition": "Dr. Robert Neilson's technique of writing a short story through the eyes of a central character living through future events, tied to assumptions in Process, People, and Technology."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "Balanced Scorecard",
+            "definition": "A strategic-level future-view artifact used to track goals such as 'Grow e-government service adoption 30% in 3 years.'"
+        },
+        {
+            "chapterId": "ch2",
+            "term": "Swim Lane Process Diagram",
+            "definition": "A business-level future artifact tracing a process such as an application from Citizen -> Apply -> Portal -> Submit -> Records Office."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "CRUD Matrix",
+            "definition": "An Activity\/Entity matrix (Create, Read, Update, Delete) at the Information level, e.g., 'Permit Record' created by Intake, updated by Reviewer, deleted by Records Admin."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "Freeze Periods",
+            "definition": "Freezing current and future views at regular intervals (e.g., twice a year); changes accumulate for 4-5 months and publish as a new release in month six."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "Baseline Architecture",
+            "definition": "The current, 'as-is' structure of the enterprise; the starting point for any transformation in TOGAF."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "Transition Architecture",
+            "definition": "One or more intermediate states that bridge the gap between baseline and target on a realistic timeline."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "Target Architecture",
+            "definition": "The desired future state: capabilities, processes, and technologies aligned to strategic goals."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "EA Management Plan",
+            "definition": "A living document guiding the transition from the current architecture to the desired future architecture; coordinates IT projects, resources, standards, governance, and implementation."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "Chief Architect",
+            "definition": "The person who manages the EA program, documentation, standards, and configuration management."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "Outcome Measures",
+            "definition": "Performance measures reflecting improvements in integration, user satisfaction, or IT investment decisions."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "Output Measures",
+            "definition": "Performance measures counting number of projects completed, scope changes, or planning activities."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "EA Sequencing Plan",
+            "definition": "A plan listing projects, tasks, milestones, dependencies, and timeframes to ensure projects occur in the correct order."
+        },
+        {
+            "chapterId": "ch2",
+            "term": "Configuration Management",
+            "definition": "Reviews and controls proposed EA changes, applies technical standards, manages waivers, and maintains documentation and version control."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "Enterprise Architecture (EA)",
+            "definition": "A structured approach to organizing an organization's business, data, applications, and technology, providing a blueprint of how parts work together."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "EAP (Enterprise Architecture Planning)",
+            "definition": "The planning discipline (Spewak, 1992) defined as 'defining the architectures needed for the business use of information — and the plan to implement them.'"
+        },
+        {
+            "chapterId": "ch3",
+            "term": "EAP Guiding Principle",
+            "definition": "BUSINESS -> DATA -> APPLICATIONS -> TECHNOLOGY: applications manage data, technology supports applications; EAP is business-driven and data-driven, never technology-driven."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "Gap Analysis",
+            "definition": "Comparing the As-Is against the To-Be to find what is missing, duplicated, and obsolete; every project must trace back to a proven gap."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "Work Package",
+            "definition": "A grouping of related gaps into small deliverables, each with clear scope, a single owner, and one concrete outcome."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "Business Case",
+            "definition": "Attaches cost, benefit, and risk to each work package; leadership funds outcomes, not diagrams."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "Architecture Review Board (ARB)",
+            "definition": "Holds checkpoints at initiation, design, and before go-live; each review ends in approved, approved with conditions, or rejected."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "Ivory-Tower Architecture",
+            "definition": "A common EA pitfall: beautiful models nobody follows."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "RBAC",
+            "definition": "Role-Based Access Control: people only get access to what they need for their job, e.g., HR staff can't touch finance data."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "Data Security",
+            "definition": "Controlling who can see, change, or take the organization's data; one of the four main areas of security."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "EA Repository",
+            "definition": "The master storage facility for all architectural assets, models, principles, and guidelines; maintains single-source-of-truth visibility for As-Is, To-Be, and Transition states."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "Architecture Metamodel",
+            "definition": "A repository component defining the schema, entity types, taxonomy, and relationship rules governing how architectural artifacts connect."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "Architecture Landscape",
+            "definition": "A repository component that catalogs real-time operational views, target blueprints, and active roadmap transitions."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "Automated Diagramming & Layout",
+            "definition": "An EA support tool capability that generates dynamic visual models from repository data, keeping diagrams synchronized with data."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "Impact & Risk Analysis",
+            "definition": "An EA support tool capability that runs traceability queries to evaluate how modifying an application impacts connected systems and operations."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "LeanIX",
+            "definition": "An EA tool focused on Application Portfolio Management for agile, cloud-native enterprise IT; known for fast SaaS setup and automated landscape discovery."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "Sparx Enterprise Architect",
+            "definition": "An EA tool known for deep modeling and system specs with comprehensive support for TOGAF, ArchiMate, UML, and SysML."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "Archi (Open Source)",
+            "definition": "A free, open-source, lightweight graphical modeling tool for ArchiMate modeling used in educational and lean teams."
+        },
+        {
+            "chapterId": "ch3",
+            "term": "CMDB",
+            "definition": "Configuration Management Database (e.g., ServiceNow, AWS Config); bi-directional integration reconciles planned architecture with actual runtime reality."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "SOA",
+            "definition": "Service-Oriented Architecture: an approach in software development where applications are created using services."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "Service",
+            "definition": "A software component assigned a task; reusable and modular, with a clearly defined interface that hides internal implementation."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "Reusability (SOA)",
+            "definition": "Using a service in multiple parts of the system, e.g., Website -> Payment Service <- Mobile App, preventing duplicate functionality."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "Loose Coupling (SOA)",
+            "definition": "Proper documentation and description of a service so changes in one service do not affect others; services should be stateless."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "Abstraction (SOA)",
+            "definition": "Clients and customers should not see important logic or code; they only need to know how to request and what response to expect."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "Modularity (SOA)",
+            "definition": "Dividing a large system into smaller, manageable services, each with its own responsibility."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "Service Provider",
+            "definition": "The SOA component that creates, maintains, and provides a service."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "Service Consumer",
+            "definition": "The application or system that requests and uses a service."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "Service Registry",
+            "definition": "A directory of available services containing information about what is available and how consumers can access them."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "REST",
+            "definition": "Representational State Transfer: an architectural style, not a strict standard; uses HTTP verbs GET\/POST\/PUT\/DELETE, typically JSON, stateless."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "SOAP",
+            "definition": "Simple Object Access Protocol: a strict, formal messaging standard with messages as XML envelopes and built-in WS-Security and transactions."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "Enterprise Service Bus (ESB)",
+            "definition": "Middleware that sits between services handling routing, translation, and message delivery so no service knows another's technical details."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "Orchestration (ESB)",
+            "definition": "An ESB function that coordinates calls to multiple services in sequence to complete a single business process."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "Protocol Mediation (ESB)",
+            "definition": "An ESB function that bridges services using different transport protocols, such as HTTP, JMS, or FTP."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "Transformation (ESB)",
+            "definition": "An ESB function that converts data formats between systems, such as XML and JSON."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "Service Mesh",
+            "definition": "Tools like Istio that manage service-to-service communication, adding retries, encryption, and observability; echoes SOA's mediation layer."
+        },
+        {
+            "chapterId": "ch4",
+            "term": "API Gateway",
+            "definition": "The modern successor to the ESB: routing, auth, and rate-limiting for cloud APIs, centralizing cross-cutting concerns."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "XML",
+            "definition": "eXtensible Markup Language: a standard for writing data as plain text using tags that describe what the data means."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "Prolog (XML)",
+            "definition": "The first line of an XML document, declaring version and encoding, e.g., <?xml version=\"1.0\" encoding=\"UTF-8\"?>."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "Root Element",
+            "definition": "The outermost element of an XML document; exactly one per document, with everything else inside it."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "Attribute (XML)",
+            "definition": "Metadata written inside an opening tag in the form name=\"value\"; a name cannot repeat on the same element."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "Well-Formed",
+            "definition": "XML with correct syntax: exactly one root, every tag closed, no overlapping tags, quoted attribute values, case-sensitive names."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "Valid (XML)",
+            "definition": "Well-formed XML that also follows a schema: only allowed elements appear, required elements present, values match data types."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "DTD",
+            "definition": "Document Type Definition: the old schema language written in its own syntax, with no data types and no namespace support."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "XSD",
+            "definition": "XML Schema Definition: the modern W3C-standard schema language written in XML itself, with real data types and namespace support."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "XPath",
+            "definition": "XML tool that FINDS one specific part of a document, written like a folder path, e.g., \/library\/book\/title."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "XQuery",
+            "definition": "XML tool that SEARCHES XML and returns only requested parts, similar to SQL for tables."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "XSLT",
+            "definition": "XML tool that CONVERTS an XML file into a different format (HTML, text, or XML); the original file is never changed."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "DOM (Parser)",
+            "definition": "Loads the whole XML document into memory as a tree; best for small files you need to modify."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "SAX (Parser)",
+            "definition": "Streams through XML firing events; read once, forward only, very little memory; best for very large files."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "StAX (Parser)",
+            "definition": "Your code asks for the next piece when ready; same efficiency as SAX but you control the loop and can skip sections."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "Impedance Mismatch",
+            "definition": "The gap between the XML tree and a relational database's flat tables; storing one in the other is never free."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "Native XML Database",
+            "definition": "An XML storage database where the document itself is the unit of storage, e.g., eXist-db, BaseX, MarkLogic."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "Shredding (XML)",
+            "definition": "An XML storage technique breaking the tree into rows and columns; fast joins and reports, but the original document no longer exists."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "WSDL",
+            "definition": "Web Services Description Language: an XML-based language that acts like a technical contract describing a SOAP service."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "UDDI",
+            "definition": "Universal Description, Discovery, and Integration: a directory where businesses and applications could publish and discover web services."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "WS-Security",
+            "definition": "The WS-* specification adding authentication, encryption, and message integrity to SOAP messages, often with SAML assertions."
+        },
+        {
+            "chapterId": "ch5",
+            "term": "WS-ReliableMessaging",
+            "definition": "The WS-* specification ensuring messages are still delivered correctly even over unstable networks."
+        },
+        {
+            "chapterId": "ch6",
+            "term": "Application Integration",
+            "definition": "Enabling independently designed applications to communicate, exchange data, and work together as a coordinated system."
+        },
+        {
+            "chapterId": "ch6",
+            "term": "Point-to-Point Integration",
+            "definition": "A direct, custom-built connection between two systems, generally not reusable; leads to 'spaghetti' architecture at scale."
+        },
+        {
+            "chapterId": "ch6",
+            "term": "Hub-and-Spoke Integration",
+            "definition": "A central hub (integration engine) manages and routes communication between multiple systems, reducing total connections."
+        },
+        {
+            "chapterId": "ch6",
+            "term": "Legacy System Integration",
+            "definition": "Connecting and enabling communication between older, outdated systems and newer systems or technologies."
+        },
+        {
+            "chapterId": "ch6",
+            "term": "Strangler Fig Pattern",
+            "definition": "An incremental modernization pattern that minimizes operational risk when migrating legacy systems."
+        },
+        {
+            "chapterId": "ch6",
+            "term": "Anti-Corruption Layer (ACL)",
+            "definition": "A pattern that protects a legacy system from a new system's data model changes."
+        },
+        {
+            "chapterId": "ch6",
+            "term": "EAI",
+            "definition": "Enterprise Application Integration: linking separate applications, databases, and hardware platforms across an organization to work together as a coordinated ecosystem."
+        },
+        {
+            "chapterId": "ch6",
+            "term": "Event-Driven Architecture (EDA)",
+            "definition": "Systems publish event messages to an enterprise broker, letting subscribing services react asynchronously in near-real time."
+        },
+        {
+            "chapterId": "ch6",
+            "term": "Content-Based Router",
+            "definition": "An integration pattern that inspects incoming message contents and routes data to the correct destination based on business rules."
+        },
+        {
+            "chapterId": "ch6",
+            "term": "Message Translator",
+            "definition": "An integration pattern that converts data payloads between incompatible structures, e.g., XML to JSON, EDI to SQL."
+        },
+        {
+            "chapterId": "ch6",
+            "term": "Publish-Subscribe Channel",
+            "definition": "An integration pattern delivering messages from a single sender to multiple subscribed systems simultaneously without direct coupling."
+        },
+        {
+            "chapterId": "ch6",
+            "term": "iPaaS",
+            "definition": "Integration Platform as a Service: cloud-hosted tools for connecting applications and data across cloud and on-premises environments."
+        },
+        {
+            "chapterId": "ch7",
+            "term": "Enterprise Integration",
+            "definition": "Linking different IT systems, applications, and data sources so they can work together and share data seamlessly; about connecting, not replacing, existing systems."
+        },
+        {
+            "chapterId": "ch7",
+            "term": "XML Integration",
+            "definition": "The practice of exchanging structured data between systems using XML as a common format, with best practices for structure, validation, security, performance, and errors."
+        },
+        {
+            "chapterId": "ch7",
+            "term": "GraphQL",
+            "definition": "An API approach offering flexible querying so clients request only what they need."
+        },
+        {
+            "chapterId": "ch7",
+            "term": "Authentication",
+            "definition": "Verifying who a user is: 'who are you?'"
+        },
+        {
+            "chapterId": "ch7",
+            "term": "Authorization",
+            "definition": "Determining what a user can do: 'what can you do?'"
+        },
+        {
+            "chapterId": "ch7",
+            "term": "Service-Oriented Enterprise (SOE)",
+            "definition": "An enterprise that connects business systems through reusable services, focusing on integration, flexibility, and reuse."
+        },
+        {
+            "chapterId": "ch7",
+            "term": "Service Interface",
+            "definition": "The SOE component that defines how a service can be accessed."
+        },
+        {
+            "chapterId": "ch7",
+            "term": "ISO 20022",
+            "definition": "The standardized format family for global interbank payments."
+        },
+        {
+            "chapterId": "ch7",
+            "term": "HL7 \/ CDA",
+            "definition": "The standardized format family for healthcare and clinical data."
+        },
+        {
+            "chapterId": "ch7",
+            "term": "RosettaNet \/ ebXML",
+            "definition": "Standardized format families for B2B supply chains."
+        }
+    ]
+}

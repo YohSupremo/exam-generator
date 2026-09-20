@@ -1,0 +1,67 @@
+[2026-09-19 13:36:12] Job test001: worker started
+[2026-09-19 13:36:12] Job test001: running opencode command
+[2026-09-19 13:48:50] Job test001: opencode exited with code 0
+[2026-09-19 13:48:50] Job test001: DONE - 7 chapters, 210 questions
+[2026-09-19 13:51:59] Job c9p6opyubsow88 created (source: SAI Web Flow Test)
+[2026-09-19 13:53:07] Job ne9u5ilvztw00c created (source: Web Flow Retry)
+[2026-09-19 13:54:29] Job lwhtz0vzbhssws created (source: Web Flow V2)
+[2026-09-19 13:54:30] Job lwhtz0vzbhssws: worker started
+[2026-09-19 13:54:30] Job lwhtz0vzbhssws: running opencode command
+[2026-09-19 14:09:10] Job lwhtz0vzbhssws: opencode exited with code 0
+[2026-09-19 14:09:10] Job lwhtz0vzbhssws: DONE - 7 chapters, 210 questions
+[2026-09-19 14:14:49] Job maabjyevv2808k created (source: ias2-reviewer-reference)
+[2026-09-19 14:14:49] Job maabjyevv2808k: worker started
+[2026-09-19 14:14:49] Job maabjyevv2808k: running opencode command
+[2026-09-19 14:17:43] Job kjtnhzskcpsk4k created (source: ias2-reviewer-reference)
+[2026-09-19 14:17:43] Job kjtnhzskcpsk4k: worker started
+[2026-09-19 14:17:43] Job kjtnhzskcpsk4k: running opencode command
+[2026-09-19 14:20:11] Job 5u9i29tmwnswog created (source: ias2-reviewer-reference)
+[2026-09-19 14:20:11] Job 5u9i29tmwnswog: worker started
+[2026-09-19 14:20:11] Job 5u9i29tmwnswog: running opencode command
+[2026-09-19 14:22:29] Job kjtnhzskcpsk4k: opencode exited with code -1
+[2026-09-19 14:22:29] Job kjtnhzskcpsk4k: FAILED - no valid question bank
+[2026-09-19 14:22:29] Job 5u9i29tmwnswog: opencode exited with code -1
+[2026-09-19 14:22:29] Job maabjyevv2808k: opencode exited with code -1
+[2026-09-19 14:22:29] Job maabjyevv2808k: FAILED - no valid question bank
+[2026-09-19 14:22:29] Job 5u9i29tmwnswog: FAILED - no valid question bank
+[2026-09-19 14:53:15] Job ms9x11j5r6s4k8 created (source: ias2-reviewer-reference)
+[2026-09-19 14:53:16] Job ms9x11j5r6s4k8: worker started
+[2026-09-19 14:53:16] Job ms9x11j5r6s4k8: running opencode command
+[2026-09-19 14:53:23] Job ms9x11j5r6s4k8: opencode exited with code 0
+[2026-09-19 14:53:23] Job ms9x11j5r6s4k8: FAILED - no valid question bank
+[2026-09-19 14:54:39] Job enaxqoqxb74s4g created (source: IAS 2 Reviewer)
+[2026-09-19 14:54:40] Job enaxqoqxb74s4g: worker started
+[2026-09-19 14:54:40] Job enaxqoqxb74s4g: WARNING - PDF text extraction failed, using PDF directly
+[2026-09-19 14:54:40] Job enaxqoqxb74s4g: running opencode command
+[2026-09-19 15:23:41] Job enaxqoqxb74s4g: opencode exited with code 0
+[2026-09-19 15:23:41] Job enaxqoqxb74s4g: DONE - 5 chapters, 167 questions
+[2026-09-20 08:06:28] Job 7jwbqlbxit4wks created (source: IAS 2 REVIEWER - COMPLETE (L3-L8))
+[2026-09-20 08:06:29] Job 7jwbqlbxit4wks: worker started
+[2026-09-20 08:06:29] Job 7jwbqlbxit4wks: WARNING - PDF text extraction failed, using PDF directly
+[2026-09-20 08:06:29] Job 7jwbqlbxit4wks: running opencode command
+[2026-09-20 08:06:41] Job 7jwbqlbxit4wks: opencode exited with code 0
+[2026-09-20 08:06:41] Job 7jwbqlbxit4wks: FAILED - no valid question bank
+[2026-09-20 08:10:28] Job rkq7bk65si88kk created (source: IAS 2 REVIEWER - COMPLETE (L3-L8))
+[2026-09-20 08:10:29] Job rkq7bk65si88kk: worker started
+[2026-09-20 08:10:29] Job rkq7bk65si88kk: extracted PDF text -> 62038 bytes
+[2026-09-20 08:10:29] Job rkq7bk65si88kk: running opencode command
+[2026-09-20 08:16:39] Job 29l6wh2f5izows created (source: system-add exam)
+[2026-09-20 08:16:39] Job 29l6wh2f5izows: worker started
+[2026-09-20 08:16:39] Job 29l6wh2f5izows: extracted PDF text -> 18194 bytes
+[2026-09-20 08:16:39] Job 29l6wh2f5izows: running opencode command
+[2026-09-20 08:31:12] Job 29l6wh2f5izows: opencode exited with code 0
+[2026-09-20 08:31:12] Job 29l6wh2f5izows: DONE - 5 chapters, 140 questions
+[2026-09-20 08:32:36] Job rkq7bk65si88kk: opencode exited with code 0
+[2026-09-20 08:32:36] Job rkq7bk65si88kk: DONE - 6 chapters, 180 questions
+[2026-09-20 08:41:27] Job csc5r5861bwco8 created (source: pagpag-reviewer)
+[2026-09-20 08:41:28] Job csc5r5861bwco8: worker started
+[2026-09-20 08:41:28] Job csc5r5861bwco8: extracted PDF text -> 17907 bytes
+[2026-09-20 08:41:28] Job csc5r5861bwco8: running opencode command
+[2026-09-20 08:53:00] Job csc5r5861bwco8: opencode exited with code 0
+[2026-09-20 08:53:00] Job csc5r5861bwco8: FAILED - no valid question bank
+[2026-09-20 08:53:45] Job pwso6i7z2c08kk created (source: PAGPAG-REVIEWER)
+[2026-09-20 08:53:46] Job pwso6i7z2c08kk: worker started
+[2026-09-20 08:53:46] Job pwso6i7z2c08kk: extracted PDF text -> 17907 bytes
+[2026-09-20 08:53:46] Job pwso6i7z2c08kk: running opencode command
+[2026-09-20 09:12:33] Job pwso6i7z2c08kk: opencode exited with code 0
+[2026-09-20 09:12:33] Job pwso6i7z2c08kk: DONE - 8 chapters, 206 questions

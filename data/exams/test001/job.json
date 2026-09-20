@@ -1,0 +1,8 @@
+{
+    "id":  "test001",
+    "pdf":  "C:\\xampp\\htdocs\\automation\\side-project\\data\\exams\\test001\\source.pdf",
+    "output":  "C:\\xampp\\htdocs\\automation\\side-project\\data\\exams\\test001\\questions.json",
+    "status_file":  "C:\\xampp\\htdocs\\automation\\side-project\\data\\exams\\test001\\status.json",
+    "title":  "SAI Reviewer Test",
+    "log":  "C:\\xampp\\htdocs\\automation\\side-project\\data\\exams\\test001\\opencode.log"
+}
