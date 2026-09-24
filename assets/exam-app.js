@@ -181,19 +181,26 @@
 
     var metaHtml = "";
 
-    /* Subject tag */
-    if (bank.subject) {
-      metaHtml += '<span class="meta-tag">' + esc(bank.subject) + "</span>";
+    /* Subject tag — only show if distinct from title */
+    if (bank.subject && bank.subject.trim().toLowerCase() !== (bank.title || "").trim().toLowerCase()) {
+      metaHtml += '<span class="meta-tag"><span class="meta-dot"></span>' + esc(bank.subject) + "</span>";
     }
+
+    /* AI Assessment badge */
+    metaHtml +=
+      '<span class="meta-chip meta-chip-ai">' +
+        '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>' +
+        'AI Studio 2.0' +
+      '</span>';
 
     /* Inline stat chips */
     metaHtml +=
-      '<span class="meta-chip">' +
-        '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>' +
+      '<span class="meta-chip meta-chip-chapters">' +
+        '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>' +
         bank.chapters.length + " Chapters" +
       "</span>" +
-      '<span class="meta-chip">' +
-        '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
+      '<span class="meta-chip meta-chip-questions">' +
+        '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
         flat.length + " Questions" +
       "</span>";
 
@@ -363,30 +370,51 @@
 
   function renderModeSelect(ch) {
     const st = getChapterState(ch.chapterId);
+    const chIdx = bank.chapters.findIndex(function(c) { return c.chapterId === ch.chapterId; });
+    const chNum = chIdx >= 0 ? (chIdx + 1) : 1;
+    const totalCh = bank.chapters.length;
+
     view.innerHTML =
       '<div class="view-panel">' +
+      '<div class="panel-eyebrow">' +
+        '<span class="eyebrow-pill">Chapter ' + chNum + ' of ' + totalCh + '</span>' +
+      '</div>' +
       '<h2 class="panel-title">' + esc(ch.title) + '</h2>' +
       (ch.description ? '<p class="panel-sub">' + esc(ch.description) + '</p>' : '') +
       '<div class="card start-card">' +
-      '<div class="start-meta">' + ch.questions.length + ' questions in this chapter</div>' +
-      '<div class="mode-label">Select Mode</div>' +
+      '<div class="start-card-header">' +
+        '<div class="start-meta-pill">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
+          '<span>' + ch.questions.length + ' Questions in this chapter</span>' +
+        '</div>' +
+        '<div class="start-card-tip">Pick a test mode below to begin</div>' +
+      '</div>' +
+      '<div class="mode-label-row">' +
+        '<span class="mode-label">Select Mode</span>' +
+      '</div>' +
       '<div class="mode-grid">' +
       '<div class="mode-option ' + (st.mode === "timed" ? "selected" : "") + '" data-mode="timed" role="button" tabindex="0" aria-pressed="' + (st.mode === "timed") + '">' +
       '<div class="mode-option-top">' +
       '<span class="mode-icon-wrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>' +
-      '<span class="mode-badge">10s / question</span>' +
+      '<span class="mode-badge mode-badge-timed">10s / question</span>' +
       '</div>' +
-      '<h4>Timed Mode</h4><p>10 seconds per question with automatic submission on timeout.</p></div>' +
+      '<h4>Timed Mode</h4><p>10 seconds per question with automatic submission on timeout. Tests rapid recall and instant mastery under pressure.</p></div>' +
       '<div class="mode-option ' + (st.mode === "untimed" ? "selected" : "") + '" data-mode="untimed" role="button" tabindex="0" aria-pressed="' + (st.mode === "untimed") + '">' +
       '<div class="mode-option-top">' +
       '<span class="mode-icon-wrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg></span>' +
-      '<span class="mode-badge">Self-paced</span>' +
+      '<span class="mode-badge mode-badge-untimed">Self-paced</span>' +
       '</div>' +
-      '<h4>Untimed Mode</h4><p>No time limit. Take as much time as you need per question.</p></div>' +
+      '<h4>Untimed Mode</h4><p>No time limit. Take as much time as you need to analyze scenarios and review detailed rationale.</p></div>' +
       '</div>' +
       '<div class="start-actions">' +
-      '<button class="btn btn-primary" id="start-id">Start Chapter</button>' +
-      '<button class="btn" id="shuffle-again">Shuffle Order</button>' +
+      '<button class="btn btn-primary btn-start-chapter" id="start-id">' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>' +
+        '<span>Start Chapter</span>' +
+      '</button>' +
+      '<button class="btn btn-shuffle" id="shuffle-again">' +
+        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>' +
+        '<span>Shuffle Order</span>' +
+      '</button>' +
       '</div>' +
       '</div></div>';
 

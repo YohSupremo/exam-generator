@@ -31,11 +31,18 @@ if ($row['status'] !== 'done') {
 <link rel="stylesheet" href="assets/exam-app.css?v=<?= filemtime(__DIR__ . '/assets/exam-app.css') ?>">
 </head>
 <body data-exam-id="<?= htmlspecialchars($id) ?>">
+<div class="ambient-glow ambient-top-left" aria-hidden="true"></div>
+<div class="ambient-glow ambient-top-right" aria-hidden="true"></div>
+<div class="ambient-glow ambient-center" aria-hidden="true"></div>
+
 <header class="exam-header">
     <div class="container">
         <!-- Top bar: back link  ←  →  Print / Download -->
         <div class="exam-header-top">
-            <a class="back-link" href="index.php">&larr; Back to exams</a>
+            <a class="back-link" href="index.php">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                <span>Back to exams</span>
+            </a>
             <div class="exam-header-actions">
                 <button type="button" class="btn btn-sm print-btn" onclick="window.print()" title="Print exam or save as PDF">
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
