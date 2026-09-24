@@ -116,55 +116,6 @@ $initModel = htmlspecialchars(!empty($initialQuota['model']) ? $initialQuota['mo
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
 <link rel="stylesheet" href="assets/site.css?v=<?= filemtime(__DIR__ . '/assets/site.css') ?>">
 <style>
-/* Critical Header Token Badge styling to prevent unstyled flash */
-.header-token-badge {
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 7px !important;
-    height: 34px !important;
-    padding: 0 12px 0 8px !important;
-    background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.75) 100%) !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
-    border-radius: 999px !important;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
-    cursor: default;
-    user-select: none;
-    white-space: nowrap !important;
-    line-height: 1 !important;
-    font-size: 13px !important;
-    font-variant-numeric: tabular-nums !important;
-    vertical-align: middle;
-}
-.htb-icon-wrap {
-    width: 22px !important;
-    height: 22px !important;
-    border-radius: 50% !important;
-    background: rgba(245, 158, 11, 0.15) !important;
-    border: 1px solid rgba(245, 158, 11, 0.35) !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    color: #fbbf24 !important;
-    flex: none !important;
-}
-.htb-remaining { font-weight: 700 !important; color: #ffffff !important; display: inline-block; transition: color 0.3s ease; }
-.htb-remaining.htb-pulse { animation: htb-num-glow 0.6s ease-out; }
-@keyframes htb-num-glow {
-    0% { color: #fbbf24; transform: scale(1.08); text-shadow: 0 0 8px rgba(251, 191, 36, 0.8); }
-    100% { color: #ffffff; transform: scale(1); text-shadow: none; }
-}
-.htb-sep { color: rgba(255, 255, 255, 0.35) !important; font-weight: 400 !important; margin: 0 1px !important; }
-.htb-limit { font-weight: 500 !important; color: #94a3b8 !important; }
-.htb-unit { font-size: 11px !important; font-weight: 600 !important; text-transform: uppercase !important; letter-spacing: 0.04em !important; color: #64748b !important; margin-left: 2px !important; }
-.htb-dot { width: 7px !important; height: 7px !important; border-radius: 50% !important; flex: none !important; margin-left: 3px !important; }
-.htb-dot.online { background: #34d399 !important; box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2) !important; }
-.htb-dot.offline { background: #f87171 !important; }
-.quota-progress-track { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.08); border-radius: 999px; overflow: hidden; margin: 4px 0 2px 0; }
-.quota-progress-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #10b981 0%, #34d399 100%); box-shadow: 0 0 8px rgba(52, 211, 153, 0.35); transition: width 0.4s ease; }
-.quota-progress-fill.quota-green { background: linear-gradient(90deg, #10b981 0%, #34d399 100%) !important; box-shadow: 0 0 8px rgba(52, 211, 153, 0.35) !important; }
-.quota-progress-fill.quota-amber { background: linear-gradient(90deg, #d97706 0%, #fbbf24 100%) !important; box-shadow: 0 0 8px rgba(251, 191, 36, 0.35) !important; }
-.quota-progress-fill.quota-red { background: linear-gradient(90deg, #dc2626 0%, #f87171 100%) !important; box-shadow: 0 0 8px rgba(248, 113, 113, 0.45) !important; }
-.quota-progress-fill.quota-blue { background: linear-gradient(90deg, #0284c7 0%, #38bdf8 100%) !important; box-shadow: 0 0 8px rgba(56, 189, 248, 0.35) !important; }
 /* Early splash styling to avoid unstyled flash */
 html.intro-skipped #intro-splash { display: none !important; }
 </style>
