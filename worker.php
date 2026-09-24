@@ -126,6 +126,9 @@ function finish_cancelled(string $statusFile, string $id, string $dir): void
 
 function remove_launch_task(string $id): void
 {
+    if (PHP_OS_FAMILY !== 'Windows') {
+        return;
+    }
     $taskName = 'autoExam_' . $id;
     $proc = @proc_open('schtasks /Delete /TN ' . escapeshellarg($taskName) . ' /F', [1 => ['pipe', 'w'], 2 => ['pipe', 'w']], $pipes);
     if (is_resource($proc)) {

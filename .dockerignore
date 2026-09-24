@@ -1,0 +1,10 @@
+.git
+.env
+data/exam.db*
+data/*.log
+data/exams/*
+!data/exams/.gitkeep
+data/ai_quota.json
+.agent
+scratch
+node_modules

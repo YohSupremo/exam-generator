@@ -16,8 +16,8 @@ try {
         }
         echo json_encode([
             'ok' => true,
-            'php' => is_file(PHP_EXE),
-            'opencode' => is_file(OPENCODE_EXE),
+            'php' => is_file(PHP_EXE) || (defined('PHP_BINARY') && is_file(PHP_BINARY)),
+            'opencode' => is_file(OPENCODE_EXE) || (defined('GROQ_API_KEY') && GROQ_API_KEY !== '') || (defined('OPENROUTER_API_KEY') && OPENROUTER_API_KEY !== '') || (defined('GEMINI_API_KEY') && GEMINI_API_KEY !== ''),
             'opencode_version' => '',
             'model' => defined('OPENCODE_MODEL') ? OPENCODE_MODEL : 'groq/openai/gpt-oss-20b',
             'has_api_key' => defined('GROQ_API_KEY') && GROQ_API_KEY !== '',

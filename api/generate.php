@@ -63,14 +63,22 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     fail('POST required');
 }
 
-if (!is_file(PHP_EXE)) {
+$phpValid = is_file(PHP_EXE) || (defined('PHP_BINARY') && is_file(PHP_BINARY));
+if (!$phpValid) {
     fail('PHP CLI not found. Set PHP_EXE in lib/config.php.');
 }
-if (!is_file(OPENCODE_EXE)) {
-    fail('opencode CLI not found. Set OPENCODE_EXE in lib/config.php.');
-}
-if (!is_file(SKILL_DIR . '/SKILL.md')) {
-    fail('Exam-generator skill is not installed in .opencode/skills/.');
+
+$hasDirectAi = (defined('GROQ_API_KEY') && GROQ_API_KEY !== '')
+    || (defined('OPENROUTER_API_KEY') && OPENROUTER_API_KEY !== '')
+    || (defined('GEMINI_API_KEY') && GEMINI_API_KEY !== '');
+
+if (!$hasDirectAi) {
+    if (!is_file(OPENCODE_EXE)) {
+        fail('opencode CLI not found. Set OPENCODE_EXE or provide an AI API key (e.g. GROQ_API_KEY).');
+    }
+    if (!is_file(SKILL_DIR . '/SKILL.md')) {
+        fail('Exam-generator skill is not installed in .opencode/skills/.');
+    }
 }
 
 if (empty($_FILES['pdf']) || ($_FILES['pdf']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
@@ -122,22 +130,30 @@ file_put_contents($jobMeta['status_file'], json_encode(['status' => 'queued', 'm
 
 app_log("Job $id created (source: $sourceName)");
 
-$phpExe = str_replace('\\', '/', PHP_EXE);
-$workerScript = str_replace('\\', '/', __DIR__ . '/../worker.php');
-$taskName = 'autoExam_' . $id;
+$workerScript = dirname(__DIR__) . '/worker.php';
 
-$taskCmd = 'schtasks /Create /TN ' . $taskName
-    . ' /TR "\"' . $phpExe . '\" \"' . $workerScript . '\" ' . $id . '"'
-    . ' /SC ONCE /ST 00:00 /F';
-$created = run_cmd($taskCmd);
-if (!$created['ok']) {
-    @unlink(__DIR__ . '/../data/.launch_' . $id . '.ps1');
-    fail('Could not create generation task: ' . trim($created['output']));
-}
-$ran = run_cmd('schtasks /Run /TN ' . $taskName);
-if (!$ran['ok']) {
-    run_cmd('schtasks /Delete /TN ' . $taskName . ' /F');
-    fail('Could not start generation task: ' . trim($ran['output']));
+if (PHP_OS_FAMILY === 'Windows') {
+    $phpExe = str_replace('\\', '/', PHP_EXE);
+    $workerScriptWin = str_replace('\\', '/', $workerScript);
+    $taskName = 'autoExam_' . $id;
+    $taskCmd = 'schtasks /Create /TN ' . $taskName
+        . ' /TR "\"' . $phpExe . '\" \"' . $workerScriptWin . '\" ' . $id . '"'
+        . ' /SC ONCE /ST 00:00 /F';
+    $created = run_cmd($taskCmd);
+    if (!$created['ok']) {
+        @unlink(dirname(__DIR__) . '/data/.launch_' . $id . '.ps1');
+        fail('Could not create generation task: ' . trim($created['output']));
+    }
+    $ran = run_cmd('schtasks /Run /TN ' . $taskName);
+    if (!$ran['ok']) {
+        run_cmd('schtasks /Delete /TN ' . $taskName . ' /F');
+        fail('Could not start generation task: ' . trim($ran['output']));
+    }
+} else {
+    // Linux / Docker background execution
+    $phpBin = PHP_EXE;
+    $cmd = escapeshellcmd($phpBin) . ' ' . escapeshellarg($workerScript) . ' ' . escapeshellarg($id) . ' > ' . escapeshellarg($dir . '/worker.log') . ' 2>&1 &';
+    exec($cmd);
 }
 
 echo json_encode(['ok' => true, 'id' => $id]);

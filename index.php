@@ -3,8 +3,11 @@ declare(strict_types=1);
 require_once __DIR__ . '/lib/db.php';
 
 $exams = exam_list();
-$opencodeOk = is_file(OPENCODE_EXE);
-$phpOk = is_file(PHP_EXE);
+$hasDirectAi = (defined('GROQ_API_KEY') && GROQ_API_KEY !== '')
+    || (defined('OPENROUTER_API_KEY') && OPENROUTER_API_KEY !== '')
+    || (defined('GEMINI_API_KEY') && GEMINI_API_KEY !== '');
+$opencodeOk = is_file(OPENCODE_EXE) || $hasDirectAi;
+$phpOk = is_file(PHP_EXE) || (defined('PHP_BINARY') && is_file(PHP_BINARY));
 
 $activeJobId = preg_replace('/[^A-Za-z0-9\-_]/', '', (string)($_GET['job'] ?? ''));
 if ($activeJobId !== '') {

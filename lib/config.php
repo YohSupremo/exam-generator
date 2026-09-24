@@ -55,20 +55,27 @@ if (GROQ_API_KEY !== '') {
 
 define('OPENCODE_MODEL', getenv('OPENCODE_MODEL') ?: $defaultModel);
 
-define(
-    'OPENCODE_EXE',
-    getenv('OPENCODE_EXE') ?: 'C:\Users\kelly\AppData\Roaming\npm\node_modules\opencode-ai\bin\opencode.exe'
-);
+// Auto-detect PHP CLI executable
+$defaultPhp = (defined('PHP_BINARY') && is_file(PHP_BINARY)) ? PHP_BINARY : '';
+if ($defaultPhp === '') {
+    $defaultPhp = PHP_OS_FAMILY === 'Windows' ? 'C:\xampp\php\php.exe' : '/usr/local/bin/php';
+}
+define('PHP_EXE', getenv('PHP_EXE') ?: $defaultPhp);
 
-define(
-    'PHP_EXE',
-    getenv('PHP_EXE') ?: 'C:\xampp\php\php.exe'
-);
+// Auto-detect Python executable
+$defaultPython = PHP_OS_FAMILY === 'Windows'
+    ? 'C:\Users\kelly\AppData\Local\Programs\Python\Python311\python.exe'
+    : '/usr/bin/python3';
+if (!is_file($defaultPython)) {
+    $defaultPython = PHP_OS_FAMILY === 'Windows' ? 'python.exe' : 'python3';
+}
+define('PYTHON_EXE', getenv('PYTHON_EXE') ?: $defaultPython);
 
-define(
-    'PYTHON_EXE',
-    getenv('PYTHON_EXE') ?: 'C:\Users\kelly\AppData\Local\Programs\Python\Python311\python.exe'
-);
+// Auto-detect OpenCode executable
+$defaultOpencode = PHP_OS_FAMILY === 'Windows'
+    ? 'C:\Users\kelly\AppData\Roaming\npm\node_modules\opencode-ai\bin\opencode.exe'
+    : '/usr/local/bin/opencode';
+define('OPENCODE_EXE', getenv('OPENCODE_EXE') ?: $defaultOpencode);
 
 function app_log(string $message): void
 {
