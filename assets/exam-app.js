@@ -246,6 +246,39 @@
     const cont = inlineContainer();
     navEl.appendChild(cont);
 
+    // Quick Jump Chapter Dropdown
+    if (bank.chapters && bank.chapters.length > 0) {
+      const dropWrap = document.createElement("div");
+      dropWrap.className = "chapter-dropdown-wrap";
+      
+      let selHtml = '<select class="chapter-dropdown" id="chapter-dropdown" aria-label="Select chapter">';
+      selHtml += '<option value="" ' + (!currentView.startsWith("ch|") ? 'selected' : '') + '>▾ Chapters (' + bank.chapters.length + ')</option>';
+      bank.chapters.forEach(function (c, idx) {
+        const isCur = currentView === "ch|" + c.chapterId;
+        const isDone = chapterState[c.chapterId] && chapterState[c.chapterId].completed;
+        selHtml += '<option value="' + c.chapterId + '"' + (isCur ? ' selected' : '') + '>' +
+          (isDone ? '✓ ' : '') + 'Ch ' + (idx + 1) + ': ' + esc(c.title) +
+        '</option>';
+      });
+      selHtml += '</select>';
+      selHtml += '<span class="chapter-dropdown-arrow" aria-hidden="true">' +
+        '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>' +
+      '</span>';
+      
+      dropWrap.innerHTML = selHtml;
+      const sel = dropWrap.querySelector("select");
+      if (lock && lock !== "overall") {
+        sel.disabled = true;
+      } else {
+        sel.addEventListener("change", function () {
+          if (sel.value) {
+            switchTo("ch|" + sel.value);
+          }
+        });
+      }
+      cont.appendChild(dropWrap);
+    }
+
     bank.chapters.forEach(function (ch) {
       const s = chapterState[ch.chapterId];
       const done = s && s.completed;
@@ -284,7 +317,9 @@
     const b = document.createElement("button");
     b.className = "nav-tab";
     if (active) b.classList.add("active");
-    b.innerHTML = esc(label) + (suffix ? " " + suffix : "");
+    b.title = label; // Universal hover tooltip with full unabbreviated title
+    b.setAttribute("aria-label", label);
+    b.innerHTML = '<span class="tab-label">' + esc(label) + '</span>' + (suffix ? " " + suffix : "");
     if (locked) {
       b.disabled = true;
     } else {

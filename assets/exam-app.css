@@ -233,7 +233,7 @@
     position: sticky;
     top: 0;
     z-index: 40;
-    background: rgba(6, 11, 20, 0.92);
+    background: rgba(6, 11, 20, 0.94);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -244,20 +244,73 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 8px 24px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    white-space: nowrap;
+    row-gap: 8px;
+    padding: 10px 24px;
+    flex-wrap: wrap; /* Allows tabs to wrap below the first line */
+    white-space: normal;
 }
+
+/* Quick Jump Chapter Dropdown */
+.chapter-dropdown-wrap {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    margin-right: 4px;
+    flex-shrink: 0;
+}
+.chapter-dropdown {
+    appearance: none;
+    -webkit-appearance: none;
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #e2e8f0;
+    font-size: 12.5px;
+    font-weight: 600;
+    font-family: inherit;
+    padding: 7px 32px 7px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: var(--glass-specular);
+    transition: all 0.2s ease;
+    max-width: 220px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.chapter-dropdown:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(99, 102, 241, 0.45);
+    color: #ffffff;
+}
+.chapter-dropdown:focus {
+    outline: none;
+    border-color: rgba(56, 189, 248, 0.6);
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
+}
+.chapter-dropdown option {
+    background: #0b1120;
+    color: #e2e8f0;
+    padding: 8px;
+}
+.chapter-dropdown-arrow {
+    position: absolute;
+    right: 12px;
+    pointer-events: none;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tab Pills with max-width and ellipsis */
 .nav-tab {
     display: inline-flex;
     align-items: center;
     gap: 7px;
     border: 1px solid transparent;
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0.025);
     color: #94a3b8;
-    padding: 7px 15px;
+    padding: 7px 14px;
     border-radius: 999px;
     font-size: 13px;
     font-weight: 500;
@@ -265,7 +318,17 @@
     cursor: pointer;
     white-space: nowrap;
     flex-shrink: 0;
+    max-width: 260px; /* Constrain max width so long chapters don't push tabs out */
     transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+}
+.nav-tab .tab-label {
+    display: inline-block;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: middle;
 }
 .nav-tab:hover:not(:disabled) {
     color: #ffffff;
@@ -295,11 +358,12 @@
     color: #34d399;
     font-size: 10px;
     font-weight: 800;
+    flex-shrink: 0;
 }
 .nav-sep {
     width: 1px;
     height: 18px;
-    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.16), transparent);
+    background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     margin: 0 4px;
     flex-shrink: 0;
 }
@@ -1612,7 +1676,10 @@ kbd {
 @media (max-width: 860px) {
     .exam-header { padding: 12px 0 14px; }
     .exam-header h1 { font-size: clamp(15px, 4vw, 20px); }
-    .exam-nav .container { padding: 6px 16px; }
+    .exam-nav .container { padding: 8px 16px; gap: 5px; row-gap: 6px; }
+    .nav-tab { max-width: 200px; padding: 6px 12px; font-size: 12.5px; }
+    .nav-tab .tab-label { max-width: 150px; }
+    .chapter-dropdown { max-width: 180px; font-size: 12px; padding: 6px 28px 6px 10px; }
 }
 
 @media (max-width: 640px) {
@@ -1625,4 +1692,8 @@ kbd {
     .q-text { font-size: 15px; }
     .mode-grid { grid-template-columns: 1fr; }
     .start-card { padding: 20px 18px; }
+    .exam-nav .container { padding: 6px 12px; gap: 4px; row-gap: 6px; }
+    .nav-tab { max-width: 160px; padding: 5px 10px; font-size: 12px; }
+    .nav-tab .tab-label { max-width: 115px; }
+    .chapter-dropdown { max-width: 160px; font-size: 11.5px; padding: 5px 24px 5px 8px; }
 }
