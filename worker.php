@@ -155,29 +155,6 @@ if (!$pdf || !is_file($pdf)) {
     exit(1);
 }
 
-// Queue protection: wait if another job is actively generating with AI to prevent rate limit collisions
-$queueWait = 0;
-while ($queueWait < 180) {
-    if (cancel_requested($dir)) {
-        finish_cancelled($statusFile, $id, $dir);
-        exit(0);
-    }
-    $activeCount = 0;
-    try {
-        $stmt = db()->prepare("SELECT COUNT(*) FROM exams WHERE status = 'running' AND id != :id");
-        $stmt->execute([':id' => $id]);
-        $activeCount = (int)$stmt->fetchColumn();
-    } catch (Throwable $e) {}
-
-    if ($activeCount === 0) {
-        break;
-    }
-
-    set_job_status($statusFile, 'queued', "In queue: waiting for active exam to finish (Queue #{$activeCount})...", '', 'queued', 0);
-    sleep(3);
-    $queueWait += 3;
-}
-
 set_job_status($statusFile, 'running', 'Extracting reference text from PDF', '', 'preparation', 1);
 exam_update($id, ['status' => 'running']);
 app_log("Job $id: worker started");
