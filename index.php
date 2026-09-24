@@ -2,7 +2,8 @@
 declare(strict_types=1);
 require_once __DIR__ . '/lib/db.php';
 
-$exams = exam_list();
+$userToken = get_or_create_user_token();
+$exams = exam_list($userToken);
 $hasDirectAi = (defined('GROQ_API_KEY') && GROQ_API_KEY !== '')
     || (defined('OPENROUTER_API_KEY') && OPENROUTER_API_KEY !== '')
     || (defined('GEMINI_API_KEY') && GEMINI_API_KEY !== '');

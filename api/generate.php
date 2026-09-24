@@ -114,7 +114,8 @@ if (!move_uploaded_file($upload['tmp_name'], $pdfPath)) {
     fail('Could not save the uploaded PDF.');
 }
 
-exam_create($id, htmlspecialchars($sourceName));
+$userToken = get_or_create_user_token();
+exam_create($id, htmlspecialchars($sourceName), $userToken);
 
 $jobMeta = [
     'id' => $id,

@@ -34,8 +34,31 @@ function db(): PDO
         } catch (Throwable $e) {
             // column already exists
         }
+        try {
+            $pdo->exec('ALTER TABLE exams ADD COLUMN user_token TEXT DEFAULT "";');
+        } catch (Throwable $e) {
+            // column already exists
+        }
     }
     return $pdo;
+}
+
+function get_or_create_user_token(): string
+{
+    $token = $_COOKIE['exam_uid'] ?? '';
+    if (!is_string($token) || !preg_match('/^[a-f0-9]{32}$/', $token)) {
+        $token = bin2hex(random_bytes(16));
+        if (!headers_sent()) {
+            setcookie('exam_uid', $token, [
+                'expires' => time() + 31536000,
+                'path' => '/',
+                'httponly' => true,
+                'samesite' => 'Lax',
+            ]);
+        }
+        $_COOKIE['exam_uid'] = $token;
+    }
+    return $token;
 }
 
 function exam_lifetime_tokens(): int
@@ -49,12 +72,12 @@ function exam_lifetime_tokens(): int
     }
 }
 
-function exam_create(string $id, string $sourceName): void
+function exam_create(string $id, string $sourceName, string $userToken = ''): void
 {
     $now = date('c');
     $stmt = db()->prepare(
-        'INSERT INTO exams (id, title, subject, source_name, status, created_at, updated_at)
-         VALUES (:id, :title, :subject, :source_name, :status, :created_at, :updated_at)'
+        'INSERT INTO exams (id, title, subject, source_name, status, user_token, created_at, updated_at)
+         VALUES (:id, :title, :subject, :source_name, :status, :user_token, :created_at, :updated_at)'
     );
     $stmt->execute([
         ':id' => $id,
@@ -62,6 +85,7 @@ function exam_create(string $id, string $sourceName): void
         ':subject' => '',
         ':source_name' => $sourceName,
         ':status' => 'queued',
+        ':user_token' => $userToken,
         ':created_at' => $now,
         ':updated_at' => $now,
     ]);
@@ -75,8 +99,20 @@ function exam_get(string $id): ?array
     return $row === false ? null : $row;
 }
 
-function exam_list(): array
+function exam_list(?string $userToken = null): array
 {
+    if ($userToken !== null && $userToken !== '') {
+        // Auto-claim legacy unassigned exams on localhost
+        $remoteAddr = $_SERVER['REMOTE_ADDR'] ?? '';
+        if ($remoteAddr === '127.0.0.1' || $remoteAddr === '::1' || $remoteAddr === 'localhost') {
+            try {
+                db()->prepare('UPDATE exams SET user_token = :token WHERE user_token IS NULL OR user_token = ""')->execute([':token' => $userToken]);
+            } catch (Throwable $e) {}
+        }
+        $stmt = db()->prepare('SELECT * FROM exams WHERE user_token = :token ORDER BY created_at DESC');
+        $stmt->execute([':token' => $userToken]);
+        return $stmt->fetchAll();
+    }
     return db()->query('SELECT * FROM exams ORDER BY created_at DESC')->fetchAll();
 }
 
