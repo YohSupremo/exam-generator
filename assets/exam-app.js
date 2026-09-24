@@ -251,8 +251,9 @@
       const dropWrap = document.createElement("div");
       dropWrap.className = "chapter-dropdown-wrap";
       
+      const isChView = Boolean(currentView && String(currentView).indexOf("ch|") === 0);
       let selHtml = '<select class="chapter-dropdown" id="chapter-dropdown" aria-label="Select chapter">';
-      selHtml += '<option value="" ' + (!currentView.startsWith("ch|") ? 'selected' : '') + '>▾ Chapters (' + bank.chapters.length + ')</option>';
+      selHtml += '<option value="" ' + (!isChView ? 'selected' : '') + '>▾ Chapters (' + bank.chapters.length + ')</option>';
       bank.chapters.forEach(function (c, idx) {
         const isCur = currentView === "ch|" + c.chapterId;
         const isDone = chapterState[c.chapterId] && chapterState[c.chapterId].completed;
