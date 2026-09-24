@@ -1,3 +1,12 @@
+---
+title: Exam Generator
+emoji: 📝
+colorFrom: indigo
+colorTo: blue
+sdk: docker
+app_port: 7860
+---
+
 # Auto Exam Maker — PDF → Interactive Comprehensive Exam Web App
 
 Upload a PDF (lecture notes, slides, reviewer, textbook). The app hands the PDF to
