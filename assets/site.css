@@ -914,23 +914,31 @@ main.container {
     color: #818cf8;
 }
 
-/* File Selected Preview Card */
+/* File Selected Preview Card (Mobile-First) */
 .dz-file-selected {
     display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 16px 20px;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px 16px;
     border-radius: var(--radius-lg);
-    background: rgba(15, 23, 42, 0.85);
-    border: 1px solid rgba(52, 211, 153, 0.35);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 20px rgba(52, 211, 153, 0.15);
+    background: rgba(15, 23, 42, 0.9);
+    border: 1px solid rgba(52, 211, 153, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 20px rgba(52, 211, 153, 0.15);
     width: 100%;
     max-width: 580px;
+    box-sizing: border-box;
     animation: fadeIn 0.3s ease;
 }
+.dfs-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+}
 .dfs-icon-wrap {
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border-radius: 12px;
     background: rgba(239, 68, 68, 0.15);
     border: 1px solid rgba(239, 68, 68, 0.3);
@@ -941,27 +949,28 @@ main.container {
     flex-shrink: 0;
 }
 .dfs-pdf-icon {
-    font-size: 26px !important;
+    font-size: 24px !important;
 }
 .dfs-info {
-    flex: 1;
+    flex: 1 1 auto;
     min-width: 0;
     text-align: left;
 }
 .dfs-name {
-    font-size: 14.5px;
+    font-size: 14px;
     font-weight: 700;
     color: #ffffff;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin-bottom: 3px;
+    margin-bottom: 2px;
 }
 .dfs-meta {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 12.5px;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+    font-size: 12px;
     color: var(--text-secondary);
 }
 .dfs-size {
@@ -984,32 +993,61 @@ main.container {
     flex-shrink: 0;
 }
 .dfs-check {
-    font-size: 16px !important;
+    font-size: 15px !important;
     color: #34d399;
 }
 .dfs-remove-btn {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    padding: 7px 14px;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px 16px;
     border-radius: var(--radius-full);
     background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.16);
     color: #e2e8f0;
     font-family: inherit;
-    font-size: 12.5px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
-    flex-shrink: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 .dfs-remove-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.16);
     color: #ffffff;
-    border-color: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 .dfs-remove-btn .material-symbols-rounded {
     font-size: 16px !important;
+}
+
+/* Tablet & Desktop Layout */
+@media (min-width: 560px) {
+    .dz-file-selected {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 20px;
+        gap: 16px;
+    }
+    .dfs-main {
+        flex: 1;
+        gap: 16px;
+    }
+    .dfs-icon-wrap {
+        width: 48px;
+        height: 48px;
+    }
+    .dfs-pdf-icon {
+        font-size: 26px !important;
+    }
+    .dfs-remove-btn {
+        width: auto;
+        padding: 7px 14px;
+        flex-shrink: 0;
+    }
 }
 
 .dz-hint {
@@ -2573,49 +2611,6 @@ main.container {
     .token-live-metric {
         width: 100%;
         flex-wrap: wrap;
-    }
-
-    /* Selected File Preview Mobile Styles */
-    .dz-file-selected {
-        flex-wrap: wrap;
-        padding: 14px;
-        gap: 12px;
-        align-items: flex-start;
-    }
-    .dfs-icon-wrap {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-    }
-    .dfs-pdf-icon {
-        font-size: 22px !important;
-    }
-    .dfs-info {
-        flex: 1 1 calc(100% - 56px);
-        min-width: 0;
-    }
-    .dfs-name {
-        font-size: 13.5px;
-        white-space: normal;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        word-break: break-word;
-        line-height: 1.35;
-        margin-bottom: 4px;
-    }
-    .dfs-meta {
-        flex-wrap: wrap;
-        gap: 6px;
-        font-size: 11.5px;
-    }
-    .dfs-remove-btn {
-        width: 100%;
-        justify-content: center;
-        padding: 8px 14px;
-        font-size: 12px;
-        margin-top: 2px;
     }
 }
 

@@ -447,15 +447,17 @@ try {
 
                     <!-- Active Selected File Card (revealed when file chosen) -->
                     <div class="dz-file-selected" id="dz-file-selected" style="display:none;">
-                        <div class="dfs-icon-wrap">
-                            <span class="material-symbols-rounded dfs-pdf-icon">picture_as_pdf</span>
-                        </div>
-                        <div class="dfs-info">
-                            <div class="dfs-name" id="dfs-name">selected_document.pdf</div>
-                            <div class="dfs-meta">
-                                <span class="dfs-size" id="dfs-size">0.00 MB</span>
-                                <span class="dfs-divider">&bull;</span>
-                                <span class="dfs-status"><span class="material-symbols-rounded dfs-check">check_circle</span> Ready to synthesize</span>
+                        <div class="dfs-main">
+                            <div class="dfs-icon-wrap">
+                                <span class="material-symbols-rounded dfs-pdf-icon">picture_as_pdf</span>
+                            </div>
+                            <div class="dfs-info">
+                                <div class="dfs-name" id="dfs-name">selected_document.pdf</div>
+                                <div class="dfs-meta">
+                                    <span class="dfs-size" id="dfs-size">0.00 MB</span>
+                                    <span class="dfs-divider">&bull;</span>
+                                    <span class="dfs-status"><span class="material-symbols-rounded dfs-check">check_circle</span> Ready to synthesize</span>
+                                </div>
                             </div>
                         </div>
                         <button type="button" class="dfs-remove-btn" id="dfs-remove-btn" title="Change file">
