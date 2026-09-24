@@ -250,7 +250,7 @@
     white-space: normal;
 }
 
-/* Quick Jump Chapter Dropdown */
+/* Custom Glassmorphic Chapter Dropdown */
 .chapter-dropdown-wrap {
     display: inline-flex;
     align-items: center;
@@ -258,48 +258,266 @@
     margin-right: 4px;
     flex-shrink: 0;
 }
-.chapter-dropdown {
-    appearance: none;
-    -webkit-appearance: none;
-    background: rgba(15, 23, 42, 0.9);
+
+.chapter-dd-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.12);
-    color: #e2e8f0;
-    font-size: 12.5px;
-    font-weight: 600;
+    color: #cbd5e1;
+    font-size: 13px;
+    font-weight: 500;
     font-family: inherit;
-    padding: 7px 32px 7px 14px;
+    padding: 7px 14px;
     border-radius: 999px;
     cursor: pointer;
-    box-shadow: var(--glass-specular);
-    transition: all 0.2s ease;
-    max-width: 220px;
-    text-overflow: ellipsis;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    max-width: 270px;
     white-space: nowrap;
-    overflow: hidden;
 }
-.chapter-dropdown:hover {
-    background: rgba(255, 255, 255, 0.08);
+
+.chapter-dd-btn:hover {
+    background: rgba(30, 41, 59, 0.9);
     border-color: rgba(99, 102, 241, 0.45);
     color: #ffffff;
+    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
-.chapter-dropdown:focus {
-    outline: none;
-    border-color: rgba(56, 189, 248, 0.6);
-    box-shadow: 0 0 14px rgba(56, 189, 248, 0.3);
+
+.chapter-dd-btn.active {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.25) 0%, rgba(99, 102, 241, 0.22) 100%);
+    border-color: rgba(99, 102, 241, 0.55);
+    color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.2);
 }
-.chapter-dropdown option {
-    background: #0b1120;
-    color: #e2e8f0;
-    padding: 8px;
+
+.chapter-dropdown-wrap.open .chapter-dd-btn {
+    border-color: rgba(56, 189, 248, 0.7);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
+    background: rgba(15, 23, 42, 0.95);
 }
-.chapter-dropdown-arrow {
-    position: absolute;
-    right: 12px;
-    pointer-events: none;
+
+.chapter-dropdown-wrap.open .cdd-chevron {
+    transform: rotate(180deg);
+}
+
+.cdd-btn-icon {
+    display: inline-flex;
+    align-items: center;
+    color: #818cf8;
+    flex-shrink: 0;
+}
+
+.cdd-btn-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+}
+
+.cdd-chevron {
+    display: inline-flex;
+    align-items: center;
     color: #94a3b8;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+/* Glassmorphic Dropdown Menu */
+.chapter-dd-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 310px;
+    max-width: 390px;
+    max-height: 420px;
+    background: rgba(10, 16, 31, 0.96);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 1px 1px rgba(255, 255, 255, 0.08), 0 8px 30px rgba(99, 102, 241, 0.2);
+    padding: 8px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    animation: cddFadeIn 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.chapter-dd-menu[hidden] {
+    display: none !important;
+}
+
+@keyframes cddFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.cdd-menu-header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    padding: 8px 10px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    margin-bottom: 6px;
+}
+
+.cdd-menu-title {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #94a3b8;
+}
+
+.cdd-menu-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.12);
+    padding: 2px 7px;
+    border-radius: 999px;
+    border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.cdd-menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    overflow-y: auto;
+    max-height: 330px;
+    padding-right: 2px;
+}
+
+.cdd-menu-items::-webkit-scrollbar {
+    width: 5px;
+}
+.cdd-menu-items::-webkit-scrollbar-track {
+    background: transparent;
+}
+.cdd-menu-items::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+}
+.cdd-menu-items::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.26);
+}
+
+.chapter-dd-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: #cbd5e1;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.16s ease;
+}
+
+.chapter-dd-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(99, 102, 241, 0.3);
+    color: #ffffff;
+    transform: translateX(2px);
+}
+
+.chapter-dd-item.active {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.22), rgba(56, 189, 248, 0.12));
+    border-color: rgba(99, 102, 241, 0.5);
+    color: #ffffff;
+    box-shadow: inset 0 0 14px rgba(99, 102, 241, 0.15);
+}
+
+.chapter-dd-item.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.cdd-badge {
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
+    padding: 3px 7px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(99, 102, 241, 0.16);
+    color: #a5b4fc;
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    flex-shrink: 0;
+    letter-spacing: 0.02em;
+}
+
+.chapter-dd-item.active .cdd-badge {
+    background: rgba(99, 102, 241, 0.35);
+    color: #e0e7ff;
+    border-color: rgba(99, 102, 241, 0.6);
+}
+
+.cdd-title {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.chapter-dd-item.active .cdd-title {
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.cdd-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.cdd-qcount {
+    font-size: 11px;
+    font-weight: 500;
+    color: #64748b;
+}
+
+.chapter-dd-item.active .cdd-qcount {
+    color: #94a3b8;
+}
+
+.cdd-check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    font-size: 11px;
+    font-weight: 800;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.25);
+}
+
+.cdd-lock {
+    font-size: 11px;
+    opacity: 0.7;
 }
 
 /* Tab Pills with max-width and ellipsis */
@@ -1679,7 +1897,9 @@ kbd {
     .exam-nav .container { padding: 8px 16px; gap: 5px; row-gap: 6px; }
     .nav-tab { max-width: 200px; padding: 6px 12px; font-size: 12.5px; }
     .nav-tab .tab-label { max-width: 150px; }
-    .chapter-dropdown { max-width: 180px; font-size: 12px; padding: 6px 28px 6px 10px; }
+    .chapter-dd-btn { max-width: 220px; font-size: 12.5px; padding: 6px 12px; }
+    .cdd-btn-text { max-width: 150px; }
+    .chapter-dd-menu { min-width: 280px; max-width: 340px; }
 }
 
 @media (max-width: 640px) {
@@ -1695,5 +1915,7 @@ kbd {
     .exam-nav .container { padding: 6px 12px; gap: 4px; row-gap: 6px; }
     .nav-tab { max-width: 160px; padding: 5px 10px; font-size: 12px; }
     .nav-tab .tab-label { max-width: 115px; }
-    .chapter-dropdown { max-width: 160px; font-size: 11.5px; padding: 5px 24px 5px 8px; }
+    .chapter-dd-btn { max-width: 180px; font-size: 12px; padding: 5px 10px; }
+    .cdd-btn-text { max-width: 115px; }
+    .chapter-dd-menu { min-width: 260px; max-width: calc(100vw - 24px); }
 }

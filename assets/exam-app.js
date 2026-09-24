@@ -246,53 +246,108 @@
     const cont = inlineContainer();
     navEl.appendChild(cont);
 
-    // Quick Jump Chapter Dropdown
+    // Custom Glassmorphic Chapter Dropdown
     if (bank.chapters && bank.chapters.length > 0) {
+      const isChView = Boolean(currentView && String(currentView).indexOf("ch|") === 0);
+      const activeChId = isChView ? currentView.slice(3) : null;
+      let activeCh = null;
+      let activeChIdx = -1;
+      bank.chapters.forEach(function (c, idx) {
+        if (c.chapterId === activeChId) {
+          activeCh = c;
+          activeChIdx = idx;
+        }
+      });
+
       const dropWrap = document.createElement("div");
       dropWrap.className = "chapter-dropdown-wrap";
-      
-      const isChView = Boolean(currentView && String(currentView).indexOf("ch|") === 0);
-      let selHtml = '<select class="chapter-dropdown" id="chapter-dropdown" aria-label="Select chapter">';
-      selHtml += '<option value="" ' + (!isChView ? 'selected' : '') + '>▾ Chapters (' + bank.chapters.length + ')</option>';
+      dropWrap.id = "chapter-dd-wrap";
+
+      const btnLabel = activeCh
+        ? "Ch " + (activeChIdx + 1) + ": " + activeCh.title
+        : "Chapters (" + bank.chapters.length + ")";
+      const btnTitle = activeCh
+        ? "Chapter " + (activeChIdx + 1) + ": " + activeCh.title
+        : "Select from " + bank.chapters.length + " chapters";
+
+      const triggerBtn = document.createElement("button");
+      triggerBtn.type = "button";
+      triggerBtn.className = "chapter-dd-btn" + (isChView ? " active" : "");
+      triggerBtn.id = "chapter-dd-btn";
+      triggerBtn.title = btnTitle;
+      triggerBtn.setAttribute("aria-haspopup", "true");
+      triggerBtn.setAttribute("aria-expanded", "false");
+      triggerBtn.setAttribute("aria-label", btnTitle);
+
+      triggerBtn.innerHTML =
+        '<span class="cdd-btn-icon" aria-hidden="true">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>' +
+        '</span>' +
+        '<span class="cdd-btn-text">' + esc(btnLabel) + '</span>' +
+        '<span class="cdd-chevron" aria-hidden="true">' +
+          '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>' +
+        '</span>';
+
+      const menu = document.createElement("div");
+      menu.className = "chapter-dd-menu";
+      menu.id = "chapter-dd-menu";
+      menu.setAttribute("role", "menu");
+      menu.hidden = true;
+
+      const header = document.createElement("div");
+      header.className = "cdd-menu-header";
+      header.innerHTML =
+        '<span class="cdd-menu-title">Select Chapter</span>' +
+        '<span class="cdd-menu-badge">' + bank.chapters.length + ' Chapters</span>';
+      menu.appendChild(header);
+
+      const itemsList = document.createElement("div");
+      itemsList.className = "cdd-menu-items";
+
       bank.chapters.forEach(function (c, idx) {
         const isCur = currentView === "ch|" + c.chapterId;
         const isDone = chapterState[c.chapterId] && chapterState[c.chapterId].completed;
-        selHtml += '<option value="' + c.chapterId + '"' + (isCur ? ' selected' : '') + '>' +
-          (isDone ? '✓ ' : '') + 'Ch ' + (idx + 1) + ': ' + esc(c.title) +
-        '</option>';
-      });
-      selHtml += '</select>';
-      selHtml += '<span class="chapter-dropdown-arrow" aria-hidden="true">' +
-        '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>' +
-      '</span>';
-      
-      dropWrap.innerHTML = selHtml;
-      const sel = dropWrap.querySelector("select");
-      if (lock && lock !== "overall") {
-        sel.disabled = true;
-      } else {
-        sel.addEventListener("change", function () {
-          if (sel.value) {
-            switchTo("ch|" + sel.value);
-          }
+        const isLocked = lock && lock !== "overall" && lock !== c.chapterId;
+
+        const itemBtn = document.createElement("button");
+        itemBtn.type = "button";
+        itemBtn.className = "chapter-dd-item" + (isCur ? " active" : "") + (isDone ? " completed" : "") + (isLocked ? " locked" : "");
+        itemBtn.setAttribute("role", "menuitem");
+        itemBtn.title = "Chapter " + (idx + 1) + ": " + c.title;
+
+        itemBtn.innerHTML =
+          '<span class="cdd-badge">Ch ' + (idx + 1) + '</span>' +
+          '<span class="cdd-title">' + esc(c.title) + '</span>' +
+          '<span class="cdd-meta">' +
+            '<span class="cdd-qcount">' + (c.questions ? c.questions.length : 0) + ' Qs</span>' +
+            (isDone ? '<span class="cdd-check" title="Completed">\u2713</span>' : '') +
+            (isLocked ? '<span class="cdd-lock" title="Exam section in progress">\uD83D\uDD12</span>' : '') +
+          '</span>';
+
+        itemBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          dropWrap.classList.remove("open");
+          triggerBtn.setAttribute("aria-expanded", "false");
+          menu.hidden = true;
+          switchTo("ch|" + c.chapterId);
         });
-      }
+
+        itemsList.appendChild(itemBtn);
+      });
+
+      menu.appendChild(itemsList);
+
+      triggerBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        const isOpen = dropWrap.classList.toggle("open");
+        triggerBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        menu.hidden = !isOpen;
+      });
+
+      dropWrap.appendChild(triggerBtn);
+      dropWrap.appendChild(menu);
       cont.appendChild(dropWrap);
     }
-
-    bank.chapters.forEach(function (ch) {
-      const s = chapterState[ch.chapterId];
-      const done = s && s.completed;
-      const isCurrent = currentView === "ch|" + ch.chapterId;
-      const btn = makeTab(
-        ch.title,
-        "ch|" + ch.chapterId,
-        done ? '<span class="chk" aria-hidden="true">\u2713</span>' : "",
-        lock && lock !== ch.chapterId,
-        isCurrent
-      );
-      cont.appendChild(btn);
-    });
 
     const sep = document.createElement("div");
     sep.className = "nav-sep";
@@ -1294,6 +1349,31 @@
       '<div class="view-panel"><div class="card"><h2 class="panel-title">' + esc(bank.title) + "</h2>" +
       "<p class=\"muted\">Pick a chapter above to begin, or take the Overall Exam.</p></div></div>";
   }
+
+  /* ---------------- dropdown outside-click & escape ---------------- */
+
+  function closeChapterDropdown() {
+    const wrap = document.getElementById("chapter-dd-wrap");
+    if (!wrap) return;
+    wrap.classList.remove("open");
+    const btn = wrap.querySelector(".chapter-dd-btn");
+    if (btn) btn.setAttribute("aria-expanded", "false");
+    const menu = wrap.querySelector(".chapter-dd-menu");
+    if (menu) menu.hidden = true;
+  }
+
+  document.addEventListener("click", function (e) {
+    const wrap = document.getElementById("chapter-dd-wrap");
+    if (wrap && !wrap.contains(e.target)) {
+      closeChapterDropdown();
+    }
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") {
+      closeChapterDropdown();
+    }
+  });
 
   /* ---------------- init ---------------- */
 
