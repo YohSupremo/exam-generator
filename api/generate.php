@@ -41,6 +41,45 @@ function run_cmd(string $cmd): array
 
 $op = $_GET['op'] ?? null;
 
+if ($op === 'cancel') {
+    $id = preg_replace('/[^A-Za-z0-9\-_]/', '', $_GET['id'] ?? '');
+    if ($id === '') {
+        fail('Missing exam ID');
+    }
+    $dir = exam_dir($id);
+    @file_put_contents($dir . '/.cancel', date('c'));
+    exam_update($id, ['status' => 'cancelled']);
+
+    if (is_dir($dir)) {
+        @file_put_contents($dir . '/status.json', json_encode([
+            'status' => 'cancelled',
+            'message' => 'Cancelled by user.',
+            'error' => '',
+            'updated' => date('c'),
+        ], JSON_UNESCAPED_UNICODE));
+
+        $pidFile = $dir . '/worker.pid';
+        if (is_file($pidFile)) {
+            $pid = (int)trim((string)@file_get_contents($pidFile));
+            if ($pid > 0) {
+                if (PHP_OS_FAMILY === 'Windows') {
+                    run_cmd('taskkill /PID ' . $pid . ' /T /F');
+                } else {
+                    @posix_kill($pid, 9);
+                }
+            }
+        }
+    }
+
+    if (PHP_OS_FAMILY === 'Windows') {
+        run_cmd('schtasks /Delete /TN autoExam_' . $id . ' /F');
+    }
+
+    app_log("Job $id: cancelled by user");
+    echo json_encode(['ok' => true, 'id' => $id]);
+    exit;
+}
+
 if ($op === 'delete') {
     $id = preg_replace('/[^A-Za-z0-9\-_]/', '', $_GET['id'] ?? '');
     if ($id === '' || !exam_get($id)) {

@@ -160,6 +160,7 @@
     if (!confirm("Cancel this generation? It cannot be resumed after this.")) return Promise.resolve(false);
     try {
       localStorage.removeItem("active_exam_job");
+      sessionStorage.removeItem("active_exam_job");
       history.replaceState(null, '', window.location.pathname);
     } catch (e) {}
     if (pollTimer) clearInterval(pollTimer);
@@ -168,7 +169,13 @@
     if (!id) return Promise.resolve(true);
     return fetch("api/generate.php?op=cancel&id=" + encodeURIComponent(id), { method: "POST" })
       .then(function (r) { return r.json(); })
-      .then(function () { return true; })
+      .then(function (data) {
+        try {
+          localStorage.removeItem("active_exam_job");
+          sessionStorage.removeItem("active_exam_job");
+        } catch (e) {}
+        return true;
+      })
       .catch(function () { return true; });
   }
 
@@ -283,8 +290,12 @@
         cancelBtn.disabled = true;
         cancelBtn.textContent = "Cancelling\u2026";
         cancelJob(trackedJobId).then(function (ok) {
-          if (ok) window.location.reload();
-          else cancelBtn.disabled = false;
+          if (ok) {
+            window.location.href = window.location.pathname;
+          } else {
+            cancelBtn.disabled = false;
+            cancelBtn.textContent = "Cancel";
+          }
         });
       };
     }
@@ -430,8 +441,15 @@
       if (!targetId) {
         try { targetId = localStorage.getItem("active_exam_job"); } catch (e) {}
       }
-      cancelJob(targetId).then(function () {
-        if (statusArea) statusArea.hidden = true;
+      cancelTrackedBtn.disabled = true;
+      cancelTrackedBtn.textContent = "Cancelling…";
+      cancelJob(targetId).then(function (ok) {
+        if (ok) {
+          window.location.href = window.location.pathname;
+        } else {
+          cancelTrackedBtn.disabled = false;
+          cancelTrackedBtn.textContent = "Cancel";
+        }
       });
     });
   }
