@@ -23,5 +23,17 @@ if (!is_file($file)) {
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
-echo (string)file_get_contents($file);
+
+$raw = (string)file_get_contents($file);
+$bank = json_decode($raw, true);
+
+if (is_array($bank)) {
+    if (ensure_exam_encyclopedia($bank)) {
+        @file_put_contents($file, json_encode($bank, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        echo json_encode($bank, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        exit;
+    }
+}
+
+echo $raw;
 exit;

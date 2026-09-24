@@ -16,10 +16,12 @@ Browser (index.php upload)
 PHP saves PDF, creates job id, writes a PowerShell launcher
    │  (detached process)
    ▼
-worker.php (CLI) calls:
-   opencode run --auto --dir <app> --file <pdf> <prompt using the skill>
+worker.php (CLI):
+   1) opencode run produces plan.json (detects the source's chapters)
+   2) one opencode run per chapter, up to CONCURRENCY at a time (parallel)
+   3) PHP validates each chapter bank and merges them into questions.json
    │
-   ▼  opencode reads the PDF, loads the skill, writes questions.json
+   ▼  each opencode run loads the skill and reads the extracted source
 PHP validates the JSON (4 choices, correctAnswer 0..3, explanations)
    ▼
 exam.php?id=<id> + assets/exam-app.js render the interactive exam
@@ -45,6 +47,7 @@ page polls `api/status.php` and opens the exam when ready.
      (default: `%APPDATA%\npm\node_modules\opencode-ai\bin\opencode.exe`).
    - `PHP_EXE` — absolute path to the CLI PHP (default: `C:\xampp\php\php.exe`).
      Override either with the `OPENCODE_EXE` / `PHP_EXE` environment variables.
+   - `CONCURRENCY` — max parallel per-chapter opencode runs (default 3).
 4. Start Apache (XAMPP Control → Apache, or `httpd.exe`).
 5. Open **http://localhost/automation/side-project/**.
 
@@ -70,12 +73,15 @@ tune the skill.
 - **Permissions:** the worker invokes opencode with `--auto` so it can read the
   PDF and write the question bank without interactive prompts. Generation runs
   only on YOUR machine; this is a local tool, not a remote service.
-- **Cost/time:** a 7-chapter exam takes roughly 10–15 minutes and produces
-  hundreds of questions; plan API usage accordingly. Large or image-heavy PDFs
-  increase token use.
+- **Cost/time:** chapters are generated in parallel (up to `CONCURRENCY` runs at
+  once), so a 7-chapter exam typically completes much faster than a single serial
+  run and produces hundreds of questions; plan API usage accordingly. Large or
+  image-heavy PDFs increase token use.
 - **Accuracy:** the skill treats the PDF as the source of truth. Verify generated
   questions before formal use (an "Answer Key" tab exists for quick audit).
-- **Job lifecycle:** `queued → running → done | error`. Jobs stuck longer than
+- **Job lifecycle:** `queued → running → done | error | cancelled`. Jobs can be
+  cancelled from the upload page or the exam list; an estimated time remaining is
+  shown while a job runs (based on past job history). Jobs stuck longer than
   30 minutes are auto-marked `error`.
 
 ## Project layout

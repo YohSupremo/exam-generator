@@ -1,0 +1,25 @@
+# Environment & Secrets
+.env
+*.env
+.env.local
+
+# Database & Generated Exams
+data/exams/*
+!data/exams/.gitkeep
+data/*.db
+data/*.db-wal
+data/*.db-shm
+data/*.log
+data/ai_quota.json
+data/_schtasks_probe.php
+
+# Agent & Scratch Files
+.agent/
+scratch/
+launch.ps1
+test_*.php
+opencode.json
+
+# Node dependencies
+node_modules/
+.opencode/node_modules/

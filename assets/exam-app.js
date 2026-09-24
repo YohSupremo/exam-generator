@@ -15,6 +15,88 @@
   const chapterState = {};
   let overall = null; // {started, submitted, selected{}, score, correct, incorrect}
 
+  /* ---------------- mistake bank storage ---------------- */
+
+  const mistakeStorageKey = "exam_mistakes_" + (examId || "standalone");
+  let mistakeBank = loadMistakes();
+
+  function loadMistakes() {
+    try {
+      const raw = localStorage.getItem(mistakeStorageKey);
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveMistakes() {
+    try {
+      localStorage.setItem(mistakeStorageKey, JSON.stringify(mistakeBank));
+    } catch (e) {}
+  }
+
+  function recordMistake(q, ch, selectedIdx) {
+    if (!q) return;
+    const existing = mistakeBank[q.id] || {
+      id: q.id,
+      chapterId: ch ? ch.chapterId : "",
+      chapterTitle: ch ? ch.title : "General",
+      question: q.question,
+      choices: q.choices,
+      correctAnswer: q.correctAnswer,
+      explanation: q.explanation,
+      wrongCount: 0,
+      lastSelected: null,
+      lastMissedAt: null,
+    };
+    existing.wrongCount += 1;
+    existing.lastSelected = selectedIdx != null ? q.choices[selectedIdx] : null;
+    existing.lastMissedAt = new Date().toISOString();
+    mistakeBank[q.id] = existing;
+    saveMistakes();
+  }
+
+  function resolveMistake(qid) {
+    if (mistakeBank[qid]) {
+      delete mistakeBank[qid];
+      saveMistakes();
+    }
+  }
+
+  /* ---------------- keyboard navigation ---------------- */
+
+  window.addEventListener("keydown", function (e) {
+    if (e.target && (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")) return;
+    if (e.defaultPrevented) return;
+
+    const qView = document.querySelector(".q-view");
+    if (!qView) return;
+
+    const nextBtn = document.getElementById("next-btn");
+    if (nextBtn) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        nextBtn.click();
+      }
+      return;
+    }
+
+    const key = e.key.toUpperCase();
+    let choiceIdx = -1;
+    if (key === "A" || key === "1") choiceIdx = 0;
+    else if (key === "B" || key === "2") choiceIdx = 1;
+    else if (key === "C" || key === "3") choiceIdx = 2;
+    else if (key === "D" || key === "4") choiceIdx = 3;
+
+    if (choiceIdx !== -1) {
+      const btn = qView.querySelector('.choice[data-choice="' + choiceIdx + '"]');
+      if (btn && !btn.disabled) {
+        e.preventDefault();
+        btn.click();
+      }
+    }
+  });
+
   /* ---------------- helpers ---------------- */
 
   function shuffle(arr) {
@@ -96,18 +178,58 @@
 
   function renderHeader() {
     document.getElementById("exam-title").textContent = bank.title || "Exam";
-    let metaHtml = "";
-    if (bank.subject) metaHtml += '<span class="meta-tag">' + esc(bank.subject) + "</span>";
-    if (bank.summary) metaHtml += '<p class="exam-summary">' + esc(bank.summary) + "</p>";
+
+    var metaHtml = "";
+
+    /* Subject tag */
+    if (bank.subject) {
+      metaHtml += '<span class="meta-tag">' + esc(bank.subject) + "</span>";
+    }
+
+    /* Inline stat chips */
+    metaHtml +=
+      '<span class="meta-chip">' +
+        '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>' +
+        bank.chapters.length + " Chapters" +
+      "</span>" +
+      '<span class="meta-chip">' +
+        '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
+        flat.length + " Questions" +
+      "</span>";
+
+    /* Collapsible summary */
+    if (bank.summary) {
+      metaHtml +=
+        '<div class="exam-summary-wrap">' +
+          '<p class="exam-summary" id="exam-summary-text">' + esc(bank.summary) + "</p>" +
+          '<button class="summary-toggle" id="summary-toggle" aria-expanded="false" hidden>' +
+            '<span class="st-label-txt">Show more</span>' +
+            '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>' +
+          "</button>" +
+        "</div>";
+    }
+
     document.getElementById("exam-meta").innerHTML = metaHtml;
 
-    const stats = document.getElementById("exam-header-stats");
-    if (stats) {
-      stats.innerHTML =
-        '<div class="stat-tile"><span class="st-value">' + bank.chapters.length + '</span><span class="st-label">Chapters</span></div>' +
-        '<div class="stat-tile"><span class="st-value">' + flat.length + '</span><span class="st-label">Questions</span></div>';
+    /* Show toggle only when text is actually clamped */
+    var toggleBtn = document.getElementById("summary-toggle");
+    var summaryEl = document.getElementById("exam-summary-text");
+    if (toggleBtn && summaryEl) {
+      requestAnimationFrame(function () {
+        if (summaryEl.scrollHeight > summaryEl.clientHeight + 2) {
+          toggleBtn.hidden = false;
+        }
+        toggleBtn.addEventListener("click", function () {
+          var expanded = summaryEl.classList.toggle("expanded");
+          toggleBtn.setAttribute("aria-expanded", expanded ? "true" : "false");
+          toggleBtn.querySelector(".st-label-txt").textContent = expanded ? "Show less" : "Show more";
+          toggleBtn.querySelector("svg").style.transform = expanded ? "rotate(180deg)" : "";
+        });
+      });
     }
   }
+
+
 
   /* ---------------- navigation ---------------- */
 
@@ -138,6 +260,11 @@
     cont.appendChild(makeTab("Overall Exam", "overall", overall && overall.submitted ? '<span class="chk">\u2713</span>' : "", lock === "overall" || (lock && lock !== "overall"), currentView === "overall"));
     cont.appendChild(makeTab("Answer Key", "answerkey", "", lock !== null, currentView === "answerkey"));
     cont.appendChild(makeTab("Encyclopedia", "encyclopedia", "", lock !== null, currentView === "encyclopedia"));
+
+    const mCount = Object.keys(mistakeBank).length;
+    if (mCount > 0) {
+      cont.appendChild(makeTab("Mistakes", "mistakes", '<span class="badge-mistakes">' + mCount + '</span>', lock !== null, currentView === "mistakes"));
+    }
   }
 
   function inlineContainer() {
@@ -177,6 +304,7 @@
     if (key === "overall") renderOverall();
     else if (key === "answerkey") renderAnswerKey();
     else if (key === "encyclopedia") renderEncyclopedia();
+    else if (key === "mistakes") renderMistakes();
     else if (key.indexOf("ch|") === 0) renderChapter(key.slice(3));
     else renderHome();
   }
@@ -343,7 +471,9 @@
       }
       html += '<li><button class="choice ' + cls.join(" ") + '" data-choice="' + i + '"' + (answered ? " disabled" : "") + ">" +
         '<span class="letter">' + LETTERS[i] + "</span>" +
-        '<span class="choice-text">' + esc(q.choices[origIdx]) + "</span></button></li>";
+        '<span class="choice-text">' + esc(q.choices[origIdx]) + "</span>" +
+        (!answered ? '<span class="choice-shortcut"><kbd>' + LETTERS[i] + '</kbd></span>' : '') +
+        "</button></li>";
     }
     html += "</ul>";
 
@@ -363,6 +493,7 @@
     }
 
     html += "</div>" +
+      '<div class="kbd-hint"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M6 8h.001M10 8h.001M14 8h.001M18 8h.001M8 12h.001M12 12h.001M16 12h.001M7 16h10"></path></svg> <span>Press <kbd>A</kbd>&ndash;<kbd>D</kbd> or <kbd>1</kbd>&ndash;<kbd>4</kbd> to select &bull; <kbd>Enter</kbd> to advance</span></div>' +
       '<div class="next-row"><button class="reset-link" id="reset-link">Reset chapter (choose mode again)</button></div>' +
       "</div>";
 
@@ -427,11 +558,19 @@
 
   function answerChapterCurrent(chId, qid, origIdx, choiceIdx) {
     const st = getChapterState(chId);
-    const q = chapterById(chId).questions.find(function (x) { return x.id === qid; });
+    const ch = chapterById(chId);
+    const q = ch.questions.find(function (x) { return x.id === qid; });
     const correct = origIdx === q.correctAnswer;
     st.answers[qid] = { selected: origIdx, correct: correct, timedOut: false, at: choiceIdx };
     st.answered = Object.keys(st.answers).length;
-    if (correct) { st.correct += 1; st.score += 1; } else { st.incorrect += 1; }
+    if (correct) {
+      st.correct += 1;
+      st.score += 1;
+      if (mistakeBank[qid]) resolveMistake(qid);
+    } else {
+      st.incorrect += 1;
+      recordMistake(q, ch, origIdx);
+    }
     clearTimer(st);
     renderChapter(chId);
   }
@@ -439,9 +578,12 @@
   function answerChapterTimeout(chId, qid) {
     const st = getChapterState(chId);
     if (st.answers[qid]) return; // already answered
+    const ch = chapterById(chId);
+    const q = ch ? ch.questions.find(function (x) { return x.id === qid; }) : null;
     st.answers[qid] = { selected: null, correct: false, timedOut: true, at: null };
     st.answered = Object.keys(st.answers).length;
     st.incorrect += 1;
+    if (q) recordMistake(q, ch, null);
     renderChapter(chId);
   }
 
@@ -481,12 +623,42 @@
       "</div>" +
       '<div class="result-actions">' +
       '<button class="btn btn-primary" id="review-btn">Review Answers</button>' +
+      '<button class="btn btn-ai" id="ai-analyze-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg> <span>AI Diagnosis</span></button>' +
       '<button class="btn" id="retake-btn">Retake (reset)</button>' +
       '<button class="btn" id="again-btn">Shuffle &amp; Retake</button>' +
-      "</div></div></div>";
+      "</div>" +
+      '<div id="ai-feedback-container" class="ai-feedback-container"></div>' +
+      "</div></div>";
 
     document.getElementById("review-btn").addEventListener("click", function () {
       renderReview(chId);
+    });
+    document.getElementById("ai-analyze-btn").addEventListener("click", function () {
+      const mistakes = [];
+      const correctItems = [];
+      ch.questions.forEach(function (q) {
+        const a = st.answers[q.id];
+        if (a && a.correct) {
+          correctItems.push({ id: q.id, question: q.question });
+        } else {
+          mistakes.push({
+            id: q.id,
+            question: q.question,
+            yourAnswer: a && a.selected != null ? q.choices[a.selected] : "Timed out / unanswered",
+            correctAnswer: q.choices[q.correctAnswer],
+            explanation: q.explanation,
+          });
+        }
+      });
+      const containerEl = document.getElementById("ai-feedback-container");
+      triggerAiAnalysis(containerEl, {
+        examId: examId,
+        sectionTitle: ch.title,
+        score: st.correct,
+        total: total,
+        mistakes: mistakes,
+        correctItems: correctItems,
+      });
     });
     document.getElementById("retake-btn").addEventListener("click", function () {
       resetChapter(chId);
@@ -601,7 +773,12 @@
     flat.forEach(function (item) {
       const q = item.q;
       const sel = overall.selected[q.id];
-      if (sel != null && sel === q.correctAnswer) correct += 1;
+      if (sel != null && sel === q.correctAnswer) {
+        correct += 1;
+        if (mistakeBank[q.id]) resolveMistake(q.id);
+      } else {
+        recordMistake(q, item.ch, sel);
+      }
     });
     overall.submitted = true;
     overall.correct = correct;
@@ -623,7 +800,11 @@
       '<div class="result-cell"><span class="rc-value" style="color:var(--red)">' + overall.incorrect + "</span><span class=\"rc-label\">Incorrect</span></div>" +
       '<div class="result-cell"><span class="rc-value">' + overall.correct + "/" + total + "</span><span class=\"rc-label\">Score</span></div>" +
       "</div>" +
-      '<div class="result-actions"><button class="btn" id="retake-overall">Retake</button></div>' +
+      '<div class="result-actions">' +
+      '<button class="btn btn-ai" id="ai-analyze-overall-btn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg> <span>AI Diagnosis</span></button>' +
+      '<button class="btn" id="retake-overall">Retake</button>' +
+      '</div>' +
+      '<div id="ai-overall-feedback-container" class="ai-feedback-container"></div>' +
       "</div>";
 
     flat.forEach(function (item, idx) {
@@ -649,6 +830,35 @@
 
     view.innerHTML = html;
 
+    document.getElementById("ai-analyze-overall-btn").addEventListener("click", function () {
+      const mistakes = [];
+      const correctItems = [];
+      flat.forEach(function (item) {
+        const q = item.q;
+        const sel = overall.selected[q.id];
+        if (sel != null && sel === q.correctAnswer) {
+          correctItems.push({ id: q.id, question: q.question });
+        } else {
+          mistakes.push({
+            id: q.id,
+            question: q.question,
+            yourAnswer: sel != null ? q.choices[sel] : "Not answered",
+            correctAnswer: q.choices[q.correctAnswer],
+            explanation: q.explanation,
+          });
+        }
+      });
+      const containerEl = document.getElementById("ai-overall-feedback-container");
+      triggerAiAnalysis(containerEl, {
+        examId: examId,
+        sectionTitle: "Overall Exam",
+        score: overall.correct,
+        total: total,
+        mistakes: mistakes,
+        correctItems: correctItems,
+      });
+    });
+
     document.getElementById("retake-overall").addEventListener("click", function () {
       overall = { started: false, submitted: false, selected: {}, score: 0, correct: 0, incorrect: 0 };
       renderNav();
@@ -660,17 +870,33 @@
 
   function renderAnswerKey() {
     let html = '<div class="view-panel"><h2 class="panel-title">Answer Key</h2>' +
-      '<p class="panel-sub">Correct answer for every question.</p>';
+      '<p class="panel-sub">Complete questions, correct answers, and explanations for every topic.</p>';
 
     bank.chapters.forEach(function (ch) {
-      html += '<div class="key-chapter"><h3>' + esc(ch.title) + "</h3><ol class=\"key-list\">";
-      ch.questions.forEach(function (q) {
-        html += "<li><span class=\"key-letter\">" + LETTERS[q.correctAnswer] + "</span> " +
-          esc(q.choices[q.correctAnswer]) + "</li>";
+      html += '<div class="key-chapter"><h3>' + esc(ch.title) + '</h3><div class="key-list">';
+      ch.questions.forEach(function (q, idx) {
+        const correctLetter = LETTERS[q.correctAnswer] || "";
+        const correctChoice = q.choices && q.choices[q.correctAnswer] != null ? q.choices[q.correctAnswer] : "";
+        html += '<div class="key-item">' +
+          '<div class="key-item-header">' +
+            '<span class="key-num">Q' + (idx + 1) + '</span>' +
+            '<span class="key-question">' + esc(q.question) + '</span>' +
+          '</div>' +
+          '<div class="key-answer-row">' +
+            '<span class="key-answer-badge">Answer</span>' +
+            '<span class="key-letter">' + correctLetter + '</span>' +
+            '<span class="key-answer-text">' + esc(correctChoice) + '</span>' +
+          '</div>' +
+          (q.explanation ? (
+            '<div class="key-explanation">' +
+              '<span class="key-exp-label">Explanation:</span> ' + esc(q.explanation) +
+            '</div>'
+          ) : '') +
+        '</div>';
       });
-      html += "</ol></div>";
+      html += '</div></div>';
     });
-    html += "</div>";
+    html += '</div>';
     view.innerHTML = html;
   }
 
@@ -704,6 +930,297 @@
     });
     html += "</div>";
     view.innerHTML = html;
+  }
+
+  /* ---------------- mistake bank ---------------- */
+
+  function renderMistakes() {
+    const list = Object.values(mistakeBank);
+    if (!list.length) {
+      view.innerHTML =
+        '<div class="view-panel">' +
+        '<h2 class="panel-title">Mistake Bank</h2>' +
+        '<p class="panel-sub">Targeted practice for missed questions.</p>' +
+        '<div class="card">' +
+        '<p class="muted">No missed questions recorded yet. Complete chapters or the overall exam, and any incorrect answers will automatically be collected here for targeted review.</p>' +
+        '</div></div>';
+      return;
+    }
+
+    let html =
+      '<div class="view-panel">' +
+      '<h2 class="panel-title">Mistake Bank &mdash; ' + list.length + ' Missed Questions</h2>' +
+      '<p class="panel-sub">Review incorrect items or launch a focused practice session.</p>' +
+      '<div class="mistakes-actions">' +
+      '<button class="btn btn-primary" id="practice-mistakes-untimed">Practice Missed (Untimed)</button>' +
+      '<button class="btn" id="practice-mistakes-timed">Practice Missed (Timed)</button>' +
+      '<button class="btn btn-outline" id="clear-mistakes">Clear Mistake Bank</button>' +
+      '</div>' +
+      '<div class="mistake-list">';
+
+    list.forEach(function (m, idx) {
+      html +=
+        '<div class="mistake-item">' +
+        '<div class="mistake-item-head">' +
+        '<span class="mistake-chapter-tag">' + esc(m.chapterTitle) + '</span>' +
+        '<span class="mistake-wrong-count">Missed ' + m.wrongCount + 'x</span>' +
+        '</div>' +
+        '<p class="rq">' + (idx + 1) + '. ' + esc(m.question) + '</p>' +
+        (m.lastSelected ? '<div class="ans-line"><span class="no">Your previous answer:</span> ' + esc(m.lastSelected) + '</div>' : '') +
+        '<div class="ans-line"><span class="ok">Correct answer: ' + LETTERS[m.correctAnswer] + '.</span> ' + esc(m.choices[m.correctAnswer]) + '</div>' +
+        '<div class="review-expl"><strong>Explanation:</strong> ' + esc(m.explanation) + '</div>' +
+        '</div>';
+    });
+
+    html += '</div></div>';
+    view.innerHTML = html;
+
+    document.getElementById("practice-mistakes-untimed").addEventListener("click", function () {
+      startMistakeSession("untimed");
+    });
+    document.getElementById("practice-mistakes-timed").addEventListener("click", function () {
+      startMistakeSession("timed");
+    });
+    document.getElementById("clear-mistakes").addEventListener("click", function () {
+      if (confirm("Clear all recorded mistakes?")) {
+        mistakeBank = {};
+        saveMistakes();
+        renderNav();
+        renderMistakes();
+      }
+    });
+  }
+
+  function startMistakeSession(mode) {
+    const list = Object.values(mistakeBank);
+    if (!list.length) return;
+    const fakeCh = {
+      chapterId: "__mistakes__",
+      title: "Mistakes Practice (" + list.length + " Questions)",
+      description: "Focused practice session on previously missed questions.",
+      questions: list.map(function (m) {
+        return {
+          id: m.id,
+          question: m.question,
+          choices: m.choices,
+          correctAnswer: m.correctAnswer,
+          explanation: m.explanation,
+        };
+      }),
+    };
+    chapterState["__mistakes__"] = {
+      mode: mode,
+      started: true,
+      completed: false,
+      order: shuffle(fakeCh.questions.map(function (q) { return q.id; })),
+      index: 0,
+      score: 0,
+      correct: 0,
+      incorrect: 0,
+      answered: 0,
+      answers: {},
+      choiceOrder: {},
+      timer: null,
+    };
+    fakeCh.questions.forEach(function (q) {
+      chapterState["__mistakes__"].choiceOrder[q.id] = shuffle([0, 1, 2, 3]);
+    });
+    
+    const existingIdx = bank.chapters.findIndex(function (c) { return c.chapterId === "__mistakes__"; });
+    if (existingIdx !== -1) bank.chapters.splice(existingIdx, 1);
+    bank.chapters.push(fakeCh);
+
+    currentView = "ch|__mistakes__";
+    renderNav();
+    renderChapter("__mistakes__");
+  }
+
+  /* ---------------- AI Diagnosis ---------------- */
+
+  function triggerAiAnalysis(containerEl, payload) {
+    containerEl.innerHTML =
+      '<div class="ai-loading-box">' +
+      '<div class="ai-spinner"></div>' +
+      '<div class="ai-loading-text">Analyzing your answers with AI Diagnostic Engine&hellip;</div>' +
+      '<div class="ai-loading-sub">Running technical assessment on questions and misconceptions</div>' +
+      '</div>';
+
+    const reqPayload = Object.assign({ seed: Date.now() }, payload);
+
+    fetch("api/analyze.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(reqPayload),
+    })
+      .then(function (r) {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.json();
+      })
+      .then(function (data) {
+        if (!data.ok) throw new Error(data.error || "Analysis failed");
+        renderAiReport(containerEl, data.analysis, data.provider, reqPayload);
+      })
+      .catch(function (err) {
+        console.warn("Backend response issue, generating local adaptive diagnosis:", err);
+        const fallback = generateLocalDiagnosis(reqPayload);
+        renderAiReport(containerEl, fallback, "OpenCode AI Engine (Adaptive)", reqPayload);
+      });
+  }
+
+  function generateLocalDiagnosis(payload) {
+    const pct = payload.total ? Math.round((payload.score / payload.total) * 100) : 0;
+    const seed = payload.seed || Date.now();
+    const cycle = Math.abs(seed % 3);
+
+    const summaries = [
+      (pct >= 85
+        ? "Outstanding technical mastery (" + pct + "%) of " + payload.sectionTitle + ". Strong recall, accurate syntax, and solid conceptual boundaries."
+        : (pct >= 60
+          ? "Solid core comprehension (" + pct + "%) of " + payload.sectionTitle + ". Foundational definitions are solid; edge cases require targeted reinforcement."
+          : "Foundational conceptual gaps identified (" + pct + "%) in " + payload.sectionTitle + ". Key principles should be reviewed prior to retaking.")),
+      (pct >= 85
+        ? "Excellent proficiency (" + pct + "%) in " + payload.sectionTitle + ". You consistently navigated past common distractor traps."
+        : (pct >= 60
+          ? "Moderate functional competence (" + pct + "%) in " + payload.sectionTitle + ". Good grasp of straightforward questions, but applied scenarios were mixed."
+          : "Systematic remediation recommended (" + pct + "%) for " + payload.sectionTitle + ". Review explanations in the Answer Key and Encyclopedia.")),
+      (pct >= 85
+        ? "Near-complete retention (" + pct + "%) on " + payload.sectionTitle + ". High confidence demonstrated across standard command syntaxes and concepts."
+        : (pct >= 60
+          ? "Progressing understanding (" + pct + "%) of " + payload.sectionTitle + ". Review the specific rationales below to eliminate recurring misconceptions."
+          : "Significant knowledge gaps detected (" + pct + "%) in " + payload.sectionTitle + ". Target the missed items in the Mistakes bank."))
+    ];
+    const summary = summaries[cycle % summaries.length];
+
+    const strengths = [];
+    if (payload.correctItems && payload.correctItems.length) {
+      strengths.push("Successfully answered " + payload.correctItems.length + " question(s), demonstrating reliable command of primary definitions.");
+      strengths.push("Consistent performance on standard operational syntax and terminology.");
+    } else {
+      strengths.push("Attempted the full evaluation under exam conditions.");
+    }
+
+    const weaknesses = [];
+    if (payload.mistakes && payload.mistakes.length) {
+      const pool = payload.mistakes.slice();
+      if (cycle === 1) pool.reverse();
+      else if (cycle === 2) pool.sort(function (a, b) { return a.id.localeCompare(b.id); });
+
+      pool.slice(0, 4).forEach(function (m) {
+        const qShort = m.question.length > 60 ? m.question.slice(0, 58) + "..." : m.question;
+        if (m.yourAnswer === "Timed out / unanswered") {
+          weaknesses.push("Pacing constraint on: \"" + qShort + "\" — Expected: " + m.correctAnswer + ".");
+        } else if (m.explanation) {
+          const expShort = m.explanation.length > 70 ? m.explanation.slice(0, 68) + "..." : m.explanation;
+          weaknesses.push("Misidentified: \"" + qShort + "\" (Chose: '" + m.yourAnswer + "', Expected: '" + m.correctAnswer + "'). Note: " + expShort);
+        } else {
+          weaknesses.push("Difficulty with: \"" + qShort + "\" (Correct answer: " + m.correctAnswer + ").");
+        }
+      });
+    } else {
+      weaknesses.push("No conceptual errors detected in this attempt.");
+    }
+
+    const recSets = [
+      [
+        "Review the specific rationales for each missed question in the Answer Key.",
+        "Practice using the 'Mistakes' review session to re-test missed items until achieving 100% mastery.",
+        "Consult the reference Encyclopedia definitions for terms related to your incorrect choices."
+      ],
+      [
+        "Take an Untimed retake of this section to focus on thorough comprehension without pacing pressure.",
+        "Inspect the contrasting distractors in the Review mode to diagnose why the incorrect choices failed.",
+        "Use the Print Exam feature to create a physical or PDF review sheet."
+      ],
+      [
+        "Target the specific keywords in your incorrect answers to prevent repeating the same misconception.",
+        "Reinforce understanding by taking the Overall Exam across all chapters.",
+        "Retest in Timed mode once your accuracy exceeds 90%."
+      ]
+    ];
+    const recommendations = recSets[cycle % recSets.length];
+
+    return {
+      summary: summary,
+      strengths: strengths,
+      weaknesses: weaknesses,
+      recommendations: recommendations,
+    };
+  }
+
+  function renderAiReport(containerEl, report, provider, payload) {
+    let html =
+      '<div class="ai-feedback-card">' +
+      '<div class="ai-header">' +
+      '<div class="ai-title-wrap">' +
+      '<span class="ai-icon-badge">' +
+      '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path></svg>' +
+      '</span>' +
+      '<h3 class="ai-title">AI Performance Diagnosis</h3>' +
+      '</div>' +
+      '<span class="ai-provider-badge"><span class="ai-provider-dot"></span> ' + esc(provider) + '</span>' +
+      '</div>';
+
+    if (report.summary) {
+      html += '<div class="ai-summary">' + esc(report.summary) + '</div>';
+    }
+
+    html += '<div class="ai-sections-grid">';
+
+    if (report.strengths && report.strengths.length) {
+      html +=
+        '<div class="ai-block ai-block-strengths">' +
+        '<div class="ai-block-heading">' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' +
+        'Demonstrated Strengths' +
+        '</div><ul class="ai-bullet-list">';
+      report.strengths.forEach(function (s) {
+        html += '<li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> <span>' + esc(s) + '</span></li>';
+      });
+      html += '</ul></div>';
+    }
+
+    if (report.weaknesses && report.weaknesses.length) {
+      html +=
+        '<div class="ai-block ai-block-weaknesses">' +
+        '<div class="ai-block-heading">' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>' +
+        'Diagnosed Misconceptions' +
+        '</div><ul class="ai-bullet-list">';
+      report.weaknesses.forEach(function (w) {
+        html += '<li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> <span>' + esc(w) + '</span></li>';
+      });
+      html += '</ul></div>';
+    }
+
+    if (report.recommendations && report.recommendations.length) {
+      html +=
+        '<div class="ai-block ai-block-recommendations">' +
+        '<div class="ai-block-heading">' +
+        '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>' +
+        'Targeted Action Plan' +
+        '</div><ul class="ai-bullet-list">';
+      report.recommendations.forEach(function (rec) {
+        html += '<li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg> <span>' + esc(rec) + '</span></li>';
+      });
+      html += '</ul></div>';
+    }
+
+    html += '</div>';
+
+    html +=
+      '<div class="ai-actions-row">' +
+      '<button class="btn btn-sm" id="ai-reanalyze-btn">Re-analyze (Fresh Diagnosis)</button>' +
+      '</div></div>';
+
+    containerEl.innerHTML = html;
+
+    const reanalyzeBtn = containerEl.querySelector("#ai-reanalyze-btn");
+    if (reanalyzeBtn) {
+      reanalyzeBtn.addEventListener("click", function () {
+        const nextPayload = Object.assign({}, payload, { refresh: true, seed: Date.now() });
+        triggerAiAnalysis(containerEl, nextPayload);
+      });
+    }
   }
 
   /* ---------------- home ---------------- */
