@@ -111,8 +111,7 @@ $initModel = htmlspecialchars(!empty($initialQuota['model']) ? $initialQuota['mo
 <meta name="description" content="SynthExam — upload a PDF and instantly generate a comprehensive interactive exam powered by AI.">
 <title>SynthExam — AI-Powered Exam Generator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
 <link rel="stylesheet" href="assets/site.css?v=<?= filemtime(__DIR__ . '/assets/site.css') ?>">
 <style>
@@ -129,14 +128,33 @@ try {
 </head>
 <body>
 
-<!-- ===================== INTRO OPENING SPLASH ===================== -->
-<div id="intro-splash" class="intro-splash" role="dialog" aria-modal="true" aria-label="Loading SynthExam">
+<!-- ===================== INTRO OPENING SPLASH: ROBOT TACTICAL BOOT INTERFACE ===================== -->
+<div id="intro-splash" class="intro-splash" role="dialog" aria-modal="true" aria-label="Initializing SynthExam Robot Console">
     <div class="intro-mesh" aria-hidden="true"></div>
+    <div class="intro-scanlines" aria-hidden="true"></div>
+
+    <!-- 4 Tactical HUD Corner Brackets -->
+    <div class="intro-corner intro-corner-tl" aria-hidden="true"></div>
+    <div class="intro-corner intro-corner-tr" aria-hidden="true"></div>
+    <div class="intro-corner intro-corner-bl" aria-hidden="true"></div>
+    <div class="intro-corner intro-corner-br" aria-hidden="true"></div>
+
+    <!-- Top Telemetry Stream -->
+    <div class="intro-telemetry-bar" aria-hidden="true">
+        <span class="telemetry-node"><span class="telemetry-led"></span> SYS-CORE: LPU QUANTUM v2.4</span>
+        <span class="telemetry-divider">//</span>
+        <span class="telemetry-node">NODE: 0x4F-88</span>
+        <span class="telemetry-divider">//</span>
+        <span class="telemetry-node">SECURITY: ENCRYPTED (TLS 1.3)</span>
+    </div>
+
     <div class="intro-content">
+        <!-- Center Cyber Reactor Beacon -->
         <div class="intro-beacon">
             <div class="intro-aura" aria-hidden="true"></div>
-            <div class="intro-ring" aria-hidden="true"></div>
-            <svg class="intro-logo-svg" width="76" height="76" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <div class="intro-ring intro-ring-outer" aria-hidden="true"></div>
+            <div class="intro-ring intro-ring-inner" aria-hidden="true"></div>
+            <svg class="intro-logo-svg" width="68" height="68" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="introBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                         <stop offset="0%" stop-color="#27272a"/>
@@ -169,16 +187,45 @@ try {
                 <path class="intro-spark" d="M20 12L20.9 14.1L23 15L20.9 15.9L20 18L19.1 15.9L17 15L19.1 14.1L20 12Z" fill="#ffffff"/>
             </svg>
         </div>
+
         <div class="intro-text-group">
-            <h1 class="intro-title">Synth<span class="intro-gradient">Exam</span></h1>
-            <p class="intro-subtitle">Cognitive Assessment Engine &bull; AI 2.0</p>
+            <div class="intro-system-tag">&gt;&gt; COGNITIVE_KERNEL_BOOT // v2.0</div>
+            <h1 class="intro-title">SYNTH<span class="intro-gradient">EXAM</span> <span class="intro-version-chip">AI_2.0</span></h1>
+            <p class="intro-subtitle">AUTONOMOUS COGNITIVE ASSESSMENT PLATFORM</p>
         </div>
-        <div class="intro-loader-track" aria-hidden="true">
-            <div class="intro-loader-fill" id="intro-loader-fill"></div>
+
+        <!-- Robot Typewriter Terminal Interface -->
+        <div class="robot-boot-terminal">
+            <div class="robot-boot-header">
+                <div class="robot-boot-dots">
+                    <span class="robot-dot dot-r"></span>
+                    <span class="robot-dot dot-y"></span>
+                    <span class="robot-dot dot-g"></span>
+                </div>
+                <div class="robot-boot-tab">TERMINAL: /dev/tty0 &bull; BOOT_SEQUENCE</div>
+                <div class="robot-boot-stats">STATUS: <span id="robot-boot-stat-val" class="stat-live">INITIALIZING</span></div>
+            </div>
+            <div class="robot-boot-body" id="robot-boot-body">
+                <!-- Lines typed out dynamically with typewriter effect -->
+            </div>
         </div>
-        <div class="intro-status-text" id="intro-status-text">Initializing Cognitive LPU Engine&hellip;</div>
+
+        <!-- Diagnostic Progress Track & Percentage -->
+        <div class="intro-progress-wrap">
+            <div class="intro-progress-meta">
+                <span class="intro-progress-label" id="intro-progress-label">INITIALIZING NEURAL SUBSYSTEMS...</span>
+                <span class="intro-progress-percent" id="intro-progress-percent">0%</span>
+            </div>
+            <div class="intro-loader-track" aria-hidden="true">
+                <div class="intro-loader-fill" id="intro-loader-fill"></div>
+            </div>
+        </div>
     </div>
-    <div class="intro-skip-hint">Click anywhere to skip</div>
+
+    <!-- Skip Hint Button -->
+    <div class="intro-skip-hint">
+        <span class="skip-key-badge">ESC</span> or <span class="skip-key-badge">CLICK ANYWHERE</span> to skip sequence
+    </div>
 </div>
 
 <!-- ===================== DISCLAIMER & TERMS MODAL ===================== -->
@@ -316,6 +363,9 @@ try {
 <div class="ambient-glow ambient-top-right" aria-hidden="true"></div>
 <div class="ambient-glow ambient-center" aria-hidden="true"></div>
 
+<!-- Cyber Pointer Snake / Trail Animation -->
+<canvas id="pointer-snake-canvas" class="pointer-snake-canvas" aria-hidden="true"></canvas>
+
 <!-- ===================== NAVBAR ===================== -->
 <header class="site-header" id="site-header">
     <div class="container header-inner">
@@ -401,6 +451,12 @@ try {
                 <span class="htb-dot online" id="htb-dot" title="Engine online"></span>
             </div>
 
+            <!-- Sticky Header Sound Effects Toggle (Always accessible) -->
+            <button type="button" class="header-sfx-btn robot-sfx-toggle" id="header-sfx-btn" aria-label="Toggle sound effects" title="Sound effects active (Click to mute)">
+                <span class="material-symbols-rounded sfx-btn-icon">volume_up</span>
+                <span class="sfx-btn-text">SFX: ON</span>
+            </button>
+
             <div class="backend-status" id="backend-status" style="display:none;"></div>
             <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-nav">
                 <span></span>
@@ -451,15 +507,35 @@ try {
     <section class="card upload-card compact-studio" id="upload">
         <div class="studio-header-compact">
             <div class="studio-badge-row">
-                <span class="studio-badge">
-                    <span class="material-symbols-rounded studio-badge-icon">auto_awesome</span>
-                    <span>Cognitive AI Exam Studio</span>
-                    <span class="studio-version-tag">LPU Accelerated</span>
-                </span>
+                <div class="section-tag-wrapper">
+                    <span class="section-tag">
+                        <span class="section-tag-dot"></span>
+                        SECTION 01: INGESTION STUDIO
+                    </span>
+                </div>
+
+                <!-- Robot Terminal Telemetry HUD -->
+                <div class="robot-hud-status">
+                    <span class="robot-indicator-pulse"></span>
+                    <span class="robot-hud-status-text">NEURAL LINK: ACTIVE</span>
+                </div>
             </div>
             <div class="studio-title-desc-row">
                 <h1 class="card-main-title">Generate High-Impact <span class="gradient-text">Interactive Exams</span></h1>
-                <p class="muted card-desc">Drop any PDF document (lecture slides, textbook chapters, reviewers, or syllabi) to synthesize rigorous application exams &amp; answer keys.</p>
+                <p class="muted card-desc" id="studio-robot-desc">Drop any PDF document (lecture slides, textbook chapters, reviewers, or syllabi) to synthesize rigorous application exams &amp; answer keys.</p>
+            </div>
+
+            <!-- Robot Tactical Terminal Bar with Typewriter Effect -->
+            <div class="robot-terminal-bar" id="robot-terminal-bar" title="Click to advance telemetry stream">
+                <div class="robot-terminal-channel">
+                    <span class="robot-terminal-tag">SYSTEM CORE</span>
+                    <span class="robot-terminal-channel-id">0x4F:88</span>
+                </div>
+                <div class="robot-terminal-feed">
+                    <span class="robot-terminal-prompt">&gt;&gt;</span>
+                    <span class="robot-typewriter-text" id="robot-typewriter-text">INITIALIZING COGNITIVE SYNTHESIS ENGINE...</span>
+                    <span class="robot-terminal-cursor" aria-hidden="true"></span>
+                </div>
             </div>
         </div>
 
@@ -467,7 +543,11 @@ try {
             <div class="studio-grid">
                 <!-- LEFT: Primary Action Panel -->
                 <div class="studio-col-action">
-                    <div class="dropzone-outer">
+                    <div class="dropzone-outer hud-corners">
+                        <span class="hud-corner hud-corner-tl" aria-hidden="true"></span>
+                        <span class="hud-corner hud-corner-tr" aria-hidden="true"></span>
+                        <span class="hud-corner hud-corner-bl" aria-hidden="true"></span>
+                        <span class="hud-corner hud-corner-br" aria-hidden="true"></span>
                         <label class="dropzone dropzone-compact" id="dropzone">
                             <input type="file" id="pdf-file" name="pdf" accept="application/pdf,.pdf" required>
                             
@@ -496,7 +576,7 @@ try {
                                         <span class="material-symbols-rounded dfs-pdf-icon">picture_as_pdf</span>
                                     </div>
                                     <div class="dfs-info">
-                                        <div class="dfs-name" id="dfs-name">selected_document.pdf</div>
+                                        <div class="dfs-name" id="dfs-name">selected-document.pdf</div>
                                         <div class="dfs-meta">
                                             <span class="dfs-size" id="dfs-size">0.00 MB</span>
                                             <span class="dfs-divider">&bull;</span>
@@ -548,7 +628,7 @@ try {
                                     </div>
                                     <div class="feature-acc-title-group">
                                         <h4 class="fc-title">~30 Questions / Chapter</h4>
-                                        <span class="fc-tag fc-tag-indigo">BLOOM'S TAXONOMY</span>
+                                        <span class="fc-tag fc-tag-indigo">Protocol 01</span>
                                     </div>
                                 </div>
                                 <div class="feature-acc-trigger-right">
@@ -571,7 +651,7 @@ try {
                                     </div>
                                     <div class="feature-acc-title-group">
                                         <h4 class="fc-title">Dual Testing Modes</h4>
-                                        <span class="fc-tag fc-tag-cyan">DUAL MODES</span>
+                                        <span class="fc-tag fc-tag-cyan">Protocol 02</span>
                                     </div>
                                 </div>
                                 <div class="feature-acc-trigger-right">
@@ -594,7 +674,7 @@ try {
                                     </div>
                                     <div class="feature-acc-title-group">
                                         <h4 class="fc-title">Key &amp; Encyclopedia</h4>
-                                        <span class="fc-tag fc-tag-purple">DEEP RATIONALE</span>
+                                        <span class="fc-tag fc-tag-purple">Protocol 03</span>
                                     </div>
                                 </div>
                                 <div class="feature-acc-trigger-right">
@@ -617,7 +697,7 @@ try {
                                     </div>
                                     <div class="feature-acc-title-group">
                                         <h4 class="fc-title">AI Diagnostics &amp; Remediation</h4>
-                                        <span class="fc-tag fc-tag-silver">COGNITIVE AUDIT</span>
+                                        <span class="fc-tag fc-tag-silver">Protocol 04</span>
                                     </div>
                                 </div>
                                 <div class="feature-acc-trigger-right">
@@ -719,10 +799,10 @@ try {
                 <div class="section-tag-wrapper">
                     <span class="section-tag">
                         <span class="section-tag-dot"></span>
-                        Exam Repository
+                        SECTION 02: EXAM REPOSITORY
                     </span>
                 </div>
-                <h2 class="section-title">Your Generated Exams</h2>
+                <h2 class="section-title robot-typewrite-title" data-original="Your Generated Exams">Your Generated Exams</h2>
                 <p class="muted section-sub">Access, practice, or export any exam you have generated.</p>
             </div>
             <div class="section-header-actions">
@@ -747,7 +827,11 @@ try {
                 <p class="muted">Upload your first PDF document above to start generating comprehensive chapter-by-chapter interactive exams.</p>
             </div>
         <?php else: ?>
-        <div class="table-glass-wrapper">
+        <div class="table-glass-wrapper hud-corners">
+            <span class="hud-corner hud-corner-tl" aria-hidden="true"></span>
+            <span class="hud-corner hud-corner-tr" aria-hidden="true"></span>
+            <span class="hud-corner hud-corner-bl" aria-hidden="true"></span>
+            <span class="hud-corner hud-corner-br" aria-hidden="true"></span>
             <table class="exam-table">
                 <thead>
                     <tr>
@@ -756,7 +840,7 @@ try {
                         <th>Chapters</th>
                         <th>Questions</th>
                         <th>AI Tokens</th>
-                        <th class="th-actions">Actions</th>
+                        <th class="th-actions">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -860,10 +944,10 @@ try {
                 <div class="section-tag-wrapper">
                     <span class="section-tag">
                         <span class="section-tag-dot"></span>
-                        Telemetry &amp; Engine Quotas
+                        SECTION 03: CORE TELEMETRY
                     </span>
                 </div>
-                <h2 class="section-title">System &amp; AI Engine Status</h2>
+                <h2 class="section-title robot-typewrite-title" data-original="System & AI Engine Status">System &amp; AI Engine Status</h2>
                 <p class="muted section-sub">Live token replenishment rates, API quotas, and backend micro-dependencies.</p>
             </div>
             <button type="button" class="btn btn-ghost" id="refresh-quota-btn" title="Refresh Live Quotas">

@@ -36,6 +36,167 @@
     }
   }
 
+  /* ============================================================
+     ROBOT GAME SFX AUDIO ENGINE & PROCEDURAL TACTILE SYNTH
+     ============================================================ */
+  var audioCtx = null;
+  var sfxEnabled = true;
+  try {
+    var storedSfx = localStorage.getItem("synthexam_robot_sfx");
+    sfxEnabled = storedSfx !== "0";
+  } catch (e) {}
+
+  function getAudioCtx() {
+    if (!audioCtx) {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) audioCtx = new AC();
+    }
+    if (audioCtx && audioCtx.state === "suspended") {
+      audioCtx.resume().catch(function () {});
+    }
+    return audioCtx;
+  }
+
+  // Soft high-speed keystroke for typewriter animation & typing in inputs
+  function playRobotKeyClick(isSpace) {
+    if (!sfxEnabled) return;
+    try {
+      var ctx = getAudioCtx();
+      if (!ctx) return;
+      var now = ctx.currentTime;
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+
+      var freq = isSpace ? 520 : (840 + Math.random() * 340);
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, now);
+
+      var dur = isSpace ? 0.02 : 0.014;
+      gain.gain.setValueAtTime(0.035, now);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + dur);
+    } catch (e) {}
+  }
+
+  // Crisp, satisfying mechanical tactile switch sound for button & interactive clicks
+  function playTactileClickSound(pitchVariation) {
+    if (!sfxEnabled) return;
+    try {
+      var ctx = getAudioCtx();
+      if (!ctx) return;
+      var now = ctx.currentTime;
+
+      // Layer 1: Crisp high mechanical snap (triangle wave)
+      var snap = ctx.createOscillator();
+      var snapGain = ctx.createGain();
+      var snapFreq = (pitchVariation || 1750) + (Math.random() * 200 - 100);
+      snap.type = "triangle";
+      snap.frequency.setValueAtTime(snapFreq, now);
+      snap.frequency.exponentialRampToValueAtTime(340, now + 0.032);
+
+      snapGain.gain.setValueAtTime(0.08, now);
+      snapGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.035);
+
+      snap.connect(snapGain);
+      snapGain.connect(ctx.destination);
+      snap.start(now);
+      snap.stop(now + 0.038);
+
+      // Layer 2: Deep solid bottom-out thud (sine wave)
+      var thud = ctx.createOscillator();
+      var thudGain = ctx.createGain();
+      thud.type = "sine";
+      thud.frequency.setValueAtTime(260 + Math.random() * 40, now);
+      thud.frequency.exponentialRampToValueAtTime(70, now + 0.04);
+
+      thudGain.gain.setValueAtTime(0.06, now);
+      thudGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.042);
+
+      thud.connect(thudGain);
+      thudGain.connect(ctx.destination);
+      thud.start(now);
+      thud.stop(now + 0.045);
+    } catch (e) {}
+  }
+
+  function updateAllSfxButtonsUI() {
+    var allToggles = document.querySelectorAll(".robot-sfx-toggle");
+    allToggles.forEach(function (btn) {
+      var icon = btn.querySelector(".sfx-btn-icon, .robot-sfx-icon");
+      var text = btn.querySelector(".sfx-btn-text, .robot-sfx-text");
+      if (sfxEnabled) {
+        btn.classList.remove("is-muted");
+        if (icon) icon.textContent = "volume_up";
+        if (text) text.textContent = "SFX: ON";
+        btn.setAttribute("title", "Sound effects active (Click to mute)");
+      } else {
+        btn.classList.add("is-muted");
+        if (icon) icon.textContent = "volume_off";
+        if (text) text.textContent = "SFX: OFF";
+        btn.setAttribute("title", "Sound effects muted (Click to enable)");
+      }
+    });
+  }
+
+  function setSfxState(enabled, showToastNotice) {
+    sfxEnabled = enabled;
+    try {
+      localStorage.setItem("synthexam_robot_sfx", sfxEnabled ? "1" : "0");
+    } catch (e) {}
+    updateAllSfxButtonsUI();
+    if (sfxEnabled) {
+      playTactileClickSound(2100);
+      if (showToastNotice && typeof showStudioToast === "function") {
+        showStudioToast("Sound Effects Enabled", "success", 2000);
+      }
+    } else {
+      if (showToastNotice && typeof showStudioToast === "function") {
+        showStudioToast("Sound Effects Muted", "info", 2000);
+      }
+    }
+  }
+
+  function typewriteWithCursor(element, text, speed, onComplete, withSfx) {
+    if (!element) return;
+    speed = speed || 24;
+    if (element._typeTimer) clearTimeout(element._typeTimer);
+
+    element.innerHTML = '<span class="tw-chars"></span><span class="typewriter-cursor" aria-hidden="true"></span>';
+    var charsSpan = element.querySelector(".tw-chars");
+    var i = 0;
+
+    function step() {
+      if (i < text.length) {
+        var char = text.charAt(i);
+        if (charsSpan) charsSpan.textContent += char;
+        if (withSfx) {
+          playRobotKeyClick(char === " ");
+        }
+        i++;
+        var delay = speed + (Math.random() * 12 - 6);
+        if (char === "," || char === ";") delay += 70;
+        else if (char === "." || char === "!" || char === "?") delay += 110;
+        else if (char === "\u2014" || char === "\u2022") delay += 60;
+        element._typeTimer = setTimeout(step, Math.max(10, delay));
+      } else {
+        if (onComplete) onComplete();
+      }
+    }
+    step();
+  }
+
+  // Global window references for universal accessibility
+  window.playRobotKeyClick = playRobotKeyClick;
+  window.playTactileClickSound = playTactileClickSound;
+  window.typewriteWithCursor = typewriteWithCursor;
+  window.setSfxState = setSfxState;
+  window.toggleSynthExamSfx = function () { setSfxState(!sfxEnabled, true); };
+
   function updateDropzoneUI() {
     setSubmitBtnState(!selectedFile, "Synthesize Interactive Exam");
     if (selectedFile) {
@@ -281,7 +442,11 @@
 
     var liveText = document.getElementById("status-text");
     if (liveText) {
-      liveText.textContent = res.message || (res.status === "queued" ? "Queued \u2014 starting shortly\u2026" : "Generating with opencode\u2026");
+      var nextMsg = res.message || (res.status === "queued" ? "Queued — starting shortly…" : "Generating with opencode…");
+      if (liveText.dataset.lastMsg !== nextMsg) {
+        liveText.dataset.lastMsg = nextMsg;
+        typewriteWithCursor(liveText, nextMsg, 18);
+      }
     }
 
     var cancelBtn = document.getElementById("cancel-tracked-btn");
@@ -772,7 +937,6 @@
       pingTimer = setInterval(pingBackend, 10000);
     }
   });
-})();
 
 /* ── Deletion Confirmation Card & Toast Notification System ── */
 var pendingDeleteId = null;
@@ -908,6 +1072,8 @@ function executeDeleteExam(id) {
       showStudioToast("Network error: Delete failed", "error", 4500);
     });
 }
+window.deleteExam = deleteExam;
+window.showStudioToast = showStudioToast;
 
 // Bind modal controls
 (function initDeleteModalControls() {
@@ -984,8 +1150,9 @@ function executeDeleteExam(id) {
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
   }
+})();
 
-  /* ── First-Time Opening Splash Intro Controller ── */
+  /* ── First-Time Robot Tactical Boot Interface Controller ── */
   (function initIntroSplash() {
     var splash = document.getElementById("intro-splash");
     if (!splash) return;
@@ -1001,7 +1168,12 @@ function executeDeleteExam(id) {
       return;
     }
 
-    var statusText = document.getElementById("intro-status-text");
+    var bootBody = document.getElementById("robot-boot-body");
+    var statVal = document.getElementById("robot-boot-stat-val");
+    var progressLabel = document.getElementById("intro-progress-label");
+    var progressPercent = document.getElementById("intro-progress-percent");
+    var loaderFill = document.getElementById("intro-loader-fill");
+
     var dismissed = false;
 
     function dismissSplash() {
@@ -1021,27 +1193,103 @@ function executeDeleteExam(id) {
       if (!dismissed && (e.key === "Escape" || e.key === " " || e.key === "Enter")) {
         dismissSplash();
       }
-    }, { once: true });
+    });
 
-    // Staged status updates & auto-dismiss
-    setTimeout(function () {
-      if (!dismissed && statusText) {
-        statusText.textContent = "Loading Groq LPU Models\u2026";
+    var bootSteps = [
+      {
+        prompt: "01",
+        text: "INITIALIZING QUANTUM NEURAL KERNEL v2.0... [OK]",
+        progress: 25,
+        status: "KERNEL_OK",
+        label: "MOUNTING COGNITIVE COMPILER..."
+      },
+      {
+        prompt: "02",
+        text: "SYNCHRONIZING GROQ LPU HARDWARE ACCELERATOR... [LPU 940 T/s]",
+        progress: 54,
+        status: "LPU_ONLINE",
+        label: "CALIBRATING BLOOM TAXONOMY ENGINE..."
+      },
+      {
+        prompt: "03",
+        text: "CALIBRATING MULTI-TIER DISTRACTOR SYNTHESIZER... [CALIBRATED]",
+        progress: 82,
+        status: "SYNTH_READY",
+        label: "INITIALIZING STUDIO SUBSYSTEMS..."
+      },
+      {
+        prompt: "04",
+        text: "ALL COGNITIVE PROTOCOLS ACTIVE. LAUNCHING SYNTHEXAM STUDIO.",
+        progress: 100,
+        status: "READY",
+        label: "SYSTEM READY // ACCESS GRANTED"
       }
-    }, 750);
+    ];
 
-    setTimeout(function () {
-      if (!dismissed && statusText) {
-        statusText.textContent = "Studio Ready";
-        statusText.style.color = "#34d399";
-      }
-    }, 1350);
+    var currentStep = 0;
 
-    setTimeout(function () {
-      if (!dismissed) {
-        dismissSplash();
+    function runNextStep() {
+      if (dismissed) return;
+      if (currentStep >= bootSteps.length) {
+        if (statVal) {
+          statVal.textContent = "READY";
+          statVal.classList.add("is-ready");
+        }
+        // Give the user time to appreciate the completed state
+        setTimeout(function () {
+          dismissSplash();
+        }, 850);
+        return;
       }
-    }, 1750);
+
+      var step = bootSteps[currentStep];
+      var lineDiv = document.createElement("div");
+      lineDiv.className = "boot-line";
+
+      var promptSpan = document.createElement("span");
+      promptSpan.className = "boot-prompt";
+      promptSpan.textContent = ">> [" + step.prompt + "]";
+
+      var textSpan = document.createElement("span");
+      textSpan.className = "boot-text";
+
+      var cursorSpan = document.createElement("span");
+      cursorSpan.className = "boot-cursor";
+
+      lineDiv.appendChild(promptSpan);
+      lineDiv.appendChild(textSpan);
+      lineDiv.appendChild(cursorSpan);
+      if (bootBody) bootBody.appendChild(lineDiv);
+
+      var fullText = step.text;
+      var charIdx = 0;
+      var typeSpeed = 16; // Smooth crisp robot typewriter speed
+
+      function typeChar() {
+        if (dismissed) return;
+        if (charIdx < fullText.length) {
+          textSpan.textContent += fullText.charAt(charIdx);
+          charIdx++;
+          if (typeof playRobotKeyClick === "function" && window.synthExamSfxEnabled) {
+            playRobotKeyClick();
+          }
+          setTimeout(typeChar, typeSpeed);
+        } else {
+          cursorSpan.remove();
+          if (loaderFill) loaderFill.style.width = step.progress + "%";
+          if (progressPercent) progressPercent.textContent = step.progress + "%";
+          if (progressLabel) progressLabel.textContent = step.label;
+          if (statVal) statVal.textContent = step.status;
+
+          currentStep++;
+          setTimeout(runNextStep, 260);
+        }
+      }
+
+      typeChar();
+    }
+
+    setTimeout(runNextStep, 350);
   })();
 
   // ============ Feature Accordion ============
@@ -1073,6 +1321,12 @@ function executeDeleteExam(id) {
         } else {
           item.classList.add("is-open");
           trigger.setAttribute("aria-expanded", "true");
+          var desc = item.querySelector(".fc-desc");
+          if (desc) {
+            var txt = desc.dataset.orig || desc.textContent.trim();
+            desc.dataset.orig = txt;
+            typewriteWithCursor(desc, txt, 12, null, true);
+          }
         }
       });
     });
@@ -1212,5 +1466,330 @@ function executeDeleteExam(id) {
   }
   initExamsCollapsible();
 
+  /* ============================================================
+     ROBOT GAME TELEMETRY CONSOLE CONTROLLER
+     ============================================================ */
+  function initRobotConsole() {
+    var textEl = document.getElementById("robot-typewriter-text");
+    var barEl = document.getElementById("robot-terminal-bar");
+    updateAllSfxButtonsUI();
+
+    if (!textEl) return;
+
+    var ROBOT_LINES = [
+      "Ingestion protocol active \u2014 Upload PDF to initiate cognitive parsing.",
+      "Neural core LPU engine standby \u2014 High-throughput inference ready.",
+      "Chapter topology mapping \u2014 Recognizing structured curricular blocks.",
+      "Deep distractor auditor online \u2014 Rigorous rationale extraction.",
+      "Dual testing runtimes ready \u2014 Tutor mode and timed examination secured.",
+      "Zero external telemetry \u2014 100% private local execution verified."
+    ];
+
+    var currentLineIndex = 0;
+    var isRunning = true;
+    var timer = null;
+
+    function nextLine() {
+      if (!isRunning) return;
+      var targetText = ROBOT_LINES[currentLineIndex];
+      currentLineIndex = (currentLineIndex + 1) % ROBOT_LINES.length;
+
+      var charIdx = 0;
+      textEl.textContent = "";
+
+      function typeChar() {
+        if (!isRunning) return;
+        if (charIdx < targetText.length) {
+          var ch = targetText.charAt(charIdx);
+          textEl.textContent += ch;
+          charIdx++;
+          var jitter = 22 + Math.random() * 16;
+          if (ch === " " || ch === "\u2014" || ch === "\u2022") jitter += 30;
+          timer = setTimeout(typeChar, jitter);
+        } else {
+          // Pause on complete sentence
+          timer = setTimeout(eraseLine, 3200);
+        }
+      }
+
+      function eraseLine() {
+        if (!isRunning) return;
+        var current = textEl.textContent;
+        if (current.length > 0) {
+          textEl.textContent = current.slice(0, -1);
+          timer = setTimeout(eraseLine, 10);
+        } else {
+          timer = setTimeout(nextLine, 300);
+        }
+      }
+
+      typeChar();
+    }
+
+    if (barEl) {
+      barEl.addEventListener("click", function () {
+        if (timer) clearTimeout(timer);
+        currentLineIndex = (currentLineIndex + 1) % ROBOT_LINES.length;
+        textEl.textContent = "";
+        nextLine();
+      });
+    }
+
+    // Start cycling
+    setTimeout(nextLine, 400);
+
+    // Also typewriter the studio description on load once
+    var descEl = document.getElementById("studio-robot-desc");
+    if (descEl && !descEl.dataset.typed) {
+      descEl.dataset.typed = "1";
+      var originalDesc = descEl.textContent.trim();
+      typewriteWithCursor(descEl, originalDesc, 14);
+    }
+
+    // Typewrite / decode section titles on page load
+    var secTitles = document.querySelectorAll(".robot-typewrite-title");
+    secTitles.forEach(function (el, idx) {
+      var orig = el.getAttribute("data-original") || el.textContent.trim();
+      el.dataset.typed = "1";
+      setTimeout(function () {
+        typewriteWithCursor(el, orig, 22);
+      }, 700 + idx * 450);
+    });
+
+    // Global SFX toggle handler & tactile click feedback on all interactive elements
+    document.addEventListener("click", function (e) {
+      // 1. Toggle SFX if clicking any SFX button
+      var sfxToggle = e.target.closest(".robot-sfx-toggle, #robot-sfx-btn, #header-sfx-btn");
+      if (sfxToggle) {
+        e.preventDefault();
+        e.stopPropagation();
+        setSfxState(!sfxEnabled, true);
+        return;
+      }
+
+      // 2. Play tactile click sound on any interactive UI element
+      var interactive = e.target.closest(
+        "button, a, input, select, textarea, label, [role='button'], " +
+        ".dropzone, .feature-acc-trigger, .exams-toggle-btn, .dfs-remove-btn, " +
+        ".custom-modal-cancel-btn, .custom-modal-close-btn, .nav-link, .print-btn, .download-btn"
+      );
+      if (interactive) {
+        playTactileClickSound();
+      }
+    });
+  } // close initRobotConsole
+
+  /* ============================================================
+     CYBER SNAKE / POINTER TRAIL ANIMATION
+     ============================================================ */
+  function initPointerSnake() {
+    var canvas = document.getElementById("pointer-snake-canvas");
+    if (!canvas) return;
+    var ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    if (window.matchMedia && window.matchMedia("(hover: none)").matches) return;
+
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    var dpr = window.devicePixelRatio || 1;
+
+    function resizeCanvas() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      canvas.style.width = width + "px";
+      canvas.style.height = height + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    var NUM_SEGMENTS = 14;
+    var MAX_SEGMENT_DIST = 5; // Tightly bound so segments form a continuous, seamless comet stream
+    var segments = [];
+    for (var s = 0; s < NUM_SEGMENTS; s++) {
+      segments.push({ x: -100, y: -100 });
+    }
+
+    var mouseX = -100;
+    var mouseY = -100;
+    var isInitialized = false;
+    var isVisible = false;
+    var isHovering = false;
+    var hoverProgress = 0;
+    var clickPulse = 0;
+    var isIdle = false;
+    var idleAlpha = 1;
+    var idleTimer = null;
+
+    window.addEventListener("mousemove", function (e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+
+      if (!isInitialized) {
+        for (var i = 0; i < NUM_SEGMENTS; i++) {
+          segments[i].x = mouseX;
+          segments[i].y = mouseY;
+        }
+        isInitialized = true;
+      }
+
+      if (!isVisible) {
+        isVisible = true;
+        canvas.classList.add("is-active");
+      }
+
+      isIdle = false;
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(function () {
+        isIdle = true;
+      }, 1600);
+    }, { passive: true });
+
+    document.addEventListener("mouseleave", function () {
+      isVisible = false;
+      canvas.classList.remove("is-active");
+    });
+
+    document.addEventListener("mouseenter", function () {
+      isVisible = true;
+      canvas.classList.add("is-active");
+    });
+
+    document.addEventListener("mouseover", function (e) {
+      var target = e.target.closest("button, a, input, select, textarea, label, [role='button'], .card, .feature-acc-trigger, .dropzone, .terms-checkbox-custom, .count-pill");
+      isHovering = !!target;
+    }, { passive: true });
+
+    window.addEventListener("mousedown", function () {
+      clickPulse = 1.0;
+    });
+
+    function updateSnake() {
+      if (isVisible && isInitialized) {
+        // Seg 0 follows mouse closely
+        segments[0].x += (mouseX - segments[0].x) * 0.75;
+        segments[0].y += (mouseY - segments[0].y) * 0.75;
+
+        // Snappy chain with max distance constraint so trail forms a solid, seamless stream
+        for (var i = 1; i < NUM_SEGMENTS; i++) {
+          var followSpeed = 0.62;
+          segments[i].x += (segments[i - 1].x - segments[i].x) * followSpeed;
+          segments[i].y += (segments[i - 1].y - segments[i].y) * followSpeed;
+
+          // Clamp maximum elongation
+          var dx = segments[i].x - segments[i - 1].x;
+          var dy = segments[i].y - segments[i - 1].y;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist > MAX_SEGMENT_DIST) {
+            var ratio = MAX_SEGMENT_DIST / (dist || 1);
+            segments[i].x = segments[i - 1].x + dx * ratio;
+            segments[i].y = segments[i - 1].y + dy * ratio;
+          }
+        }
+
+        // Hover color progress interpolation
+        hoverProgress += ((isHovering ? 1 : 0) - hoverProgress) * 0.15;
+
+        // Idle fading
+        if (isIdle) {
+          idleAlpha = Math.max(0, idleAlpha - 0.025);
+        } else {
+          idleAlpha = Math.min(1, idleAlpha + 0.08);
+        }
+
+        // Click ripple decay
+        if (clickPulse > 0.01) {
+          clickPulse *= 0.88;
+        } else {
+          clickPulse = 0;
+        }
+
+        ctx.clearRect(0, 0, width, height);
+
+        if (idleAlpha > 0.005) {
+          // Pure emerald neon glow (no blue): rgb(52, 211, 153) -> rgb(16, 185, 129)
+          var r = Math.round(52 + (16 - 52) * hoverProgress);
+          var g = Math.round(211 + (185 - 211) * hoverProgress);
+          var b = Math.round(153 + (129 - 153) * hoverProgress);
+
+          // 1. Tapered outer luminous comet trail (seamless stream, NO beaded circles)
+          for (var j = 0; j < NUM_SEGMENTS - 1; j++) {
+            var p0 = segments[j];
+            var p1 = segments[j + 1];
+            var t = j / (NUM_SEGMENTS - 1);
+            var trailWidth = (1 - t) * (5.5 + clickPulse * 2.5) + 0.8;
+            var trailAlpha = Math.pow(1 - t, 1.25) * 0.8 * idleAlpha;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(p0.x, p0.y);
+            ctx.lineTo(p1.x, p1.y);
+            ctx.lineWidth = trailWidth;
+            ctx.lineCap = "round";
+            ctx.lineJoin = "round";
+            ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + trailAlpha + ")";
+            ctx.shadowBlur = 10 * (1 - t);
+            ctx.shadowColor = "rgba(" + r + "," + g + "," + b + "," + (trailAlpha * 0.8) + ")";
+            ctx.stroke();
+            ctx.restore();
+          }
+
+          // 2. Tapered white-hot inner comet core
+          for (var m = 0; m < NUM_SEGMENTS - 1; m++) {
+            var cp0 = segments[m];
+            var cp1 = segments[m + 1];
+            var ct = m / (NUM_SEGMENTS - 1);
+            var coreWidth = (1 - ct) * (2.2 + clickPulse * 1.2) + 0.4;
+            var coreAlpha = Math.pow(1 - ct, 1.6) * 0.95 * idleAlpha;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(cp0.x, cp0.y);
+            ctx.lineTo(cp1.x, cp1.y);
+            ctx.lineWidth = coreWidth;
+            ctx.lineCap = "round";
+            ctx.lineJoin = "round";
+            ctx.strokeStyle = "rgba(255, 255, 255, " + coreAlpha + ")";
+            ctx.stroke();
+            ctx.restore();
+          }
+
+          // 3. Single luminous comet nucleus at head
+          ctx.save();
+          ctx.beginPath();
+          ctx.arc(segments[0].x, segments[0].y, 2.5 + clickPulse * 1.5, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(255, 255, 255, " + (0.98 * idleAlpha) + ")";
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = "#ffffff";
+          ctx.fill();
+          ctx.restore();
+
+          // 4. Click shockwave ring
+          if (clickPulse > 0.05) {
+            var shockRadius = 5 + (1 - clickPulse) * 22;
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(segments[0].x, segments[0].y, shockRadius, 0, Math.PI * 2);
+            ctx.strokeStyle = "rgba(255, 255, 255, " + (clickPulse * 0.85 * idleAlpha) + ")";
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            ctx.restore();
+          }
+        }
+      }
+
+      requestAnimationFrame(updateSnake);
+    }
+    requestAnimationFrame(updateSnake);
+  }
+
+  window.initPointerSnake = initPointerSnake;
+
+  initRobotConsole();
+  initPointerSnake();
   initTermsDisclaimer();
 })();
