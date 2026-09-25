@@ -594,6 +594,7 @@ main.container {
     border: 1px solid rgba(255, 255, 255, 0.16);
     padding: 3px 10px;
     border-radius: 4px;
+    white-space: nowrap; /* Never wrap section label text */
 }
 .section-tag-dot {
     width: 6px;
@@ -846,8 +847,10 @@ main.container {
 .feature-acc-panel {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    transition: grid-template-rows 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease;
     opacity: 0;
+    will-change: grid-template-rows, opacity;
+    transform: translateZ(0);
 }
 
 .feature-acc-item.is-open .feature-acc-panel {
@@ -857,6 +860,7 @@ main.container {
 
 .feature-acc-content {
     overflow: hidden;
+    min-height: 0;
 }
 
 .feature-acc-content .fc-desc {
@@ -1028,17 +1032,18 @@ main.container {
     content: "";
     position: absolute;
     top: 0;
-    left: -100%;
+    left: 0;
     width: 60%;
     height: 100%;
     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.04), transparent);
+    transform: translateX(-150%);
     animation: terminalScanline 6s linear infinite;
     pointer-events: none;
 }
 
 @keyframes terminalScanline {
-    0% { left: -100%; }
-    100% { left: 200%; }
+    0% { transform: translateX(-150%); }
+    100% { transform: translateX(250%); }
 }
 
 .robot-terminal-bar:hover {
@@ -1629,14 +1634,14 @@ main.container {
     position: absolute;
     inset: -6px;
     border-radius: 24px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
-    animation: beaconPulse 2.6s infinite ease-in-out;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
     pointer-events: none;
+    opacity: 0.55;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
-@keyframes beaconPulse {
-    0% { transform: scale(0.9); opacity: 0.4; }
-    50% { transform: scale(1.15); opacity: 0.8; }
-    100% { transform: scale(0.9); opacity: 0.4; }
+.dropzone:hover .dz-beacon-ring {
+    opacity: 0.95;
+    transform: scale(1.08);
 }
 .dz-icon-wrap {
     width: 60px;
@@ -3615,17 +3620,15 @@ main.container {
     .card { padding: 22px 18px; border-radius: var(--radius-lg); }
     .card-main-title { font-size: 22px; }
 
-    /* Mobile Header Layout — strictly prevent overflow and keep hamburger visible */
+    /* Mobile Header Layout — brand expands, actions shrink, no clipping of name */
     .header-inner {
         gap: 8px;
         max-width: 100%;
-        overflow: hidden;
     }
     .brand {
         gap: 8px;
         min-width: 0;
         flex: 1 1 auto;
-        overflow: hidden;
     }
     .brand-logo-wrap {
         flex-shrink: 0;
@@ -3636,27 +3639,39 @@ main.container {
     }
     .brand-text {
         min-width: 0;
-        overflow: hidden;
     }
     .brand-name-row {
         min-width: 0;
-        overflow: hidden;
+        overflow: visible;
         gap: 6px;
+        flex-wrap: nowrap;
     }
     .brand-name {
         font-size: 14.5px;
         white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        overflow: visible;
+        text-overflow: clip;
     }
     .brand-ai-badge {
         display: none !important; /* Hide AI 2.0 badge on mobile to free up header space */
     }
+    .brand-sub {
+        display: none; /* Hide sub-tagline on mobile */
+    }
     .header-actions {
-        gap: 8px;
+        gap: 6px;
         flex-shrink: 0;
         display: flex;
         align-items: center;
+    }
+    /* Icon-only SFX button on mobile — hides the text label */
+    .header-sfx-btn .sfx-btn-text {
+        display: none !important;
+    }
+    .header-sfx-btn {
+        padding: 0 9px !important;
+        width: 36px !important;
+        min-width: 36px !important;
     }
     .header-token-badge {
         height: 32px !important;
@@ -3682,6 +3697,23 @@ main.container {
         height: 36px;
         flex-shrink: 0;
         border-radius: 9px;
+    }
+
+    /* SYSTEM CORE terminal bar — stack channel + feed on mobile */
+    .robot-terminal-bar {
+        flex-wrap: wrap;
+        gap: 6px;
+        padding: 8px 12px;
+    }
+    .robot-terminal-channel {
+        flex-shrink: 0;
+    }
+    .robot-terminal-feed {
+        flex: 1 1 100%;
+        min-width: 0;
+    }
+    .robot-typewriter-text {
+        font-size: 11.5px;
     }
 
     /* Stack Table */

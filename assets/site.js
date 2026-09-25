@@ -184,6 +184,18 @@
         else if (char === "\u2014" || char === "\u2022") delay += 60;
         element._typeTimer = setTimeout(step, Math.max(10, delay));
       } else {
+        var cursor = element.querySelector(".typewriter-cursor");
+        if (cursor) {
+          setTimeout(function () {
+            if (cursor && cursor.parentNode) {
+              cursor.style.transition = "opacity 0.3s ease";
+              cursor.style.opacity = "0";
+              setTimeout(function () {
+                if (cursor && cursor.parentNode) cursor.remove();
+              }, 300);
+            }
+          }, 1000);
+        }
         if (onComplete) onComplete();
       }
     }
@@ -1321,12 +1333,6 @@ window.showStudioToast = showStudioToast;
         } else {
           item.classList.add("is-open");
           trigger.setAttribute("aria-expanded", "true");
-          var desc = item.querySelector(".fc-desc");
-          if (desc) {
-            var txt = desc.dataset.orig || desc.textContent.trim();
-            desc.dataset.orig = txt;
-            typewriteWithCursor(desc, txt, 12, null, true);
-          }
         }
       });
     });
