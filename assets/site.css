@@ -3759,6 +3759,25 @@ main.container {
         text-align: center;
     }
 
+    /* Section Headers: stack title/tag block and actions on mobile to prevent container overflow */
+    .section-header-row,
+    .backend-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+        margin-bottom: 18px;
+    }
+    .section-header-actions,
+    #refresh-quota-btn {
+        align-self: flex-start;
+    }
+    .section-tag {
+        font-size: 10px;
+        letter-spacing: 0.06em;
+        padding: 3px 8px;
+        max-width: 100%;
+    }
+
     /* Status Card & Pipeline Tracker Mobile Styles */
     .status-card {
         padding: 18px 14px;
