@@ -108,8 +108,8 @@ $initModel = htmlspecialchars(!empty($initialQuota['model']) ? $initialQuota['mo
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#09090b">
-<meta name="description" content="Auto Exam Maker — upload a PDF and instantly generate a comprehensive interactive exam powered by AI.">
-<title>Auto Exam Maker — AI-Powered Exam Generator</title>
+<meta name="description" content="SynthExam — upload a PDF and instantly generate a comprehensive interactive exam powered by AI.">
+<title>SynthExam — AI-Powered Exam Generator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&display=swap" rel="stylesheet">
@@ -130,7 +130,7 @@ try {
 <body>
 
 <!-- ===================== INTRO OPENING SPLASH ===================== -->
-<div id="intro-splash" class="intro-splash" role="dialog" aria-modal="true" aria-label="Loading Auto Exam Maker">
+<div id="intro-splash" class="intro-splash" role="dialog" aria-modal="true" aria-label="Loading SynthExam">
     <div class="intro-mesh" aria-hidden="true"></div>
     <div class="intro-content">
         <div class="intro-beacon">
@@ -170,7 +170,7 @@ try {
             </svg>
         </div>
         <div class="intro-text-group">
-            <h1 class="intro-title">Auto Exam <span class="intro-gradient">Maker</span></h1>
+            <h1 class="intro-title">Synth<span class="intro-gradient">Exam</span></h1>
             <p class="intro-subtitle">Cognitive Assessment Engine &bull; AI 2.0</p>
         </div>
         <div class="intro-loader-track" aria-hidden="true">
@@ -180,6 +180,136 @@ try {
     </div>
     <div class="intro-skip-hint">Click anywhere to skip</div>
 </div>
+
+<!-- ===================== DISCLAIMER & TERMS MODAL ===================== -->
+<div id="terms-modal" class="terms-modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="terms-modal-title" aria-hidden="true">
+    <div class="terms-modal-backdrop"></div>
+    <div class="terms-modal-card">
+        <div class="terms-modal-header">
+            <div class="terms-icon-badge">
+                <span class="material-symbols-rounded">policy</span>
+            </div>
+            <div class="terms-header-text">
+                <div class="terms-badge-row">
+                    <span class="terms-badge">Studio Policies &bull; v2.4</span>
+                </div>
+                <h2 id="terms-modal-title" class="terms-title">Disclaimer &amp; Terms of Service</h2>
+                <p class="terms-sub">Please review and acknowledge the educational disclaimer and usage terms before utilizing the studio.</p>
+            </div>
+            <button type="button" class="terms-close-btn" id="terms-close-btn" aria-label="Close terms modal" style="display:none;">
+                <span class="material-symbols-rounded">close</span>
+            </button>
+        </div>
+
+        <div class="terms-scroll-body" tabindex="0">
+            <div class="terms-section">
+                <div class="terms-section-title">
+                    <span class="material-symbols-rounded">psychology</span>
+                    <h4>1. AI Synthesis &amp; Academic Verification</h4>
+                </div>
+                <p>All examination questions, distractors, answer keys, and cognitive rationales are autonomously generated using large language models. While engineered for rigorous academic depth, artificial intelligence outputs may occasionally contain hallucinations or contextual inaccuracies. All generated materials are intended as assistive review aids and should be cross-referenced with your official course syllabi and textbooks.</p>
+            </div>
+
+            <div class="terms-section">
+                <div class="terms-section-title">
+                    <span class="material-symbols-rounded">school</span>
+                    <h4>2. Educational &amp; Self-Study Purpose</h4>
+                </div>
+                <p>SynthExam is strictly an educational tool designed for self-assessment, study preparation, and cognitive review. It is not an accredited examination board and does not confer official certification, academic credit, or professional qualification.</p>
+            </div>
+
+            <div class="terms-section">
+                <div class="terms-section-title">
+                    <span class="material-symbols-rounded">shield</span>
+                    <h4>3. Document Ownership &amp; Fair Use</h4>
+                </div>
+                <p>You certify and warrant that you own or have obtained lawful authorization to upload and process any PDF documents submitted to the platform under applicable copyright or fair-use educational provisions. Document processing operates with zero persistent training retention.</p>
+            </div>
+
+            <div class="terms-section">
+                <div class="terms-section-title">
+                    <span class="material-symbols-rounded">gavel</span>
+                    <h4>4. Limitation of Liability</h4>
+                </div>
+                <p>The service and its synthesized outputs are provided strictly &ldquo;AS IS&rdquo; without warranties of any kind. The developers and providers disclaim all liability for any direct or indirect academic, educational, or testing outcomes resulting from the use of this software.</p>
+            </div>
+        </div>
+
+        <div class="terms-modal-footer">
+            <label class="terms-checkbox-label" for="terms-agree-checkbox">
+                <input type="checkbox" id="terms-agree-checkbox" class="terms-checkbox">
+                <span class="terms-checkbox-custom">
+                    <span class="material-symbols-rounded terms-check-icon">check</span>
+                </span>
+                <span class="terms-label-text">I have read, understand, and agree to the <strong>Terms of Service</strong> and <strong>AI Assessment Disclaimer</strong>.</span>
+            </label>
+
+            <div class="terms-actions-row">
+                <button type="button" id="terms-accept-btn" class="btn btn-primary btn-lg terms-accept-btn" disabled>
+                    <span class="material-symbols-rounded">verified</span>
+                    <span>Accept &amp; Enter Studio</span>
+                </button>
+            </div>
+            <div class="terms-persist-note">Your acknowledgement is securely remembered on this device.</div>
+        </div>
+    </div>
+</div>
+
+<!-- Deletion Confirmation Dialog Card -->
+<div id="delete-modal" class="custom-modal-overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title" style="display:none;">
+    <div class="custom-modal-backdrop" id="delete-modal-backdrop"></div>
+    <div class="custom-modal-card custom-modal-card-danger">
+        <div class="custom-modal-header">
+            <div class="custom-modal-icon-badge badge-danger">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+            </div>
+            <div class="custom-modal-header-text">
+                <div class="custom-modal-badge-row">
+                    <span class="custom-modal-badge badge-danger-tag">Permanent Action</span>
+                </div>
+                <h3 id="delete-modal-title" class="custom-modal-title">Delete Exam?</h3>
+                <p id="delete-modal-desc" class="custom-modal-sub">Are you sure you want to permanently delete this exam and all generated content?</p>
+            </div>
+            <button type="button" class="custom-modal-close-btn" id="delete-modal-close-btn" aria-label="Close dialog">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+
+        <div class="custom-modal-body">
+            <div class="delete-target-preview">
+                <div class="delete-target-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                </div>
+                <div class="delete-target-info">
+                    <span class="delete-target-label">Selected Exam</span>
+                    <strong class="delete-target-name" id="delete-target-name">&mdash;</strong>
+                </div>
+            </div>
+            <p class="delete-warning-note">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <span>This cannot be undone. All interactive chapters, question keys, and diagnostics will be removed immediately.</span>
+            </p>
+        </div>
+
+        <div class="custom-modal-footer">
+            <button type="button" class="btn btn-secondary custom-modal-cancel-btn" id="delete-modal-cancel-btn">
+                <span>Cancel</span>
+            </button>
+            <button type="button" class="btn btn-danger custom-modal-confirm-btn" id="delete-modal-confirm-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                <span class="btn-text">Delete Exam</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Notification Card (Toast Container) -->
+<div id="studio-toast-container" class="studio-toast-container" aria-live="polite" aria-atomic="true"></div>
 
 <!-- Ambient background lighting for glassmorphic depth -->
 <div class="ambient-glow ambient-top-left" aria-hidden="true"></div>
@@ -191,7 +321,7 @@ try {
     <div class="container header-inner">
 
         <!-- Brand -->
-        <a class="brand" href="index.php" aria-label="Auto Exam Maker home">
+        <a class="brand" href="index.php" aria-label="SynthExam home">
             <div class="brand-logo-wrap">
                 <svg class="brand-logo-svg" width="38" height="38" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <defs>
@@ -232,7 +362,7 @@ try {
             </div>
             <div class="brand-text">
                 <div class="brand-name-row">
-                    <span class="brand-name">Auto Exam <span class="brand-name-gradient">Maker</span></span>
+                    <span class="brand-name">Synth<span class="brand-name-gradient">Exam</span></span>
                     <span class="brand-ai-badge">AI 2.0</span>
                 </div>
                 <span class="brand-sub">Cognitive Assessment Engine</span>
@@ -318,131 +448,214 @@ try {
 <main class="container">
 
     <!-- Upload card -->
-    <section class="card upload-card" id="upload">
-        <div class="studio-badge-row">
-            <span class="studio-badge">
-                <span class="material-symbols-rounded studio-badge-icon">auto_awesome</span>
-                <span>Cognitive AI Exam Studio</span>
-                <span class="studio-version-tag">LPU Accelerated</span>
-            </span>
-        </div>
-        <h1 class="card-main-title">Generate High-Impact <span class="gradient-text">Interactive Exams</span></h1>
-        <p class="muted card-desc">Drop any PDF document (lecture slides, textbook chapters, reviewers, or syllabi). Our multi-pass cognitive engine maps conceptual hierarchies to synthesize rigorous application scenarios, dual-mode test runners, and exhaustive rationale keys.</p>
-        
-        <div class="feature-strip">
-            <div class="feature-card feature-card-indigo">
-                <div class="fc-glow"></div>
-                <div class="fc-header">
-                    <div class="fc-icon-wrap fc-indigo">
-                        <span class="material-symbols-rounded">psychology</span>
-                    </div>
-                    <span class="fc-tag fc-tag-indigo">BLOOM'S TAXONOMY</span>
-                </div>
-                <div class="fc-body">
-                    <h4 class="fc-title">~30 Questions / Chapter</h4>
-                    <p class="fc-desc">Scenario, case analysis &amp; multi-tier logic questions testing deep cognitive application &mdash; not simple recall.</p>
-                </div>
+    <section class="card upload-card compact-studio" id="upload">
+        <div class="studio-header-compact">
+            <div class="studio-badge-row">
+                <span class="studio-badge">
+                    <span class="material-symbols-rounded studio-badge-icon">auto_awesome</span>
+                    <span>Cognitive AI Exam Studio</span>
+                    <span class="studio-version-tag">LPU Accelerated</span>
+                </span>
             </div>
-
-            <div class="feature-card feature-card-cyan">
-                <div class="fc-glow"></div>
-                <div class="fc-header">
-                    <div class="fc-icon-wrap fc-cyan">
-                        <span class="material-symbols-rounded">timer</span>
-                    </div>
-                    <span class="fc-tag fc-tag-cyan">DUAL MODES</span>
-                </div>
-                <div class="fc-body">
-                    <h4 class="fc-title">Dual Testing Modes</h4>
-                    <p class="fc-desc">High-stakes 10s blitz countdown or self-paced reflective study with immediate answer evaluation and scoring.</p>
-                </div>
-            </div>
-
-            <div class="feature-card feature-card-purple">
-                <div class="fc-glow"></div>
-                <div class="fc-header">
-                    <div class="fc-icon-wrap fc-purple">
-                        <span class="material-symbols-rounded">auto_stories</span>
-                    </div>
-                    <span class="fc-tag fc-tag-purple">DEEP RATIONALE</span>
-                </div>
-                <div class="fc-body">
-                    <h4 class="fc-title">Key &amp; Encyclopedia</h4>
-                    <p class="fc-desc">Instant evaluation, exhaustive rationales for every distractor, and an interactive domain concept glossary.</p>
-                </div>
+            <div class="studio-title-desc-row">
+                <h1 class="card-main-title">Generate High-Impact <span class="gradient-text">Interactive Exams</span></h1>
+                <p class="muted card-desc">Drop any PDF document (lecture slides, textbook chapters, reviewers, or syllabi) to synthesize rigorous application exams &amp; answer keys.</p>
             </div>
         </div>
 
         <form id="upload-form">
-            <div class="dropzone-outer">
-                <label class="dropzone" id="dropzone">
-                    <input type="file" id="pdf-file" name="pdf" accept="application/pdf,.pdf" required>
-                    
-                    <div class="dz-idle-state" id="dz-idle-state">
-                        <div class="dz-beacon">
-                            <div class="dz-beacon-ring"></div>
-                            <div class="dz-icon-wrap">
-                                <span class="material-symbols-rounded dz-icon">cloud_upload</span>
+            <div class="studio-grid">
+                <!-- LEFT: Primary Action Panel -->
+                <div class="studio-col-action">
+                    <div class="dropzone-outer">
+                        <label class="dropzone dropzone-compact" id="dropzone">
+                            <input type="file" id="pdf-file" name="pdf" accept="application/pdf,.pdf" required>
+                            
+                            <div class="dz-idle-state" id="dz-idle-state">
+                                <div class="dz-beacon dz-beacon-compact">
+                                    <div class="dz-beacon-ring"></div>
+                                    <div class="dz-icon-wrap dz-icon-wrap-compact">
+                                        <span class="material-symbols-rounded dz-icon">cloud_upload</span>
+                                    </div>
+                                </div>
+                                <div class="dz-text-group">
+                                    <span class="dz-headline">Click or drop your PDF document here</span>
+                                    <span class="dz-subline">Textbooks, lecture slides, notes &bull; up to 50MB</span>
+                                </div>
+                                <div class="dz-chips-row dz-chips-compact">
+                                    <span class="dz-chip"><span class="material-symbols-rounded">picture_as_pdf</span> PDF Document</span>
+                                    <span class="dz-chip"><span class="material-symbols-rounded">insights</span> Deep Chapter Mapping</span>
+                                    <span class="dz-chip"><span class="material-symbols-rounded">verified_user</span> 100% Private</span>
+                                </div>
                             </div>
+
+                            <!-- Active Selected File Card (revealed when file chosen) -->
+                            <div class="dz-file-selected" id="dz-file-selected" style="display:none;">
+                                <div class="dfs-main">
+                                    <div class="dfs-icon-wrap">
+                                        <span class="material-symbols-rounded dfs-pdf-icon">picture_as_pdf</span>
+                                    </div>
+                                    <div class="dfs-info">
+                                        <div class="dfs-name" id="dfs-name">selected_document.pdf</div>
+                                        <div class="dfs-meta">
+                                            <span class="dfs-size" id="dfs-size">0.00 MB</span>
+                                            <span class="dfs-divider">&bull;</span>
+                                            <span class="dfs-status"><span class="material-symbols-rounded dfs-check">check_circle</span> Ready to synthesize</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="dfs-remove-btn" id="dfs-remove-btn" title="Change file">
+                                    <span class="material-symbols-rounded">swap_horiz</span>
+                                    <span>Change</span>
+                                </button>
+                            </div>
+
+                            <div class="dz-hint" id="dz-hint" style="display:none;"></div>
+                        </label>
+                    </div>
+
+                    <div class="form-row form-row-compact">
+                        <div class="form-label-row">
+                            <label for="title-input" class="field-label">
+                                <span class="material-symbols-rounded label-icon">edit_note</span>
+                                <span>Exam Title</span>
+                            </label>
+                            <span class="label-badge-optional">Optional &mdash; auto-derived from filename</span>
                         </div>
-                        <div class="dz-text-group">
-                            <span class="dz-headline">Click to browse or drop your PDF document here</span>
-                            <span class="dz-subline">Accepts textbook chapters, lecture presentations, notes &bull; up to 50MB</span>
-                        </div>
-                        <div class="dz-chips-row">
-                            <span class="dz-chip"><span class="material-symbols-rounded">picture_as_pdf</span> PDF Document</span>
-                            <span class="dz-chip"><span class="material-symbols-rounded">insights</span> Deep Chapter Mapping</span>
-                            <span class="dz-chip"><span class="material-symbols-rounded">verified_user</span> 100% Private &amp; Local</span>
+                        <div class="input-wrap input-glow-wrap">
+                            <span class="material-symbols-rounded input-leading-symbol">title</span>
+                            <input type="text" id="title-input" name="title" placeholder="e.g. Chapter 4: Distributed Systems &amp; Raft" maxlength="120">
                         </div>
                     </div>
 
-                    <!-- Active Selected File Card (revealed when file chosen) -->
-                    <div class="dz-file-selected" id="dz-file-selected" style="display:none;">
-                        <div class="dfs-main">
-                            <div class="dfs-icon-wrap">
-                                <span class="material-symbols-rounded dfs-pdf-icon">picture_as_pdf</span>
-                            </div>
-                            <div class="dfs-info">
-                                <div class="dfs-name" id="dfs-name">selected_document.pdf</div>
-                                <div class="dfs-meta">
-                                    <span class="dfs-size" id="dfs-size">0.00 MB</span>
-                                    <span class="dfs-divider">&bull;</span>
-                                    <span class="dfs-status"><span class="material-symbols-rounded dfs-check">check_circle</span> Ready to synthesize</span>
+                    <div class="form-actions-row form-actions-compact">
+                        <button type="submit" class="btn btn-primary btn-lg btn-synthesize" id="submit-btn" disabled>
+                            <span class="material-symbols-rounded btn-synth-icon">auto_awesome</span>
+                            <span class="btn-text">Synthesize Interactive Exam</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- RIGHT: Engine Capabilities Accordion & Specs -->
+                <div class="studio-col-info">
+                    <div class="feature-accordion feature-accordion-compact" id="feature-accordion" role="region" aria-label="Engine Capabilities">
+                        <!-- Item 1: Bloom's Taxonomy -->
+                        <div class="feature-acc-item is-open" data-acc-id="acc-1">
+                            <button type="button" class="feature-acc-trigger" aria-expanded="true" aria-controls="acc-panel-1" id="acc-btn-1">
+                                <div class="feature-acc-trigger-left">
+                                    <div class="fc-icon-wrap fc-indigo">
+                                        <span class="material-symbols-rounded">psychology</span>
+                                    </div>
+                                    <div class="feature-acc-title-group">
+                                        <h4 class="fc-title">~30 Questions / Chapter</h4>
+                                        <span class="fc-tag fc-tag-indigo">BLOOM'S TAXONOMY</span>
+                                    </div>
+                                </div>
+                                <div class="feature-acc-trigger-right">
+                                    <span class="material-symbols-rounded feature-acc-chevron">expand_more</span>
+                                </div>
+                            </button>
+                            <div class="feature-acc-panel" id="acc-panel-1" role="region" aria-labelledby="acc-btn-1">
+                                <div class="feature-acc-content">
+                                    <p class="fc-desc">Scenario, case analysis &amp; multi-tier logic questions testing deep cognitive application &mdash; not simple recall.</p>
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="dfs-remove-btn" id="dfs-remove-btn" title="Change file">
-                            <span class="material-symbols-rounded">swap_horiz</span>
-                            <span>Change File</span>
-                        </button>
+
+                        <!-- Item 2: Dual Testing Modes -->
+                        <div class="feature-acc-item" data-acc-id="acc-2">
+                            <button type="button" class="feature-acc-trigger" aria-expanded="false" aria-controls="acc-panel-2" id="acc-btn-2">
+                                <div class="feature-acc-trigger-left">
+                                    <div class="fc-icon-wrap fc-cyan">
+                                        <span class="material-symbols-rounded">timer</span>
+                                    </div>
+                                    <div class="feature-acc-title-group">
+                                        <h4 class="fc-title">Dual Testing Modes</h4>
+                                        <span class="fc-tag fc-tag-cyan">DUAL MODES</span>
+                                    </div>
+                                </div>
+                                <div class="feature-acc-trigger-right">
+                                    <span class="material-symbols-rounded feature-acc-chevron">expand_more</span>
+                                </div>
+                            </button>
+                            <div class="feature-acc-panel" id="acc-panel-2" role="region" aria-labelledby="acc-btn-2">
+                                <div class="feature-acc-content">
+                                    <p class="fc-desc">High-stakes 10s blitz countdown or self-paced reflective study with immediate answer evaluation and scoring.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Item 3: Deep Rationale -->
+                        <div class="feature-acc-item" data-acc-id="acc-3">
+                            <button type="button" class="feature-acc-trigger" aria-expanded="false" aria-controls="acc-panel-3" id="acc-btn-3">
+                                <div class="feature-acc-trigger-left">
+                                    <div class="fc-icon-wrap fc-purple">
+                                        <span class="material-symbols-rounded">auto_stories</span>
+                                    </div>
+                                    <div class="feature-acc-title-group">
+                                        <h4 class="fc-title">Key &amp; Encyclopedia</h4>
+                                        <span class="fc-tag fc-tag-purple">DEEP RATIONALE</span>
+                                    </div>
+                                </div>
+                                <div class="feature-acc-trigger-right">
+                                    <span class="material-symbols-rounded feature-acc-chevron">expand_more</span>
+                                </div>
+                            </button>
+                            <div class="feature-acc-panel" id="acc-panel-3" role="region" aria-labelledby="acc-btn-3">
+                                <div class="feature-acc-content">
+                                    <p class="fc-desc">Instant evaluation, exhaustive rationales for every distractor, and an interactive domain concept glossary.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Item 4: AI Diagnostics & Remediation -->
+                        <div class="feature-acc-item" data-acc-id="acc-4">
+                            <button type="button" class="feature-acc-trigger" aria-expanded="false" aria-controls="acc-panel-4" id="acc-btn-4">
+                                <div class="feature-acc-trigger-left">
+                                    <div class="fc-icon-wrap fc-silver">
+                                        <span class="material-symbols-rounded">insights</span>
+                                    </div>
+                                    <div class="feature-acc-title-group">
+                                        <h4 class="fc-title">AI Diagnostics &amp; Remediation</h4>
+                                        <span class="fc-tag fc-tag-silver">COGNITIVE AUDIT</span>
+                                    </div>
+                                </div>
+                                <div class="feature-acc-trigger-right">
+                                    <span class="material-symbols-rounded feature-acc-chevron">expand_more</span>
+                                </div>
+                            </button>
+                            <div class="feature-acc-panel" id="acc-panel-4" role="region" aria-labelledby="acc-btn-4">
+                                <div class="feature-acc-content">
+                                    <p class="fc-desc">Automated post-exam cognitive audits pinpointing conceptual blindspots, distractor fallacies, and custom review drills.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="dz-hint" id="dz-hint" style="display:none;"></div>
-                </label>
-            </div>
-
-            <div class="form-row">
-                <div class="form-label-row">
-                    <label for="title-input" class="field-label">
-                        <span class="material-symbols-rounded label-icon">edit_note</span>
-                        <span>Exam Title</span>
-                    </label>
-                    <span class="label-badge-optional">Optional &mdash; auto-derived from PDF filename</span>
-                </div>
-                <div class="input-wrap input-glow-wrap">
-                    <span class="material-symbols-rounded input-leading-symbol">title</span>
-                    <input type="text" id="title-input" name="title" placeholder="e.g. Chapter 4: Distributed Consensus &amp; Raft" maxlength="120">
-                </div>
-            </div>
-
-            <div class="form-actions-row">
-                <button type="submit" class="btn btn-primary btn-lg btn-synthesize" id="submit-btn" disabled>
-                    <span class="material-symbols-rounded btn-synth-icon">auto_awesome</span>
-                    <span class="btn-text">Synthesize Interactive Exam</span>
-                </button>
-                <div class="synthesis-hint">
-                    <span class="material-symbols-rounded hint-icon">bolt</span>
-                    <span>Generates interactive examination suite &amp; chapter glossary</span>
+                    <!-- Quick Engine Telemetry Specs Bar -->
+                    <div class="studio-specs-card">
+                        <div class="studio-spec-item">
+                            <span class="material-symbols-rounded spec-icon">speed</span>
+                            <div class="spec-text">
+                                <span class="spec-label">Speed</span>
+                                <strong class="spec-val">&lt; 15s / Chapter</strong>
+                            </div>
+                        </div>
+                        <div class="studio-spec-item">
+                            <span class="material-symbols-rounded spec-icon">memory</span>
+                            <div class="spec-text">
+                                <span class="spec-label">Engine</span>
+                                <strong class="spec-val">Groq LPU Array</strong>
+                            </div>
+                        </div>
+                        <div class="studio-spec-item">
+                            <span class="material-symbols-rounded spec-icon">lock</span>
+                            <div class="spec-text">
+                                <span class="spec-label">Privacy</span>
+                                <strong class="spec-val">100% Client/Local</strong>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -547,8 +760,8 @@ try {
                     </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($exams as $ex): ?>
-                    <tr data-id="<?= htmlspecialchars($ex['id']) ?>">
+                <?php foreach ($exams as $idx => $ex): ?>
+                    <tr data-id="<?= htmlspecialchars($ex['id']) ?>" class="<?= $idx >= 5 ? 'exam-row-extra is-collapsed' : '' ?>">
                         <td class="tt">
                             <div class="exam-title-row">
                                 <span class="exam-info-badge has-tooltip" data-tooltip="Generated <?= htmlspecialchars(date('M j, Y g:i A', strtotime($ex['created_at']))) ?>" title="Generated <?= htmlspecialchars(date('M j, Y g:i A', strtotime($ex['created_at']))) ?>" aria-label="Generated date">
@@ -626,6 +839,17 @@ try {
                 </tbody>
             </table>
         </div>
+        <?php if (count($exams) > 5): ?>
+            <div class="exams-toggle-wrap">
+                <button type="button" class="exams-toggle-btn" id="exams-toggle-btn" aria-expanded="false" data-count="<?= count($exams) - 5 ?>">
+                    <span class="exams-toggle-text">Show <?= count($exams) - 5 ?> More <?= (count($exams) - 5) === 1 ? 'Exam' : 'Exams' ?></span>
+                    <span class="exams-toggle-badge">+<?= count($exams) - 5 ?></span>
+                    <svg class="toggle-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+            </div>
+        <?php endif; ?>
         <?php endif; ?>
     </section>
 
@@ -753,10 +977,10 @@ try {
                 <path d="M20 9L20 19.4M11 14.2L20 19.4L29 14.2M20 19.4L20 29.8" stroke="rgba(255,255,255,0.45)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M20 12L20.9 14.1L23 15L20.9 15.9L20 18L19.1 15.9L17 15L19.1 14.1L20 12Z" fill="#ffffff"/>
             </svg>
-            <span>Auto Exam Maker</span>
+            <span>SynthExam</span>
             <span class="footer-version-tag">Local Studio v2.4</span>
         </div>
-        <div class="footer-note">Runs locally on your environment via opencode &amp; Groq LPU &bull; Zero external data tracking</div>
+        <div class="footer-note">Runs locally on your environment via opencode &amp; Groq LPU &bull; Zero external data tracking &bull; <a href="#terms" id="footer-terms-link" class="footer-link">Terms &amp; Disclaimer</a></div>
     </div>
 </footer>
 

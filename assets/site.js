@@ -774,16 +774,174 @@
   });
 })();
 
+/* ── Deletion Confirmation Card & Toast Notification System ── */
+var pendingDeleteId = null;
+
+function showStudioToast(message, type, duration) {
+  type = type || "info";
+  duration = duration || 3500;
+  var container = document.getElementById("studio-toast-container");
+  if (!container) {
+    container = document.createElement("div");
+    container.id = "studio-toast-container";
+    container.className = "studio-toast-container";
+    container.setAttribute("aria-live", "polite");
+    document.body.appendChild(container);
+  }
+
+  var toast = document.createElement("div");
+  toast.className = "studio-toast toast-" + type;
+
+  var iconSvg = "";
+  if (type === "success") {
+    iconSvg = '<svg class="toast-icon toast-icon-success" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+  } else if (type === "error") {
+    iconSvg = '<svg class="toast-icon toast-icon-error" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>';
+  } else {
+    iconSvg = '<svg class="toast-icon toast-icon-info" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>';
+  }
+
+  toast.innerHTML = iconSvg + '<div class="toast-content">' + message + '</div>';
+  container.appendChild(toast);
+
+  function dismiss() {
+    toast.classList.add("toast-dismissing");
+    setTimeout(function () {
+      if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 220);
+  }
+
+  toast.addEventListener("click", dismiss);
+  setTimeout(dismiss, duration);
+}
+
+function hideDeleteModal() {
+  var modal = document.getElementById("delete-modal");
+  if (!modal) return;
+  modal.classList.add("is-dismissing");
+  setTimeout(function () {
+    modal.style.display = "none";
+    modal.classList.remove("is-dismissing");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("delete-modal-open");
+    pendingDeleteId = null;
+  }, 220);
+}
+
 function deleteExam(id) {
-  if (!confirm("Delete this exam and its generated data?")) return;
+  pendingDeleteId = id;
+  var modal = document.getElementById("delete-modal");
+  if (!modal) {
+    if (!confirm("Delete this exam and its generated data?")) return;
+    executeDeleteExam(id);
+    return;
+  }
+
+  var row = document.querySelector('tr[data-id="' + id + '"]');
+  var examTitle = "Exam #" + id;
+  if (row) {
+    var tEl = row.querySelector(".exam-title-cell");
+    if (tEl && tEl.textContent.trim()) {
+      examTitle = tEl.textContent.trim();
+    }
+  }
+
+  var nameEl = document.getElementById("delete-target-name");
+  if (nameEl) nameEl.textContent = examTitle;
+
+  var confirmBtn = document.getElementById("delete-modal-confirm-btn");
+  if (confirmBtn) {
+    confirmBtn.disabled = false;
+    var btnText = confirmBtn.querySelector(".btn-text");
+    if (btnText) btnText.textContent = "Delete Exam";
+  }
+
+  modal.style.display = "flex";
+  modal.classList.remove("is-dismissing");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("delete-modal-open");
+}
+
+function executeDeleteExam(id) {
+  var confirmBtn = document.getElementById("delete-modal-confirm-btn");
+  if (confirmBtn) {
+    confirmBtn.disabled = true;
+    var btnText = confirmBtn.querySelector(".btn-text");
+    if (btnText) btnText.textContent = "Deleting…";
+  }
+
   fetch("api/generate.php?op=delete&id=" + encodeURIComponent(id), { method: "POST" })
     .then(function (r) { return r.json(); })
     .then(function (res) {
-      if (res.ok) location.reload();
-      else alert(res.error || "Delete failed");
+      if (res.ok) {
+        hideDeleteModal();
+        showStudioToast("Exam deleted successfully", "success", 2400);
+
+        var row = document.querySelector('tr[data-id="' + id + '"]');
+        if (row) {
+          row.style.transition = "all 0.35s cubic-bezier(0.16, 1, 0.3, 1)";
+          row.style.opacity = "0";
+          row.style.transform = "translateX(24px) scale(0.98)";
+          setTimeout(function () {
+            location.reload();
+          }, 500);
+        } else {
+          setTimeout(function () { location.reload(); }, 500);
+        }
+      } else {
+        if (confirmBtn) {
+          confirmBtn.disabled = false;
+          var bText = confirmBtn.querySelector(".btn-text");
+          if (bText) bText.textContent = "Delete Exam";
+        }
+        hideDeleteModal();
+        showStudioToast(res.error || "Delete failed", "error", 4500);
+      }
     })
-    .catch(function () { alert("Delete failed"); });
+    .catch(function () {
+      if (confirmBtn) {
+        confirmBtn.disabled = false;
+        var bText = confirmBtn.querySelector(".btn-text");
+        if (bText) bText.textContent = "Delete Exam";
+      }
+      hideDeleteModal();
+      showStudioToast("Network error: Delete failed", "error", 4500);
+    });
 }
+
+// Bind modal controls
+(function initDeleteModalControls() {
+  function bind() {
+    var cancelBtn = document.getElementById("delete-modal-cancel-btn");
+    var closeBtn = document.getElementById("delete-modal-close-btn");
+    var backdrop = document.getElementById("delete-modal-backdrop");
+    var confirmBtn = document.getElementById("delete-modal-confirm-btn");
+
+    if (cancelBtn) cancelBtn.addEventListener("click", hideDeleteModal);
+    if (closeBtn) closeBtn.addEventListener("click", hideDeleteModal);
+    if (backdrop) backdrop.addEventListener("click", hideDeleteModal);
+
+    if (confirmBtn) {
+      confirmBtn.addEventListener("click", function () {
+        if (pendingDeleteId) {
+          executeDeleteExam(pendingDeleteId);
+        }
+      });
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && document.body.classList.contains("delete-modal-open")) {
+        hideDeleteModal();
+      }
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bind);
+  } else {
+    bind();
+  }
+})();
 
 /* ── Hamburger / mobile nav ── */
 (function () {
@@ -885,4 +1043,174 @@ function deleteExam(id) {
       }
     }, 1750);
   })();
+
+  // ============ Feature Accordion ============
+  function initFeatureAccordion() {
+    var accordion = document.getElementById("feature-accordion");
+    if (!accordion) return;
+
+    var items = accordion.querySelectorAll(".feature-acc-item");
+    items.forEach(function (item) {
+      var trigger = item.querySelector(".feature-acc-trigger");
+      if (!trigger) return;
+
+      trigger.addEventListener("click", function () {
+        var isOpen = item.classList.contains("is-open");
+
+        // Close other items (classic accordion behavior)
+        items.forEach(function (other) {
+          if (other !== item) {
+            other.classList.remove("is-open");
+            var otherTrigger = other.querySelector(".feature-acc-trigger");
+            if (otherTrigger) otherTrigger.setAttribute("aria-expanded", "false");
+          }
+        });
+
+        // Toggle current item
+        if (isOpen) {
+          item.classList.remove("is-open");
+          trigger.setAttribute("aria-expanded", "false");
+        } else {
+          item.classList.add("is-open");
+          trigger.setAttribute("aria-expanded", "true");
+        }
+      });
+    });
+  }
+  initFeatureAccordion();
+
+  // ============ Terms & Disclaimer Controller ============
+  function initTermsDisclaimer() {
+    var modal = document.getElementById("terms-modal");
+    if (!modal) return;
+
+    var checkbox = document.getElementById("terms-agree-checkbox");
+    var acceptBtn = document.getElementById("terms-accept-btn");
+    var footerLink = document.getElementById("footer-terms-link");
+    var closeBtn = document.getElementById("terms-close-btn");
+
+    var STORAGE_KEY = "aem_terms_disclaimer_accepted";
+    var forceTerms = window.location.search.includes("terms=1");
+    var hasAccepted = false;
+    try {
+      hasAccepted = !!localStorage.getItem(STORAGE_KEY);
+    } catch (e) {}
+
+    function showTermsModal() {
+      modal.style.display = "flex";
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("terms-modal-open");
+      if (hasAccepted) {
+        if (checkbox) checkbox.checked = true;
+        if (acceptBtn) acceptBtn.disabled = false;
+        if (closeBtn) closeBtn.style.display = "flex";
+      } else {
+        if (checkbox) checkbox.checked = false;
+        if (acceptBtn) acceptBtn.disabled = true;
+        if (closeBtn) closeBtn.style.display = "none";
+      }
+    }
+
+    function hideTermsModal() {
+      modal.classList.add("is-dismissing");
+      setTimeout(function () {
+        modal.style.display = "none";
+        modal.classList.remove("is-dismissing");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.classList.remove("terms-modal-open");
+      }, 240);
+    }
+
+    if (checkbox && acceptBtn) {
+      checkbox.addEventListener("change", function () {
+        acceptBtn.disabled = !checkbox.checked;
+      });
+
+      acceptBtn.addEventListener("click", function () {
+        if (!checkbox.checked) return;
+        try {
+          localStorage.setItem(STORAGE_KEY, "1");
+        } catch (e) {}
+        hasAccepted = true;
+        hideTermsModal();
+      });
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", function () {
+        if (hasAccepted) {
+          hideTermsModal();
+        }
+      });
+    }
+
+    if (footerLink) {
+      footerLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        showTermsModal();
+      });
+    }
+
+    // Auto-show upon loading if not yet accepted, or if ?terms=1
+    if (!hasAccepted || forceTerms) {
+      var splash = document.getElementById("intro-splash");
+      var splashActive = splash && splash.style.display !== "none" && !document.documentElement.classList.contains("intro-skipped");
+
+      if (splashActive) {
+        setTimeout(function () {
+          showTermsModal();
+        }, 1900);
+      } else {
+        setTimeout(function () {
+          showTermsModal();
+        }, 120);
+      }
+    }
+  }
+
+  /* ── Collapsible Exams Table Controller (Show first 5, collapse the rest) ── */
+  function initExamsCollapsible() {
+    var toggleBtn = document.getElementById("exams-toggle-btn");
+    if (!toggleBtn) return;
+
+    var extraRows = document.querySelectorAll(".exam-row-extra");
+    if (!extraRows.length) return;
+
+    var count = parseInt(toggleBtn.getAttribute("data-count"), 10) || extraRows.length;
+    var textEl = toggleBtn.querySelector(".exams-toggle-text");
+    var badgeEl = toggleBtn.querySelector(".exams-toggle-badge");
+
+    // If an active job (queued or running) is within extra rows, auto-expand so user can track it immediately
+    var hasActiveExtraRow = false;
+    extraRows.forEach(function (row) {
+      if (row.querySelector('.badge[data-status="running"], .badge[data-status="queued"]')) {
+        hasActiveExtraRow = true;
+      }
+    });
+
+    function setExpanded(expanded) {
+      extraRows.forEach(function (row) {
+        row.classList.toggle("is-collapsed", !expanded);
+      });
+      toggleBtn.setAttribute("aria-expanded", expanded ? "true" : "false");
+      if (textEl) {
+        textEl.textContent = expanded ? "Show Less" : ("Show " + count + " More " + (count === 1 ? "Exam" : "Exams"));
+      }
+      if (badgeEl) {
+        badgeEl.style.display = expanded ? "none" : "inline-flex";
+      }
+    }
+
+    if (hasActiveExtraRow) {
+      setExpanded(true);
+    }
+
+    toggleBtn.addEventListener("click", function () {
+      var isExpanded = toggleBtn.getAttribute("aria-expanded") === "true";
+      setExpanded(!isExpanded);
+    });
+  }
+  initExamsCollapsible();
+
+  initTermsDisclaimer();
 })();

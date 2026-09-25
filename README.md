@@ -7,7 +7,7 @@ sdk: docker
 app_port: 7860
 ---
 
-# Auto Exam Maker — PDF → Interactive Comprehensive Exam Web App
+# SynthExam — PDF → Interactive Comprehensive Exam Web App
 
 Upload a PDF (lecture notes, slides, reviewer, textbook). The app hands the PDF to
 [opencode](https://opencode.ai) running the **`interactive-comprehensive-exam-generator`**
