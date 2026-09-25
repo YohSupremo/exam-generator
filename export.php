@@ -36,7 +36,7 @@ header('Content-Disposition: attachment; filename="' . $safeName . '.html"');
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#0b1120">
+<meta name="theme-color" content="#09090b">
 <title><?= htmlspecialchars($title) ?></title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

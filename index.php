@@ -107,7 +107,7 @@ $initModel = htmlspecialchars(!empty($initialQuota['model']) ? $initialQuota['mo
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
-<meta name="theme-color" content="#07101f">
+<meta name="theme-color" content="#09090b">
 <meta name="description" content="Auto Exam Maker — upload a PDF and instantly generate a comprehensive interactive exam powered by AI.">
 <title>Auto Exam Maker — AI-Powered Exam Generator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -139,26 +139,26 @@ try {
             <svg class="intro-logo-svg" width="76" height="76" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <linearGradient id="introBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#1e1b4b"/>
-                        <stop offset="50%" stop-color="#0f172a"/>
-                        <stop offset="100%" stop-color="#082f49"/>
+                        <stop offset="0%" stop-color="#27272a"/>
+                        <stop offset="50%" stop-color="#18181b"/>
+                        <stop offset="100%" stop-color="#09090b"/>
                     </linearGradient>
                     <linearGradient id="introStrokeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#38bdf8"/>
-                        <stop offset="50%" stop-color="#818cf8"/>
-                        <stop offset="100%" stop-color="#c084fc"/>
+                        <stop offset="0%" stop-color="#ffffff"/>
+                        <stop offset="50%" stop-color="#a1a1aa"/>
+                        <stop offset="100%" stop-color="#52525b"/>
                     </linearGradient>
                     <linearGradient id="introFacetTop" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#38bdf8"/>
-                        <stop offset="100%" stop-color="#0284c7"/>
+                        <stop offset="0%" stop-color="#ffffff"/>
+                        <stop offset="100%" stop-color="#d4d4d8"/>
                     </linearGradient>
                     <linearGradient id="introFacetLeft" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#6366f1"/>
-                        <stop offset="100%" stop-color="#4338ca"/>
+                        <stop offset="0%" stop-color="#a1a1aa"/>
+                        <stop offset="100%" stop-color="#52525b"/>
                     </linearGradient>
                     <linearGradient id="introFacetRight" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#a855f7"/>
-                        <stop offset="100%" stop-color="#7e22ce"/>
+                        <stop offset="0%" stop-color="#71717a"/>
+                        <stop offset="100%" stop-color="#27272a"/>
                     </linearGradient>
                 </defs>
                 <rect x="1" y="1" width="38" height="38" rx="11" fill="url(#introBgGrad)" stroke="url(#introStrokeGrad)" stroke-width="1.3"/>
@@ -196,26 +196,26 @@ try {
                 <svg class="brand-logo-svg" width="38" height="38" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <linearGradient id="brandBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#1e1b4b"/>
-                            <stop offset="50%" stop-color="#0f172a"/>
-                            <stop offset="100%" stop-color="#082f49"/>
+                            <stop offset="0%" stop-color="#27272a"/>
+                            <stop offset="50%" stop-color="#18181b"/>
+                            <stop offset="100%" stop-color="#09090b"/>
                         </linearGradient>
                         <linearGradient id="brandStrokeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#38bdf8"/>
-                            <stop offset="50%" stop-color="#818cf8"/>
-                            <stop offset="100%" stop-color="#c084fc"/>
+                            <stop offset="0%" stop-color="#ffffff"/>
+                            <stop offset="50%" stop-color="#a1a1aa"/>
+                            <stop offset="100%" stop-color="#52525b"/>
                         </linearGradient>
                         <linearGradient id="facetTop" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#38bdf8"/>
-                            <stop offset="100%" stop-color="#0284c7"/>
+                            <stop offset="0%" stop-color="#ffffff"/>
+                            <stop offset="100%" stop-color="#d4d4d8"/>
                         </linearGradient>
                         <linearGradient id="facetLeft" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#6366f1"/>
-                            <stop offset="100%" stop-color="#4338ca"/>
+                            <stop offset="0%" stop-color="#a1a1aa"/>
+                            <stop offset="100%" stop-color="#52525b"/>
                         </linearGradient>
                         <linearGradient id="facetRight" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#a855f7"/>
-                            <stop offset="100%" stop-color="#7e22ce"/>
+                            <stop offset="0%" stop-color="#71717a"/>
+                            <stop offset="100%" stop-color="#27272a"/>
                         </linearGradient>
                     </defs>
                     <!-- Base Squircle -->
