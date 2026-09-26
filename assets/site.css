@@ -327,7 +327,125 @@ main.container {
     transform: translateY(-1px);
 }
 
-/* Header SFX Audio Toggle */
+/* ============================================================
+   LIVE QUEUE COUNTER BADGE
+   ============================================================ */
+.queue-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 36px;
+    padding: 0 10px 0 9px;
+    background: rgba(18, 18, 22, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: var(--radius-full);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), var(--glass-specular);
+    cursor: default;
+    user-select: none;
+    white-space: nowrap;
+    line-height: 1;
+    font-size: 12px;
+    font-family: ui-monospace, 'SF Mono', 'Fira Code', monospace;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.queue-badge:hover {
+    border-color: rgba(255, 255, 255, 0.22);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55), 0 0 14px rgba(255, 255, 255, 0.06);
+    transform: translateY(-1px);
+}
+
+/* Icon wrapper */
+.queue-badge-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    transition: color 0.25s ease;
+    flex: none;
+}
+
+/* Text label */
+.queue-badge-label {
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+    transition: color 0.25s ease;
+}
+
+/* Numeric count — always shown */
+.queue-badge-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 5px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    color: var(--text-muted);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Pulsing dot — only visible when active */
+.queue-badge-pulse {
+    display: none;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    flex: none;
+    animation: queuePulseDot 1.6s ease-in-out infinite;
+}
+@keyframes queuePulseDot {
+    0%, 100% { opacity: 1; transform: scale(1);    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
+    50%       { opacity: 0.6; transform: scale(0.78); box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.08); }
+}
+
+/* ── Active state: jobs present ── */
+.queue-badge--active {
+    border-color: rgba(16, 185, 129, 0.40);
+    background: rgba(16, 185, 129, 0.07);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), 0 0 18px rgba(16, 185, 129, 0.15);
+    color: #34d399;
+}
+.queue-badge--active:hover {
+    border-color: rgba(16, 185, 129, 0.65);
+    box-shadow: 0 6px 22px rgba(0, 0, 0, 0.55), 0 0 28px rgba(16, 185, 129, 0.22);
+}
+.queue-badge--active .queue-badge-icon { color: #10b981; }
+.queue-badge--active .queue-badge-label { color: #34d399; }
+.queue-badge--active .queue-badge-count {
+    background: rgba(16, 185, 129, 0.18);
+    border-color: rgba(16, 185, 129, 0.45);
+    color: #34d399;
+}
+.queue-badge--active .queue-badge-pulse { display: inline-block; }
+
+/* ── Idle state: no jobs ── */
+.queue-badge--idle {
+    opacity: 0.65;
+}
+.queue-badge--idle .queue-badge-count {
+    color: var(--text-dim);
+}
+
+/* Responsive: hide label text on very small screens */
+@media (max-width: 520px) {
+    .queue-badge-label { display: none; }
+    .queue-badge { padding: 0 8px; gap: 5px; }
+}
+
+
 .header-sfx-btn {
     display: inline-flex !important;
     align-items: center !important;
@@ -4683,11 +4801,379 @@ body.delete-modal-open {
 }
 
 /* ============================================================
+   SETTINGS PANEL — Gear Icon + Dropdown
+   ============================================================ */
+
+/* Gear button */
+.settings-gear-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(18, 18, 22, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: var(--radius-full);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), var(--glass-specular);
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    flex: none;
+}
+.settings-gear-btn:hover {
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55), 0 0 14px rgba(255, 255, 255, 0.08);
+}
+.settings-gear-btn[aria-expanded="true"] {
+    border-color: rgba(52, 211, 153, 0.45);
+    background: rgba(16, 185, 129, 0.08);
+    color: #34d399;
+}
+.settings-gear-icon {
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    flex: none;
+}
+.settings-gear-icon.is-spinning {
+    transform: rotate(90deg);
+}
+
+/* Backdrop */
+.settings-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 99990;
+    background: transparent;
+}
+
+/* Panel */
+.settings-panel {
+    position: fixed;
+    z-index: 99995;
+    width: 300px;
+    max-width: calc(100vw - 24px);
+    background: rgba(12, 12, 16, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    transform: translateY(-6px) scale(0.97);
+    opacity: 0;
+    transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+.settings-panel.is-open {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: all;
+}
+
+.settings-panel-inner {
+    padding: 0;
+    overflow: hidden;
+    border-radius: 14px;
+}
+
+/* Panel header */
+.settings-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.02);
+}
+.settings-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.7);
+}
+.settings-panel-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    padding: 0;
+}
+.settings-panel-close:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+}
+
+/* Sections */
+.settings-section {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.settings-section:last-of-type {
+    border-bottom: none;
+}
+.settings-section-label {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: rgba(255, 255, 255, 0.45);
+    margin-bottom: 10px;
+}
+.settings-section-sub {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin: -6px 0 10px;
+    line-height: 1.5;
+}
+
+/* AUTO badge */
+.settings-auto-badge {
+    font-size: 8.5px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    padding: 1px 5px;
+    border-radius: 4px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #34d399;
+    margin-left: 2px;
+}
+
+/* SFX toggle row */
+.settings-sfx-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+.settings-sfx-toggle:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.14);
+}
+.settings-sfx-toggle.is-muted {
+    opacity: 0.6;
+}
+.settings-sfx-toggle .sfx-btn-icon {
+    font-size: 18px;
+    color: #34d399;
+    flex: none;
+    transition: color 0.2s ease;
+}
+.settings-sfx-toggle.is-muted .sfx-btn-icon { color: var(--text-dim); }
+.settings-sfx-label {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex: 1;
+    min-width: 0;
+}
+.settings-sfx-label .sfx-btn-text {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #ffffff;
+}
+.settings-sfx-sub {
+    font-size: 10.5px;
+    color: var(--text-dim);
+}
+
+/* SFX toggle track (pill) */
+.settings-toggle-track {
+    position: relative;
+    width: 36px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    flex: none;
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+.settings-sfx-toggle:not(.is-muted) .settings-toggle-track {
+    background: rgba(16, 185, 129, 0.3);
+    border-color: rgba(16, 185, 129, 0.5);
+}
+.settings-toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--text-dim);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
+}
+.settings-sfx-toggle:not(.is-muted) .settings-toggle-thumb {
+    transform: translateX(16px);
+    background: #34d399;
+}
+
+/* Graphics presets grid */
+.settings-gfx-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-bottom: 10px;
+}
+.gfx-preset-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px 4px 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    text-align: center;
+    color: var(--text-dim);
+}
+.gfx-preset-btn:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.18);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+.gfx-preset-btn.is-active {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.50);
+    color: #34d399;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.18);
+}
+.gfx-preset-icon {
+    font-size: 14px;
+    line-height: 1;
+    display: block;
+    transition: transform 0.2s ease;
+}
+.gfx-preset-btn:hover .gfx-preset-icon,
+.gfx-preset-btn.is-active .gfx-preset-icon {
+    transform: scale(1.15);
+}
+.gfx-preset-name {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+.gfx-preset-desc {
+    font-size: 8px;
+    color: inherit;
+    opacity: 0.65;
+    line-height: 1.3;
+    display: block;
+}
+
+/* Detail text */
+.settings-gfx-detail {
+    font-size: 10.5px;
+    color: var(--text-dim);
+    line-height: 1.55;
+    min-height: 1em;
+    transition: opacity 0.2s ease;
+}
+
+/* Device info row */
+.settings-device-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    padding: 10px 16px 12px;
+    background: rgba(255, 255, 255, 0.018);
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    font-size: 10px;
+    color: var(--text-dim);
+    line-height: 1.5;
+}
+.settings-device-row svg {
+    flex: none;
+    margin-top: 1px;
+}
+
+/* ============================================================
+   GFX HTML-CLASS OVERRIDES
+   Applied by settings panel to <html> element:
+   html.gfx-lite  → disable animations, reduce blur
+   html.gfx-off   → disable ambient glows + all animations
+   ============================================================ */
+
+/* Lite mode */
+html.gfx-lite .ambient-glow,
+html.gfx-off  .ambient-glow  { display: none; }
+
+html.gfx-lite .intro-ring,
+html.gfx-lite .intro-aura,
+html.gfx-lite .intro-spark,
+html.gfx-lite .telemetry-led,
+html.gfx-off  .intro-ring,
+html.gfx-off  .intro-aura,
+html.gfx-off  .intro-spark,
+html.gfx-off  .telemetry-led { animation: none !important; }
+
+html.gfx-lite .intro-aura,
+html.gfx-off  .intro-aura    { filter: none !important; opacity: 0.3; }
+
+html.gfx-lite .intro-scanlines,
+html.gfx-off  .intro-scanlines { display: none; }
+
+html.gfx-lite .intro-splash,
+html.gfx-off  .intro-splash    {
+    transition: opacity 0.3s ease !important;
+}
+html.gfx-lite .intro-splash.is-dismissing,
+html.gfx-off  .intro-splash.is-dismissing {
+    filter: none !important;
+    transform: none !important;
+}
+
+/* Off mode: also kill all pulsing badges/dots */
+html.gfx-off .queue-badge-pulse,
+html.gfx-off .htb-dot,
+html.gfx-off .section-tag-dot,
+html.gfx-off .robot-indicator-pulse { animation: none !important; }
+
+/* Responsive: right-align panel on small screens */
+@media (max-width: 480px) {
+    .settings-panel {
+        width: calc(100vw - 16px);
+        left: 8px !important;
+        right: 8px !important;
+    }
+}
+
+/* ============================================================
    CYBER SNAKE / POINTER TRAIL ANIMATION
    ============================================================ */
 .pointer-snake-canvas {
     position: fixed;
     top: 0;
+
     left: 0;
     width: 100vw;
     height: 100vh;

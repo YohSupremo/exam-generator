@@ -660,6 +660,42 @@
   refreshActiveRows();
   setInterval(refreshActiveRows, 4000);
 
+  /* ── Live Queue Counter Badge ─────────────────────────────────────── */
+  var queueBadgeEl    = document.getElementById("queue-badge");
+  var queueCountEl    = document.getElementById("queue-badge-count");
+  var queuePulseEl    = document.getElementById("queue-badge-pulse");
+  var lastQueueTotal  = -1; // track to avoid unnecessary DOM updates
+
+  function updateQueueBadge() {
+    fetch("api/queue.php")
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (!res || !res.ok) return;
+        var total   = res.total   || 0;
+        var queued  = res.queued  || 0;
+        var running = res.running || 0;
+
+        if (total === lastQueueTotal) return; // no change, skip repaint
+        lastQueueTotal = total;
+
+        if (queueCountEl) queueCountEl.textContent = total;
+        if (queueBadgeEl) {
+          queueBadgeEl.classList.toggle("queue-badge--active", total > 0);
+          queueBadgeEl.classList.toggle("queue-badge--idle",   total === 0);
+          var tip = total > 0
+            ? total + " job" + (total !== 1 ? "s" : "") + " in queue"
+              + (running > 0 ? " (" + running + " running)" : "")
+            : "No jobs in queue";
+          queueBadgeEl.title = tip;
+        }
+      })
+      .catch(function () { /* transient, ignore */ });
+  }
+
+  // Initial fetch + piggyback on the 4-second active-row refresh
+  updateQueueBadge();
+  setInterval(updateQueueBadge, 4000);
+
   const backendEl = document.getElementById("backend-status");
   var pingAttempts = 0;
   var pingTimer = null;
@@ -892,6 +928,7 @@
       .then(function (res) {
         renderBackend(!!(res.opencode && res.php), true);
         if (res.quota) updateQuotaUI(res);
+        updateQueueBadge(); // keep queue count fresh on every ping
       })
       .catch(function () {
         pingAttempts++;
@@ -1565,7 +1602,7 @@ window.showStudioToast = showStudioToast;
     // Global SFX toggle handler & tactile click feedback on all interactive elements
     document.addEventListener("click", function (e) {
       // 1. Toggle SFX if clicking any SFX button
-      var sfxToggle = e.target.closest(".robot-sfx-toggle, #robot-sfx-btn, #header-sfx-btn");
+      var sfxToggle = e.target.closest(".robot-sfx-toggle, #robot-sfx-btn, #settings-sfx-btn");
       if (sfxToggle) {
         e.preventDefault();
         e.stopPropagation();
@@ -1586,30 +1623,253 @@ window.showStudioToast = showStudioToast;
   } // close initRobotConsole
 
   /* ============================================================
+     SETTINGS PANEL — Gear Icon + Graphics Quality Controller
+     ============================================================ */
+  (function initSettingsPanel() {
+
+    /* ── Graphics preset definitions ──────────────────────────────────────── */
+    var GFX_PRESETS = {
+      ultra: {
+        label: "Ultra",
+        detail: "Full cursor trail (14 segments), glow shadows, ambient blur, all animations enabled.",
+        trailEnabled: true,
+        trailLite: false,
+        ambientEnabled: true,
+        animationsEnabled: true,
+        dprCap: 1.5
+      },
+      high: {
+        label: "High",
+        detail: "Cursor trail (8 segments), no glow shadows, full ambient & animations.",
+        trailEnabled: true,
+        trailLite: true,
+        ambientEnabled: true,
+        animationsEnabled: true,
+        dprCap: 1
+      },
+      lite: {
+        label: "Lite",
+        detail: "No cursor trail. Reduced ambient blur. Splash animations simplified.",
+        trailEnabled: false,
+        trailLite: true,
+        ambientEnabled: true,
+        animationsEnabled: false,
+        dprCap: 1
+      },
+      off: {
+        label: "Off",
+        detail: "All visual effects disabled. Best for very low-end or shared devices.",
+        trailEnabled: false,
+        trailLite: true,
+        ambientEnabled: false,
+        animationsEnabled: false,
+        dprCap: 1
+      }
+    };
+
+    /* ── Auto-detect best preset for this device ───────────────────────────── */
+    function detectBestPreset() {
+      var cores = navigator.hardwareConcurrency || 4;
+      var mem   = navigator.deviceMemory        || 4; // GB (Chromium only)
+      var touch = window.matchMedia && window.matchMedia("(hover: none)").matches;
+      var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (prefersReduced || touch)                   return "lite";
+      if (cores <= 2 || mem <= 1)                    return "off";
+      if (cores <= 4 || mem <= 2)                    return "lite";
+      if (cores <= 6 || mem <= 4)                    return "high";
+      return "ultra";
+    }
+
+    function deviceLabel() {
+      var cores = navigator.hardwareConcurrency || "?";
+      var mem   = navigator.deviceMemory != null ? navigator.deviceMemory + " GB RAM" : "";
+      var touch = window.matchMedia && window.matchMedia("(hover: none)").matches ? "· Touch device" : "";
+      return cores + " CPU cores" + (mem ? " · " + mem : "") + (touch ? " " + touch : "");
+    }
+
+    /* ── Persist & load ────────────────────────────────────────────────────── */
+    var GFX_KEY = "synthexam_gfx_preset";
+    var currentPreset = null;
+
+    function loadStoredPreset() {
+      try {
+        var stored = localStorage.getItem(GFX_KEY);
+        if (stored && GFX_PRESETS[stored]) return stored;
+      } catch (e) {}
+      return null;
+    }
+
+    function savePreset(preset) {
+      try { localStorage.setItem(GFX_KEY, preset); } catch (e) {}
+    }
+
+    /* ── Apply preset — mutates CSS classes on <html> ──────────────────────── */
+    function applyPreset(preset, isManual) {
+      if (!GFX_PRESETS[preset]) return;
+      currentPreset = preset;
+      var cfg = GFX_PRESETS[preset];
+
+      var html = document.documentElement;
+      // Remove all existing gfx classes
+      html.classList.remove("gfx-ultra", "gfx-high", "gfx-lite", "gfx-off");
+      html.classList.add("gfx-" + preset);
+
+      // Handle canvas trail
+      var canvas = document.getElementById("pointer-snake-canvas");
+      if (canvas) {
+        canvas.style.display = cfg.trailEnabled ? "" : "none";
+      }
+
+      // Update detail text
+      var detailEl = document.getElementById("gfx-detail-text");
+      if (detailEl) detailEl.textContent = cfg.detail;
+
+      // Update radio buttons
+      document.querySelectorAll(".gfx-preset-btn").forEach(function (btn) {
+        var active = btn.dataset.preset === preset;
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-checked", active ? "true" : "false");
+      });
+
+      // Show/hide AUTO badge
+      var autoBadge = document.getElementById("gfx-auto-badge");
+      if (autoBadge) autoBadge.style.display = isManual ? "none" : "";
+
+      if (isManual) {
+        savePreset(preset);
+        if (typeof showStudioToast === "function") {
+          showStudioToast("Graphics: " + cfg.label, "success", 1800);
+        }
+      }
+    }
+
+    /* ── Panel open / close ────────────────────────────────────────────────── */
+    var panelEl    = document.getElementById("settings-panel");
+    var backdropEl = document.getElementById("settings-backdrop");
+    var gearBtn    = document.getElementById("settings-gear-btn");
+    var closeBtn   = document.getElementById("settings-panel-close");
+    var isOpen     = false;
+
+    function openPanel() {
+      if (!panelEl) return;
+      isOpen = true;
+      panelEl.hidden   = false;
+      backdropEl.hidden = false;
+      if (gearBtn) gearBtn.setAttribute("aria-expanded", "true");
+      // Animate gear icon spin
+      var icon = gearBtn && gearBtn.querySelector(".settings-gear-icon");
+      if (icon) icon.classList.add("is-spinning");
+      // Position panel below gear button
+      if (gearBtn && panelEl) {
+        var rect = gearBtn.getBoundingClientRect();
+        panelEl.style.top   = (rect.bottom + 8) + "px";
+        panelEl.style.right = (window.innerWidth - rect.right) + "px";
+      }
+      setTimeout(function () { panelEl.classList.add("is-open"); }, 10);
+    }
+
+    function closePanel() {
+      if (!panelEl) return;
+      isOpen = false;
+      panelEl.classList.remove("is-open");
+      if (gearBtn) gearBtn.setAttribute("aria-expanded", "false");
+      var icon = gearBtn && gearBtn.querySelector(".settings-gear-icon");
+      if (icon) icon.classList.remove("is-spinning");
+      setTimeout(function () {
+        panelEl.hidden    = true;
+        backdropEl.hidden = true;
+      }, 220);
+    }
+
+    function togglePanel() {
+      if (isOpen) closePanel(); else openPanel();
+    }
+
+    if (gearBtn)   gearBtn.addEventListener("click", function (e) { e.stopPropagation(); togglePanel(); });
+    if (closeBtn)  closeBtn.addEventListener("click", closePanel);
+    if (backdropEl) backdropEl.addEventListener("click", closePanel);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && isOpen) closePanel();
+    });
+
+    /* ── Preset button clicks ──────────────────────────────────────────────── */
+    var grid = document.getElementById("gfx-preset-grid");
+    if (grid) {
+      grid.addEventListener("click", function (e) {
+        var btn = e.target.closest(".gfx-preset-btn");
+        if (!btn) return;
+        applyPreset(btn.dataset.preset, true);
+      });
+    }
+
+    /* ── Boot: apply stored or auto preset ─────────────────────────────────── */
+    var stored     = loadStoredPreset();
+    var autoPreset = detectBestPreset();
+    var bootPreset = stored || autoPreset;
+
+    applyPreset(bootPreset, !!stored); // isManual=true only if stored (hides AUTO badge)
+
+    // Populate device info
+    var devInfoEl = document.getElementById("settings-device-info");
+    if (devInfoEl) {
+      devInfoEl.textContent = deviceLabel() + " — Auto: " + GFX_PRESETS[autoPreset].label;
+    }
+
+    // Expose for external use
+    window.synthExamGfxPreset = bootPreset;
+    window.setSynthExamGfx = function (preset) { applyPreset(preset, true); };
+
+  })();
+
+
+
+  /* ============================================================
      CYBER SNAKE / POINTER TRAIL ANIMATION  (performance-optimised)
      ============================================================ */
   function initPointerSnake() {
     var canvas = document.getElementById("pointer-snake-canvas");
     if (!canvas) return;
 
-    // Skip on touch / coarse-pointer devices (already handled by CSS but guard here too)
+    // Skip on touch / coarse-pointer devices
     if (window.matchMedia && window.matchMedia("(hover: none)").matches) return;
 
-    // ── Low-end device detection ─────────────────────────────────────────────
-    // hardwareConcurrency ≤ 2 or deviceMemory ≤ 1 GB → disable trail entirely
-    // hardwareConcurrency ≤ 4 → lite mode (fewer segments, no glow shadow)
-    var cores  = navigator.hardwareConcurrency || 4;
-    var mem    = navigator.deviceMemory        || 4;  // GB, only in Chromium
+    // ── Resolve mode from settings panel preset ───────────────────────────
+    // Priority: user-saved preset → hardware auto-detect floor
+    var savedPreset = null;
+    try { savedPreset = localStorage.getItem("synthexam_gfx_preset"); } catch (e) {}
+
+    var cores = navigator.hardwareConcurrency || 4;
+    var mem   = navigator.deviceMemory        || 4;
+
+    // Hard floor: truly incapable hardware — never run regardless of preset
     if (cores <= 2 || mem <= 1) {
       canvas.style.display = "none";
-      return;   // Don't even start the RAF loop
+      return;
     }
-    var isLite = (cores <= 4 || mem <= 2);
+
+    // Map saved preset → behaviour flags
+    var trailEnabled = true;
+    var isLite       = false;
+
+    if (savedPreset === "off" || savedPreset === "lite") {
+      // These presets disable the trail; applyPreset already hid the canvas,
+      // but re-confirm here for robustness on cold-load ordering.
+      canvas.style.display = "none";
+      return;
+    } else if (savedPreset === "high") {
+      isLite = true;   // 8 segments, DPR=1
+    } else if (savedPreset === "ultra") {
+      isLite = false;  // full 14 segments, DPR 1.5
+    } else {
+      // No saved preset — fall back to hardware heuristic
+      isLite = (cores <= 6 || mem <= 4);
+    }
 
     var ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // ── Canvas sizing – cap DPR at 1.5 to halve pixel-fill on hi-DPI screens ─
+    // ── Canvas sizing – cap DPR ───────────────────────────────────────────
     var width, height;
     var MAX_DPR = isLite ? 1 : 1.5;
 
@@ -1626,7 +1886,6 @@ window.showStudioToast = showStudioToast;
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
-    // Fewer segments in lite mode (saves ~50% of all per-segment math)
     var NUM_SEGMENTS   = isLite ? 8 : 14;
     var MAX_SEGMENT_DIST = 5;
     var segments = [];
@@ -1645,11 +1904,9 @@ window.showStudioToast = showStudioToast;
     var idleTimer     = null;
     var rafId         = null;
 
-    // ── Throttled mousemove: only record position, skip duplicate coords ─────
     var lastMX = -200, lastMY = -200;
     window.addEventListener("mousemove", function (e) {
       var nx = e.clientX, ny = e.clientY;
-      // Ignore sub-pixel jitter
       if (Math.abs(nx - lastMX) < 1 && Math.abs(ny - lastMY) < 1) return;
       lastMX = mouseX = nx;
       lastMY = mouseY = ny;
@@ -1665,7 +1922,6 @@ window.showStudioToast = showStudioToast;
       if (!isVisible) {
         isVisible = true;
         canvas.classList.add("is-active");
-        // Resume RAF loop when mouse re-enters
         if (!rafId) rafId = requestAnimationFrame(updateSnake);
       }
 
@@ -1694,7 +1950,6 @@ window.showStudioToast = showStudioToast;
 
     window.addEventListener("mousedown", function () { clickPulse = 1.0; });
 
-    // ── Pre-computed per-segment constants (avoid per-frame division) ─────────
     var SEG_T     = new Float32Array(NUM_SEGMENTS);
     var SEG_INV_T = new Float32Array(NUM_SEGMENTS);
     for (var k = 0; k < NUM_SEGMENTS; k++) {
@@ -1703,9 +1958,8 @@ window.showStudioToast = showStudioToast;
     }
 
     function updateSnake() {
-      rafId = null; // cleared — will be re-scheduled below if still active
+      rafId = null;
 
-      // ── State updates always run (even when not drawing) so fades finish ──
       if (isVisible && isInitialized) {
         segments[0].x += (mouseX - segments[0].x) * 0.75;
         segments[0].y += (mouseY - segments[0].y) * 0.75;
@@ -1727,7 +1981,6 @@ window.showStudioToast = showStudioToast;
         hoverProgress += ((isHovering ? 1 : 0) - hoverProgress) * 0.15;
       }
 
-      // Idle alpha fades even after mouse leaves so the trail disappears cleanly
       if (isIdle || !isVisible) {
         idleAlpha = Math.max(0, idleAlpha - 0.025);
       } else {
@@ -1736,10 +1989,9 @@ window.showStudioToast = showStudioToast;
 
       if (clickPulse > 0.01) { clickPulse *= 0.88; } else { clickPulse = 0; }
 
-      // ── If fully faded AND mouse left — stop the loop entirely ───────────
       if (idleAlpha < 0.005 && !isVisible) {
         ctx.clearRect(0, 0, width, height);
-        return; // No reschedule — RAF stays dormant until next mouseenter
+        return;
       }
 
       ctx.clearRect(0, 0, width, height);
@@ -1749,12 +2001,9 @@ window.showStudioToast = showStudioToast;
         var g = Math.round(211 + (185 - 211) * hoverProgress);
         var b = Math.round(153 + (129 - 153) * hoverProgress);
 
-        // ── 1. Outer comet trail – single gradient-like path per segment ─────
-        //    No save/restore in loop. shadowBlur intentionally REMOVED from
-        //    the segment loop (biggest GPU drain). Shadow only on the nucleus.
         ctx.lineCap  = "round";
         ctx.lineJoin = "round";
-        ctx.shadowBlur = 0; // ensure no leftover shadow state
+        ctx.shadowBlur = 0;
 
         for (var j = 0; j < NUM_SEGMENTS - 1; j++) {
           var inv_t      = SEG_INV_T[j];
@@ -1769,7 +2018,6 @@ window.showStudioToast = showStudioToast;
           ctx.stroke();
         }
 
-        // ── 2. Inner white-hot core (lite mode skips this pass) ────────────
         if (!isLite) {
           for (var m = 0; m < NUM_SEGMENTS - 1; m++) {
             var cinv_t    = SEG_INV_T[m];
@@ -1785,7 +2033,6 @@ window.showStudioToast = showStudioToast;
           }
         }
 
-        // ── 3. Nucleus — shadow only here (one draw, not 28) ───────────────
         ctx.beginPath();
         ctx.arc(segments[0].x, segments[0].y, 2.5 + clickPulse * 1.5, 0, Math.PI * 2);
         ctx.fillStyle  = "rgba(255,255,255," + (0.98 * idleAlpha) + ")";
@@ -1794,9 +2041,8 @@ window.showStudioToast = showStudioToast;
           ctx.shadowColor = "#ffffff";
         }
         ctx.fill();
-        ctx.shadowBlur = 0; // reset so it doesn't bleed into next frame
+        ctx.shadowBlur = 0;
 
-        // ── 4. Click shockwave (lite mode skips) ──────────────────────────
         if (!isLite && clickPulse > 0.05) {
           var shockRadius = 5 + (1 - clickPulse) * 22;
           ctx.beginPath();
@@ -1810,8 +2056,6 @@ window.showStudioToast = showStudioToast;
       rafId = requestAnimationFrame(updateSnake);
     }
 
-    // Start only on first real mouse move (listener above) to avoid idle RAF
-    // For immediate first frame if cursor is already on page:
     if (isVisible) rafId = requestAnimationFrame(updateSnake);
   }
 

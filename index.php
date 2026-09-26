@@ -4,6 +4,23 @@ require_once __DIR__ . '/lib/db.php';
 
 $userToken = get_or_create_user_token();
 $exams = exam_list($userToken);
+
+// Compute initial queue stats for the navbar badge (counts all users, not just current)
+$initQueueTotal   = 0;
+$initQueueQueued  = 0;
+$initQueueRunning = 0;
+try {
+    $qRows = db()->query(
+        "SELECT status, COUNT(*) as cnt FROM exams
+         WHERE status IN ('queued','running') GROUP BY status"
+    )->fetchAll();
+    foreach ($qRows as $qr) {
+        if ($qr['status'] === 'queued')  $initQueueQueued  = (int)$qr['cnt'];
+        if ($qr['status'] === 'running') $initQueueRunning = (int)$qr['cnt'];
+    }
+    $initQueueTotal = $initQueueQueued + $initQueueRunning;
+} catch (Throwable $e) {}
+
 $hasDirectAi = (defined('GROQ_API_KEY') && GROQ_API_KEY !== '')
     || (defined('OPENROUTER_API_KEY') && OPENROUTER_API_KEY !== '')
     || (defined('GEMINI_API_KEY') && GEMINI_API_KEY !== '');
@@ -119,11 +136,47 @@ $initModel = htmlspecialchars(!empty($initialQuota['model']) ? $initialQuota['mo
 html.intro-skipped #intro-splash { display: none !important; }
 </style>
 <script>
-try {
-    if (sessionStorage.getItem('aem_intro_seen') && !window.location.search.includes('intro=1')) {
-        document.documentElement.classList.add('intro-skipped');
+/* ── Early Graphics Class — runs synchronously before any CSS/JS paint ──
+   Stamps gfx-ultra / gfx-high / gfx-lite / gfx-off onto <html> immediately
+   so CSS suppression rules (ambient-glow, animations, etc.) apply on frame 1.
+   Mirror of the detection logic in site.js initSettingsPanel / detectBestPreset.
+*/
+(function () {
+  try {
+    var GFX_KEY = 'synthexam_gfx_preset';
+    var VALID   = { ultra: 1, high: 1, lite: 1, off: 1 };
+
+    /* 1. Check for user-saved preference */
+    var stored = null;
+    try { stored = localStorage.getItem(GFX_KEY); } catch (e) {}
+
+    var preset = (stored && VALID[stored]) ? stored : null;
+
+    /* 2. If no stored pref, auto-detect from hardware */
+    if (!preset) {
+      var cores = navigator.hardwareConcurrency || 4;
+      var mem   = navigator.deviceMemory        || 4; // GB (Chromium only)
+      var touch = window.matchMedia && window.matchMedia('(hover: none)').matches;
+      var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduced || touch)        preset = 'lite';
+      else if (cores <= 2 || mem <= 1) preset = 'off';
+      else if (cores <= 4 || mem <= 2) preset = 'lite';
+      else if (cores <= 6 || mem <= 4) preset = 'high';
+      else                             preset = 'ultra';
     }
-} catch (e) {}
+
+    /* 3. Stamp class on <html> before first paint */
+    var html = document.documentElement;
+    html.classList.remove('gfx-ultra', 'gfx-high', 'gfx-lite', 'gfx-off');
+    html.classList.add('gfx-' + preset);
+
+    /* 4. Intro-skip check (kept together to save a separate script tag) */
+    if (sessionStorage.getItem('aem_intro_seen') && !window.location.search.includes('intro=1')) {
+      html.classList.add('intro-skipped');
+    }
+  } catch (e) {}
+})();
 </script>
 </head>
 <body>
@@ -435,38 +488,173 @@ try {
             </a>
         </nav>
 
-        <!-- Right side -->
-        <div class="header-actions">
-            <!-- Professional Single-Line Header Token Badge: Remaining / Limit -->
-            <div class="header-token-badge" id="header-token-badge" title="AI Rate Limit: <?= $initRemTokens ?> / <?= $initLimTokens ?> TPM">
-                <span class="htb-icon-wrap" aria-hidden="true">
-                    <svg class="htb-bolt" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            <!-- Right side -->
+            <div class="header-actions">
+                <!-- Professional Single-Line Header Token Badge: Remaining / Limit -->
+                <div class="header-token-badge" id="header-token-badge" title="AI Rate Limit: <?= $initRemTokens ?> / <?= $initLimTokens ?> TPM">
+                    <span class="htb-icon-wrap" aria-hidden="true">
+                        <svg class="htb-bolt" width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                        </svg>
+                    </span>
+                    <span class="htb-remaining" id="htb-remaining"><?= $initRemTokens ?></span>
+                    <span class="htb-sep">/</span>
+                    <span class="htb-limit" id="htb-limit"><?= $initLimTokens ?></span>
+                    <span class="htb-unit">Tokens</span>
+                    <span class="htb-dot online" id="htb-dot" title="Engine online"></span>
+                </div>
+
+                <!-- Live Queue Counter Badge -->
+                <div class="queue-badge<?= $initQueueTotal > 0 ? ' queue-badge--active' : ' queue-badge--idle' ?>" id="queue-badge"
+                     title="<?= $initQueueTotal > 0 ? $initQueueTotal . ' job(s) in queue' : 'No jobs in queue' ?>">
+                    <span class="queue-badge-icon" aria-hidden="true">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="8" y1="6" x2="21" y2="6"/>
+                            <line x1="8" y1="12" x2="21" y2="12"/>
+                            <line x1="8" y1="18" x2="21" y2="18"/>
+                            <line x1="3" y1="6" x2="3.01" y2="6"/>
+                            <line x1="3" y1="12" x2="3.01" y2="12"/>
+                            <line x1="3" y1="18" x2="3.01" y2="18"/>
+                        </svg>
+                    </span>
+                    <span class="queue-badge-label">Queue</span>
+                    <span class="queue-badge-count" id="queue-badge-count"><?= $initQueueTotal ?></span>
+                    <span class="queue-badge-pulse" id="queue-badge-pulse" aria-hidden="true"></span>
+                </div>
+
+                <!-- Settings Gear Button -->
+                <button type="button" class="settings-gear-btn" id="settings-gear-btn"
+                        aria-label="Open settings" title="Settings"
+                        aria-haspopup="dialog" aria-expanded="false" aria-controls="settings-panel">
+                    <svg class="settings-gear-icon" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33
+                                 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33
+                                 l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2
+                                 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83
+                                 l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0
+                                 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4
+                                 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
                     </svg>
-                </span>
-                <span class="htb-remaining" id="htb-remaining"><?= $initRemTokens ?></span>
-                <span class="htb-sep">/</span>
-                <span class="htb-limit" id="htb-limit"><?= $initLimTokens ?></span>
-                <span class="htb-unit">Tokens</span>
-                <span class="htb-dot online" id="htb-dot" title="Engine online"></span>
+                </button>
+
+                <div class="backend-status" id="backend-status" style="display:none;"></div>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-nav">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </div>
 
-            <!-- Sticky Header Sound Effects Toggle (Always accessible) -->
-            <button type="button" class="header-sfx-btn robot-sfx-toggle" id="header-sfx-btn" aria-label="Toggle sound effects" title="Sound effects active (Click to mute)">
-                <span class="material-symbols-rounded sfx-btn-icon">volume_up</span>
-                <span class="sfx-btn-text">SFX: ON</span>
-            </button>
+        </div>
+    </div>
+</header>
 
-            <div class="backend-status" id="backend-status" style="display:none;"></div>
-            <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobile-nav">
-                <span></span>
-                <span></span>
-                <span></span>
+<!-- ===================== SETTINGS PANEL ===================== -->
+<div id="settings-panel" class="settings-panel" role="dialog" aria-modal="false" aria-label="Settings" hidden>
+    <div class="settings-panel-inner">
+
+        <!-- Header -->
+        <div class="settings-panel-header">
+            <div class="settings-panel-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0
+                             0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65
+                             1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65
+                             1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82
+                             l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2
+                             2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83
+                             2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65
+                             1.65 0 0 0-1.51 1z"/>
+                </svg>
+                Settings
+            </div>
+            <button class="settings-panel-close" id="settings-panel-close" aria-label="Close settings">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
             </button>
         </div>
 
+        <!-- Sound FX -->
+        <div class="settings-section">
+            <div class="settings-section-label">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                </svg>
+                Sound Effects
+            </div>
+            <button type="button" class="settings-sfx-toggle robot-sfx-toggle" id="settings-sfx-btn"
+                    aria-label="Toggle sound effects">
+                <span class="material-symbols-rounded sfx-btn-icon" aria-hidden="true">volume_up</span>
+                <span class="settings-sfx-label">
+                    <span class="sfx-btn-text">SFX: ON</span>
+                    <span class="settings-sfx-sub">Tactile UI audio feedback</span>
+                </span>
+                <span class="settings-toggle-track" aria-hidden="true">
+                    <span class="settings-toggle-thumb"></span>
+                </span>
+            </button>
+        </div>
+
+        <!-- Graphics Quality -->
+        <div class="settings-section">
+            <div class="settings-section-label">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/>
+                    <line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+                Graphics Quality
+                <span class="settings-auto-badge" id="gfx-auto-badge">AUTO</span>
+            </div>
+            <p class="settings-section-sub">Controls cursor trail, background effects &amp; animations.</p>
+            <div class="settings-gfx-grid" id="gfx-preset-grid" role="radiogroup" aria-label="Graphics quality preset">
+                <button type="button" class="gfx-preset-btn" data-preset="ultra" role="radio" aria-checked="false" id="gfx-ultra">
+                    <span class="gfx-preset-icon" aria-hidden="true">✦</span>
+                    <span class="gfx-preset-name">Ultra</span>
+                    <span class="gfx-preset-desc">Full effects + glow</span>
+                </button>
+                <button type="button" class="gfx-preset-btn" data-preset="high" role="radio" aria-checked="false" id="gfx-high">
+                    <span class="gfx-preset-icon" aria-hidden="true">▲</span>
+                    <span class="gfx-preset-name">High</span>
+                    <span class="gfx-preset-desc">Trail, no shadows</span>
+                </button>
+                <button type="button" class="gfx-preset-btn" data-preset="lite" role="radio" aria-checked="false" id="gfx-lite">
+                    <span class="gfx-preset-icon" aria-hidden="true">◈</span>
+                    <span class="gfx-preset-name">Lite</span>
+                    <span class="gfx-preset-desc">Minimal animations</span>
+                </button>
+                <button type="button" class="gfx-preset-btn" data-preset="off" role="radio" aria-checked="false" id="gfx-off">
+                    <span class="gfx-preset-icon" aria-hidden="true">◻</span>
+                    <span class="gfx-preset-name">Off</span>
+                    <span class="gfx-preset-desc">No effects at all</span>
+                </button>
+            </div>
+            <div class="settings-gfx-detail" id="gfx-detail-text"></div>
+        </div>
+
+        <!-- Device info row -->
+        <div class="settings-device-row" id="settings-device-row">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/>
+                <line x1="12" y1="8" x2="12.01" y2="8"/>
+            </svg>
+            <span id="settings-device-info">Detecting device…</span>
+        </div>
+
     </div>
-</header>
+</div>
+<!-- Settings backdrop -->
+<div id="settings-backdrop" class="settings-backdrop" hidden></div>
+
 
 <!-- Mobile nav drawer -->
 <div class="mobile-nav" id="mobile-nav" role="navigation" aria-label="Mobile navigation">
