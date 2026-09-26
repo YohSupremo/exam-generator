@@ -104,11 +104,14 @@ body {
 .ambient-glow {
     position: fixed;
     border-radius: 50%;
-    filter: blur(140px);
+    /* Reduced from 140px — still looks great but far cheaper on GPU */
+    filter: blur(80px);
     pointer-events: none;
     z-index: 0;
     opacity: 0.5;
-    will-change: transform;
+    /* GPU-composite the element on its own layer; don't hint transform (no anim) */
+    will-change: filter;
+    contain: strict;
 }
 .ambient-top-left {
     top: -150px;
@@ -130,6 +133,11 @@ body {
     width: 800px;
     height: 800px;
     background: radial-gradient(circle, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+/* Hide expensive ambient glows when user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .ambient-glow { display: none; }
 }
 
 /* ============================================================
@@ -4696,5 +4704,47 @@ body.delete-modal-open {
 @media (hover: none) or (pointer: coarse) {
     .pointer-snake-canvas {
         display: none !important;
+    }
+}
+
+/* Disable trail on reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+    .pointer-snake-canvas {
+        display: none !important;
+    }
+}
+
+/* ============================================================
+   LOADING SPLASH — PERFORMANCE OVERRIDES FOR LOW-END DEVICES
+   prefers-reduced-motion: strip all spinning/pulsing animations
+   and heavy filter effects from the intro splash.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    /* Stop all spinning / pulsing keyframe animations on the splash */
+    .intro-ring,
+    .intro-aura,
+    .intro-spark,
+    .telemetry-led {
+        animation: none !important;
+    }
+
+    /* Remove the expensive blur filter on the aura */
+    .intro-aura {
+        filter: none !important;
+        opacity: 0.4;
+    }
+
+    /* Simplify dismiss transition — no blur + scale */
+    .intro-splash {
+        transition: opacity 0.3s ease !important;
+    }
+    .intro-splash.is-dismissing {
+        filter: none !important;
+        transform: none !important;
+    }
+
+    /* Hide scanlines — static gradient background repaint on every scroll */
+    .intro-scanlines {
+        display: none;
     }
 }

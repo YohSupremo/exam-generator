@@ -1586,54 +1586,73 @@ window.showStudioToast = showStudioToast;
   } // close initRobotConsole
 
   /* ============================================================
-     CYBER SNAKE / POINTER TRAIL ANIMATION
+     CYBER SNAKE / POINTER TRAIL ANIMATION  (performance-optimised)
      ============================================================ */
   function initPointerSnake() {
     var canvas = document.getElementById("pointer-snake-canvas");
     if (!canvas) return;
+
+    // Skip on touch / coarse-pointer devices (already handled by CSS but guard here too)
+    if (window.matchMedia && window.matchMedia("(hover: none)").matches) return;
+
+    // ── Low-end device detection ─────────────────────────────────────────────
+    // hardwareConcurrency ≤ 2 or deviceMemory ≤ 1 GB → disable trail entirely
+    // hardwareConcurrency ≤ 4 → lite mode (fewer segments, no glow shadow)
+    var cores  = navigator.hardwareConcurrency || 4;
+    var mem    = navigator.deviceMemory        || 4;  // GB, only in Chromium
+    if (cores <= 2 || mem <= 1) {
+      canvas.style.display = "none";
+      return;   // Don't even start the RAF loop
+    }
+    var isLite = (cores <= 4 || mem <= 2);
+
     var ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    if (window.matchMedia && window.matchMedia("(hover: none)").matches) return;
-
-    var width = window.innerWidth;
-    var height = window.innerHeight;
-    var dpr = window.devicePixelRatio || 1;
+    // ── Canvas sizing – cap DPR at 1.5 to halve pixel-fill on hi-DPI screens ─
+    var width, height;
+    var MAX_DPR = isLite ? 1 : 1.5;
 
     function resizeCanvas() {
-      width = window.innerWidth;
+      width  = window.innerWidth;
       height = window.innerHeight;
-      dpr = window.devicePixelRatio || 1;
-      canvas.width = Math.floor(width * dpr);
+      var dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
+      canvas.width  = Math.floor(width  * dpr);
       canvas.height = Math.floor(height * dpr);
-      canvas.style.width = width + "px";
+      canvas.style.width  = width  + "px";
       canvas.style.height = height + "px";
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     window.addEventListener("resize", resizeCanvas);
     resizeCanvas();
 
-    var NUM_SEGMENTS = 14;
-    var MAX_SEGMENT_DIST = 5; // Tightly bound so segments form a continuous, seamless comet stream
+    // Fewer segments in lite mode (saves ~50% of all per-segment math)
+    var NUM_SEGMENTS   = isLite ? 8 : 14;
+    var MAX_SEGMENT_DIST = 5;
     var segments = [];
     for (var s = 0; s < NUM_SEGMENTS; s++) {
-      segments.push({ x: -100, y: -100 });
+      segments.push({ x: -200, y: -200 });
     }
 
-    var mouseX = -100;
-    var mouseY = -100;
+    var mouseX = -200, mouseY = -200;
     var isInitialized = false;
-    var isVisible = false;
-    var isHovering = false;
+    var isVisible     = false;
+    var isHovering    = false;
     var hoverProgress = 0;
-    var clickPulse = 0;
-    var isIdle = false;
-    var idleAlpha = 1;
-    var idleTimer = null;
+    var clickPulse    = 0;
+    var isIdle        = false;
+    var idleAlpha     = 1;
+    var idleTimer     = null;
+    var rafId         = null;
 
+    // ── Throttled mousemove: only record position, skip duplicate coords ─────
+    var lastMX = -200, lastMY = -200;
     window.addEventListener("mousemove", function (e) {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
+      var nx = e.clientX, ny = e.clientY;
+      // Ignore sub-pixel jitter
+      if (Math.abs(nx - lastMX) < 1 && Math.abs(ny - lastMY) < 1) return;
+      lastMX = mouseX = nx;
+      lastMY = mouseY = ny;
 
       if (!isInitialized) {
         for (var i = 0; i < NUM_SEGMENTS; i++) {
@@ -1646,13 +1665,13 @@ window.showStudioToast = showStudioToast;
       if (!isVisible) {
         isVisible = true;
         canvas.classList.add("is-active");
+        // Resume RAF loop when mouse re-enters
+        if (!rafId) rafId = requestAnimationFrame(updateSnake);
       }
 
       isIdle = false;
       clearTimeout(idleTimer);
-      idleTimer = setTimeout(function () {
-        isIdle = true;
-      }, 1600);
+      idleTimer = setTimeout(function () { isIdle = true; }, 1600);
     }, { passive: true });
 
     document.addEventListener("mouseleave", function () {
@@ -1663,134 +1682,137 @@ window.showStudioToast = showStudioToast;
     document.addEventListener("mouseenter", function () {
       isVisible = true;
       canvas.classList.add("is-active");
+      if (!rafId) rafId = requestAnimationFrame(updateSnake);
     });
 
     document.addEventListener("mouseover", function (e) {
-      var target = e.target.closest("button, a, input, select, textarea, label, [role='button'], .card, .feature-acc-trigger, .dropzone, .terms-checkbox-custom, .count-pill");
+      var target = e.target.closest(
+        "button, a, input, select, textarea, label, [role='button'], .card, .feature-acc-trigger, .dropzone, .terms-checkbox-custom, .count-pill"
+      );
       isHovering = !!target;
     }, { passive: true });
 
-    window.addEventListener("mousedown", function () {
-      clickPulse = 1.0;
-    });
+    window.addEventListener("mousedown", function () { clickPulse = 1.0; });
+
+    // ── Pre-computed per-segment constants (avoid per-frame division) ─────────
+    var SEG_T     = new Float32Array(NUM_SEGMENTS);
+    var SEG_INV_T = new Float32Array(NUM_SEGMENTS);
+    for (var k = 0; k < NUM_SEGMENTS; k++) {
+      SEG_T[k]     = k / (NUM_SEGMENTS - 1);
+      SEG_INV_T[k] = 1 - SEG_T[k];
+    }
 
     function updateSnake() {
+      rafId = null; // cleared — will be re-scheduled below if still active
+
+      // ── State updates always run (even when not drawing) so fades finish ──
       if (isVisible && isInitialized) {
-        // Seg 0 follows mouse closely
         segments[0].x += (mouseX - segments[0].x) * 0.75;
         segments[0].y += (mouseY - segments[0].y) * 0.75;
 
-        // Snappy chain with max distance constraint so trail forms a solid, seamless stream
         for (var i = 1; i < NUM_SEGMENTS; i++) {
-          var followSpeed = 0.62;
-          segments[i].x += (segments[i - 1].x - segments[i].x) * followSpeed;
-          segments[i].y += (segments[i - 1].y - segments[i].y) * followSpeed;
+          segments[i].x += (segments[i - 1].x - segments[i].x) * 0.62;
+          segments[i].y += (segments[i - 1].y - segments[i].y) * 0.62;
 
-          // Clamp maximum elongation
-          var dx = segments[i].x - segments[i - 1].x;
-          var dy = segments[i].y - segments[i - 1].y;
+          var dx   = segments[i].x - segments[i - 1].x;
+          var dy   = segments[i].y - segments[i - 1].y;
           var dist = Math.sqrt(dx * dx + dy * dy);
           if (dist > MAX_SEGMENT_DIST) {
-            var ratio = MAX_SEGMENT_DIST / (dist || 1);
+            var ratio = MAX_SEGMENT_DIST / dist;
             segments[i].x = segments[i - 1].x + dx * ratio;
             segments[i].y = segments[i - 1].y + dy * ratio;
           }
         }
 
-        // Hover color progress interpolation
         hoverProgress += ((isHovering ? 1 : 0) - hoverProgress) * 0.15;
+      }
 
-        // Idle fading
-        if (isIdle) {
-          idleAlpha = Math.max(0, idleAlpha - 0.025);
-        } else {
-          idleAlpha = Math.min(1, idleAlpha + 0.08);
-        }
+      // Idle alpha fades even after mouse leaves so the trail disappears cleanly
+      if (isIdle || !isVisible) {
+        idleAlpha = Math.max(0, idleAlpha - 0.025);
+      } else {
+        idleAlpha = Math.min(1, idleAlpha + 0.08);
+      }
 
-        // Click ripple decay
-        if (clickPulse > 0.01) {
-          clickPulse *= 0.88;
-        } else {
-          clickPulse = 0;
-        }
+      if (clickPulse > 0.01) { clickPulse *= 0.88; } else { clickPulse = 0; }
 
+      // ── If fully faded AND mouse left — stop the loop entirely ───────────
+      if (idleAlpha < 0.005 && !isVisible) {
         ctx.clearRect(0, 0, width, height);
+        return; // No reschedule — RAF stays dormant until next mouseenter
+      }
 
-        if (idleAlpha > 0.005) {
-          // Pure emerald neon glow (no blue): rgb(52, 211, 153) -> rgb(16, 185, 129)
-          var r = Math.round(52 + (16 - 52) * hoverProgress);
-          var g = Math.round(211 + (185 - 211) * hoverProgress);
-          var b = Math.round(153 + (129 - 153) * hoverProgress);
+      ctx.clearRect(0, 0, width, height);
 
-          // 1. Tapered outer luminous comet trail (seamless stream, NO beaded circles)
-          for (var j = 0; j < NUM_SEGMENTS - 1; j++) {
-            var p0 = segments[j];
-            var p1 = segments[j + 1];
-            var t = j / (NUM_SEGMENTS - 1);
-            var trailWidth = (1 - t) * (5.5 + clickPulse * 2.5) + 0.8;
-            var trailAlpha = Math.pow(1 - t, 1.25) * 0.8 * idleAlpha;
+      if (idleAlpha > 0.005 && isInitialized) {
+        var r = Math.round(52  + (16  - 52)  * hoverProgress);
+        var g = Math.round(211 + (185 - 211) * hoverProgress);
+        var b = Math.round(153 + (129 - 153) * hoverProgress);
 
-            ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(p0.x, p0.y);
-            ctx.lineTo(p1.x, p1.y);
-            ctx.lineWidth = trailWidth;
-            ctx.lineCap = "round";
-            ctx.lineJoin = "round";
-            ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + trailAlpha + ")";
-            ctx.shadowBlur = 10 * (1 - t);
-            ctx.shadowColor = "rgba(" + r + "," + g + "," + b + "," + (trailAlpha * 0.8) + ")";
-            ctx.stroke();
-            ctx.restore();
-          }
+        // ── 1. Outer comet trail – single gradient-like path per segment ─────
+        //    No save/restore in loop. shadowBlur intentionally REMOVED from
+        //    the segment loop (biggest GPU drain). Shadow only on the nucleus.
+        ctx.lineCap  = "round";
+        ctx.lineJoin = "round";
+        ctx.shadowBlur = 0; // ensure no leftover shadow state
 
-          // 2. Tapered white-hot inner comet core
-          for (var m = 0; m < NUM_SEGMENTS - 1; m++) {
-            var cp0 = segments[m];
-            var cp1 = segments[m + 1];
-            var ct = m / (NUM_SEGMENTS - 1);
-            var coreWidth = (1 - ct) * (2.2 + clickPulse * 1.2) + 0.4;
-            var coreAlpha = Math.pow(1 - ct, 1.6) * 0.95 * idleAlpha;
+        for (var j = 0; j < NUM_SEGMENTS - 1; j++) {
+          var inv_t      = SEG_INV_T[j];
+          var trailWidth = inv_t * (5.5 + clickPulse * 2.5) + 0.8;
+          var trailAlpha = Math.pow(inv_t, 1.25) * 0.8 * idleAlpha;
 
-            ctx.save();
-            ctx.beginPath();
-            ctx.moveTo(cp0.x, cp0.y);
-            ctx.lineTo(cp1.x, cp1.y);
-            ctx.lineWidth = coreWidth;
-            ctx.lineCap = "round";
-            ctx.lineJoin = "round";
-            ctx.strokeStyle = "rgba(255, 255, 255, " + coreAlpha + ")";
-            ctx.stroke();
-            ctx.restore();
-          }
-
-          // 3. Single luminous comet nucleus at head
-          ctx.save();
           ctx.beginPath();
-          ctx.arc(segments[0].x, segments[0].y, 2.5 + clickPulse * 1.5, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(255, 255, 255, " + (0.98 * idleAlpha) + ")";
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = "#ffffff";
-          ctx.fill();
-          ctx.restore();
+          ctx.moveTo(segments[j].x, segments[j].y);
+          ctx.lineTo(segments[j + 1].x, segments[j + 1].y);
+          ctx.lineWidth   = trailWidth;
+          ctx.strokeStyle = "rgba(" + r + "," + g + "," + b + "," + trailAlpha + ")";
+          ctx.stroke();
+        }
 
-          // 4. Click shockwave ring
-          if (clickPulse > 0.05) {
-            var shockRadius = 5 + (1 - clickPulse) * 22;
-            ctx.save();
+        // ── 2. Inner white-hot core (lite mode skips this pass) ────────────
+        if (!isLite) {
+          for (var m = 0; m < NUM_SEGMENTS - 1; m++) {
+            var cinv_t    = SEG_INV_T[m];
+            var coreWidth = cinv_t * (2.2 + clickPulse * 1.2) + 0.4;
+            var coreAlpha = Math.pow(cinv_t, 1.6) * 0.95 * idleAlpha;
+
             ctx.beginPath();
-            ctx.arc(segments[0].x, segments[0].y, shockRadius, 0, Math.PI * 2);
-            ctx.strokeStyle = "rgba(255, 255, 255, " + (clickPulse * 0.85 * idleAlpha) + ")";
-            ctx.lineWidth = 1.5;
+            ctx.moveTo(segments[m].x, segments[m].y);
+            ctx.lineTo(segments[m + 1].x, segments[m + 1].y);
+            ctx.lineWidth   = coreWidth;
+            ctx.strokeStyle = "rgba(255,255,255," + coreAlpha + ")";
             ctx.stroke();
-            ctx.restore();
           }
+        }
+
+        // ── 3. Nucleus — shadow only here (one draw, not 28) ───────────────
+        ctx.beginPath();
+        ctx.arc(segments[0].x, segments[0].y, 2.5 + clickPulse * 1.5, 0, Math.PI * 2);
+        ctx.fillStyle  = "rgba(255,255,255," + (0.98 * idleAlpha) + ")";
+        if (!isLite) {
+          ctx.shadowBlur  = 10;
+          ctx.shadowColor = "#ffffff";
+        }
+        ctx.fill();
+        ctx.shadowBlur = 0; // reset so it doesn't bleed into next frame
+
+        // ── 4. Click shockwave (lite mode skips) ──────────────────────────
+        if (!isLite && clickPulse > 0.05) {
+          var shockRadius = 5 + (1 - clickPulse) * 22;
+          ctx.beginPath();
+          ctx.arc(segments[0].x, segments[0].y, shockRadius, 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(255,255,255," + (clickPulse * 0.85 * idleAlpha) + ")";
+          ctx.lineWidth   = 1.5;
+          ctx.stroke();
         }
       }
 
-      requestAnimationFrame(updateSnake);
+      rafId = requestAnimationFrame(updateSnake);
     }
-    requestAnimationFrame(updateSnake);
+
+    // Start only on first real mouse move (listener above) to avoid idle RAF
+    // For immediate first frame if cursor is already on page:
+    if (isVisible) rafId = requestAnimationFrame(updateSnake);
   }
 
   window.initPointerSnake = initPointerSnake;
