@@ -1123,9 +1123,9 @@ function generate_chapter_direct_api(string $textFile, array $chapter, string $m
 
     $pos = mb_stripos($rawText, $chTitle);
     if ($pos !== false && $pos >= 0) {
-        $excerpt = mb_substr($rawText, max(0, $pos - 200), 5000);
+        $excerpt = mb_substr($rawText, max(0, $pos - 200), 12000);
     } else {
-        $excerpt = mb_substr($rawText, 0, 5000);
+        $excerpt = mb_substr($rawText, 0, 12000);
     }
 
     $configuredModel = (defined('OPENCODE_MODEL') && OPENCODE_MODEL !== '')
@@ -1151,15 +1151,15 @@ function generate_chapter_direct_api(string $textFile, array $chapter, string $m
                     'messages' => [
                         [
                             'role' => 'system',
-                            'content' => 'You are an expert exam question generator. Think briefly in 2-3 sentences max, then output valid JSON. JSON keys: chapterId, title, description, questions, encyclopedia. Each question must have id (int), question (string), choices (array of exactly 4 strings), correctAnswer (0-3 int representing index in choices), explanation (string). The encyclopedia key MUST be an array of 5 to 10 important terms/concepts from this chapter, each an object with term (string) and definition (string grounded in the reference).'
+                            'content' => 'You are an expert exam question generator. Output valid JSON only. JSON keys: chapterId, title, description, questions, encyclopedia. Each question must have id (int), question (string), choices (array of exactly 4 strings), correctAnswer (0-3 int representing index in choices), explanation (string). Generate AT LEAST 30 questions — do not stop early. The encyclopedia key MUST be an array of 5 to 10 important terms/concepts from this chapter, each an object with term (string) and definition (string grounded in the reference).'
                         ],
                         [
                             'role' => 'user',
-                            'content' => "Generate 12 to 15 multiple choice questions and 5 to 10 encyclopedia entries in valid JSON for:\nChapter: $mergeKey - $chTitle\nDescription: $chDesc\n\nReference Material Excerpt:\n$excerpt"
+                            'content' => "Generate at least 30 multiple choice questions (more is better) and 5 to 10 encyclopedia entries in valid JSON for:\nChapter: $mergeKey - $chTitle\nDescription: $chDesc\n\nReference Material Excerpt:\n$excerpt"
                         ]
                     ],
                     'temperature' => 0.3,
-                    'max_tokens' => 4096
+                    'max_tokens' => 8192
                 ]),
                 CURLOPT_HTTPHEADER => [
                     'Authorization: Bearer ' . GROQ_API_KEY,
@@ -1268,7 +1268,7 @@ function synthesize_chapter_fallback(string $textFile, array $chapter, string $m
 
     // Generate from discovered definitions
     foreach ($definitions as $term => $def) {
-        if ($qId > 12) break;
+        if ($qId > 30) break;
         // Distractors: other definitions or plausible opposites
         $otherDefs = array_values(array_diff_key($definitions, [$term => true]));
         shuffle($otherDefs);
@@ -1301,9 +1301,15 @@ function synthesize_chapter_fallback(string $textFile, array $chapter, string $m
         ["administrative management workflow", "Ensures controlled execution and audit compliance", 2],
         ["standard command operations", "Executes verified routines without side-effects", 0],
         ["operational security policy", "Restricts unauthorized access and safeguards data", 3],
+        ["error handling and recovery mechanism", "Detects failures and restores stable system state", 1],
+        ["data integrity and validation process", "Guarantees accuracy and consistency of stored information", 2],
+        ["resource allocation and scheduling", "Distributes system resources efficiently across active tasks", 0],
+        ["network communication protocol", "Defines rules for reliable data transmission between nodes", 3],
+        ["logging and monitoring subsystem", "Records operational events for auditing and troubleshooting", 1],
+        ["configuration management framework", "Controls and versions system settings across environments", 2],
     ];
 
-    while ($qId <= 10) {
+    while ($qId <= 30) {
         $idx = ($qId - 1) % count($defaultConcepts);
         $concept = $defaultConcepts[$idx];
         $correctIdx = $concept[2];
