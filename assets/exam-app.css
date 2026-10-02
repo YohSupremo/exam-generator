@@ -1923,3 +1923,281 @@ kbd {
     .cdd-btn-text { max-width: 115px; }
     .chapter-dd-menu { min-width: 260px; max-width: calc(100vw - 24px); }
 }
+
+/* ============================================================
+   ENHANCED REVIEWER SKILL (exam-generator-enhanced) STYLES
+   ============================================================ */
+
+/* Google Forms card aesthetic (Section 13) */
+.card-google-form {
+    border-top: 5px solid #10b981 !important;
+}
+
+.q-card-identification {
+    border-top: 5px solid #10b981 !important;
+}
+
+.q-card-mc {
+    border-top: 5px solid #3b82f6 !important;
+}
+
+.q-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+}
+
+.q-card-identification .q-type-badge {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.3);
+    color: #34d399;
+}
+
+.q-card-mc .q-type-badge {
+    background: rgba(59, 130, 246, 0.12);
+    border-color: rgba(59, 130, 246, 0.3);
+    color: #60a5fa;
+}
+
+.q-redemption-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(249, 115, 22, 0.15);
+    border: 1px solid rgba(249, 115, 22, 0.35);
+    color: #fb923c;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    margin-left: 8px;
+    letter-spacing: 0.02em;
+}
+
+/* Underline text input for Identification mode (Section 13) */
+.id-input-wrap {
+    margin: 20px 0 24px;
+    position: relative;
+}
+
+.id-input-underline {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+    font-size: 18.5px;
+    font-family: inherit;
+    font-weight: 500;
+    padding: 12px 2px 10px;
+    outline: none;
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    border-radius: 0;
+}
+
+.id-input-underline::placeholder {
+    color: rgba(148, 163, 184, 0.45);
+    font-weight: 400;
+    font-size: 16.5px;
+}
+
+.id-input-underline:focus {
+    border-bottom-color: #10b981;
+    box-shadow: 0 4px 14px -4px rgba(16, 185, 129, 0.45);
+}
+
+.id-input-underline.correct {
+    border-bottom-color: #10b981 !important;
+    color: #34d399 !important;
+    box-shadow: 0 4px 16px -4px rgba(16, 185, 129, 0.55);
+}
+
+.id-input-underline.incorrect {
+    border-bottom-color: #f43f5e !important;
+    color: #fb7185 !important;
+    box-shadow: 0 4px 16px -4px rgba(244, 63, 94, 0.55);
+}
+
+.id-alts-note {
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: #94a3b8;
+}
+
+.id-alts-label {
+    font-weight: 600;
+    color: #cbd5e1;
+}
+
+.feedback-expl {
+    margin-top: 8px;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: #cbd5e1;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 8px;
+}
+
+/* Mode Selection Cards (Section 12) */
+.mode-option.disabled {
+    opacity: 0.42;
+    cursor: not-allowed;
+    border-style: dashed;
+}
+
+.mode-badge-id {
+    background: rgba(16, 185, 129, 0.16);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.mode-badge-mc {
+    background: rgba(59, 130, 246, 0.16);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.35);
+}
+
+.mode-badge-empty {
+    background: rgba(148, 163, 184, 0.1);
+    color: #94a3b8;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+/* Shuffling toggle (Section 12: default ON) */
+.shuffle-toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    margin: 16px 0 22px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+}
+
+.shuffle-toggle-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.shuffle-toggle-row input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: #10b981;
+    cursor: pointer;
+}
+
+.shuffle-toggle-label strong {
+    display: block;
+    font-size: 14px;
+    color: #ffffff;
+    margin-bottom: 2px;
+}
+
+.shuffle-toggle-desc {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+/* Redemption Arc Button (Section 12) */
+.btn-redemption {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    font-weight: 700 !important;
+    padding: 10px 20px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 20px rgba(249, 115, 22, 0.4) !important;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-redemption:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(249, 115, 22, 0.6) !important;
+}
+
+.redemption-success-banner {
+    padding: 14px 18px;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    border-radius: 10px;
+    color: #34d399;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Answer Key Mode Headers (Section 14) */
+.key-mode-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin: 18px 0 10px;
+}
+
+.badge-mode-id {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #34d399;
+}
+
+.badge-mode-mc {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    color: #60a5fa;
+}
+
+.key-item-id {
+    border-left: 3px solid #10b981 !important;
+}
+
+.key-alts {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-left: 6px;
+    font-weight: normal;
+}
+
+/* Choice badges for accessibility */
+.choice-result-badge {
+    margin-left: 8px;
+    font-weight: 800;
+    font-size: 14px;
+}
+.choice-result-badge.ok {
+    color: #34d399;
+}
+.choice-result-badge.no {
+    color: #f43f5e;
+}

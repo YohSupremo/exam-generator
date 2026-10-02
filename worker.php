@@ -585,9 +585,16 @@ function chapter_prompt(string $textFile, string $pdf, array $chapter, string $c
     $chDesc = trim((string)($chapter['description'] ?? ''));
 
     return <<<PROMPT
-You are generating ONE chapter of an interactive comprehensive exam for a web app.
+You are generating ONE chapter of an interactive comprehensive exam for a web app using the exam-generator-enhanced skill.
 
-STEP 1: Load the skill named "interactive-comprehensive-exam-generator" using your skill tool. Follow ALL of its instructions: ~30 questions per chapter, exactly 4 choices per question, correctAnswer is the 0-based index of the correct choice, balanced A/B/C/D positions overall, all-choice parity, anti-guessing rules, a short explanation for every question.
+STEP 1: Load the skill named "exam-generator-enhanced" using your skill tool. Follow ALL of its instructions:
+- Distinguish between Identification and Multiple Choice by Question-Type Fitness:
+  * IDENTIFICATION: Test stable, universally identifiable named terms ("What is this called?").
+  * MULTIPLE CHOICE: Test source/textbook-dependent information (benefits, advantages, challenges, characteristics, purposes, examples, comparisons, and list items).
+- Avoid duplicate testing of the exact same fact in both modes without meaningful change in knowledge tested.
+- All Multiple Choice questions MUST have exactly 4 choices and balanced A/B/C/D positions.
+- All Identification questions MUST test universally stable terms, with acceptable variants/acronyms listed in "alternates".
+- Encyclopedia entries MUST be 5 to 10 key terms grounded in the reference.
 
 STEP 2: The reference material is a plain-text extraction of the original PDF at:
 $src
@@ -613,10 +620,21 @@ Use EXACTLY this schema:
   "questions": [
     {
       "id": "$chapterId-q01",
-      "question": "The question text. Use scenarios, comparisons, exceptions, application and analysis, not just recall.",
+      "type": "mc",
+      "question": "The question text testing source-dependent knowledge (benefits, challenges, purposes, comparisons, application).",
       "choices": ["Choice A text", "Choice B text", "Choice C text", "Choice D text"],
       "correctAnswer": 0,
       "explanation": "Concise explanation of why this is correct and why the others are not."
+    }
+  ],
+  "identification": [
+    {
+      "id": "$chapterId-id01",
+      "type": "identification",
+      "question": "The clue asking what the term/concept is or what it is called.",
+      "answer": "Primary source-supported term",
+      "alternates": ["Alternative spelling or accepted acronym"],
+      "explanation": "Concise reference-grounded explanation."
     }
   ],
   "encyclopedia": [
@@ -625,14 +643,20 @@ Use EXACTLY this schema:
 }
 
 HARD RULES:
-- correctAnswer is the 0-based INDEX of the correct choice within the choices array.
-- Every question MUST have exactly 4 choices and exactly one correct answer.
-- Every question MUST have id, question, choices, correctAnswer, explanation.
-- Approximately 30 questions for this chapter (fewer if the chapter is thin, never fabricate).
-- Balanced A/B/C/D correct-answer positions across the chapter; no obvious answer patterns.
-- All-choice parity: the correct answer must not be the longest/most technical/most specific option.
-- Explanations must be grounded in the reference.
-- The 'encyclopedia' array is REQUIRED and MUST contain 5 to 10 key terms and definitions grounded in this chapter.
+- Multiple Choice (questions):
+  * correctAnswer is the 0-based INDEX of the correct choice within the choices array.
+  * Every question MUST have exactly 4 choices and exactly one correct answer.
+  * Balanced A/B/C/D correct-answer positions across the chapter.
+  * All-choice parity: the correct answer must not be the longest/most technical option.
+  * Aim for 15-30 Multiple Choice questions.
+- Identification (identification):
+  * Ask for WHAT the term/concept IS or what it is called.
+  * Test stable, recognized named terms, models, patterns, frameworks, components, phases, protocols, or acronyms.
+  * Answer must be the exact source-supported term.
+  * Alternates array includes source-supported acronyms or accepted variants.
+  * Aim for 10-20 Identification questions.
+- Encyclopedia:
+  * 5 to 10 key terms and definitions grounded in this chapter.
 - Do NOT generate questions for any other chapter. Do NOT include exam-level fields (title, subject, chapters array, summary).
 - The JSON MUST be valid. Check it before writing.
 
@@ -764,6 +788,14 @@ function is_valid_question(array $q): bool
     return true;
 }
 
+function is_valid_identification(array $q): bool
+{
+    if (empty($q['question']) || !isset($q['answer']) || !is_string($q['answer']) || trim($q['answer']) === '') {
+        return false;
+    }
+    return true;
+}
+
 function merge_bank(array $plan, array $finished, string $fallbackTitle): array
 {
     $chapters = [];
@@ -774,14 +806,27 @@ function merge_bank(array $plan, array $finished, string $fallbackTitle): array
         $normalized = preg_replace('/[^A-Za-z0-9\-_]/', '_', $key);
         if ($normalized === '' || !isset($finished[$normalized])) { continue; }
         $raw = $finished[$normalized];
-        if (!is_array($raw) || empty($raw['questions']) || !is_array($raw['questions'])) { continue; }
-        $questions = array_values(array_filter($raw['questions'], 'is_valid_question'));
-        if (!$questions) { continue; }
+        if (!is_array($raw)) { continue; }
+
+        $rawQuestions = (isset($raw['questions']) && is_array($raw['questions'])) ? $raw['questions'] : [];
+        $questions = array_values(array_filter($rawQuestions, 'is_valid_question'));
+
+        $rawIdent = (isset($raw['identification']) && is_array($raw['identification'])) ? $raw['identification'] : [];
+        foreach ($rawQuestions as $rq) {
+            if (is_array($rq) && (($rq['type'] ?? '') === 'identification' || (isset($rq['answer']) && empty($rq['choices'])))) {
+                $rawIdent[] = $rq;
+            }
+        }
+        $identification = array_values(array_filter($rawIdent, 'is_valid_identification'));
+
+        if (!$questions && !$identification) { continue; }
+
         $chapters[] = [
             'chapterId' => $normalized,
             'title' => (string)($raw['title'] ?? $pc['title'] ?? 'Chapter'),
             'description' => (string)($raw['description'] ?? $pc['description'] ?? ''),
             'questions' => $questions,
+            'identification' => $identification,
         ];
         $rawEnc = (isset($raw['encyclopedia']) && is_array($raw['encyclopedia'])) ? $raw['encyclopedia'] : [];
         if (count($rawEnc) < 3) {
@@ -1151,11 +1196,11 @@ function generate_chapter_direct_api(string $textFile, array $chapter, string $m
                     'messages' => [
                         [
                             'role' => 'system',
-                            'content' => 'You are an expert exam question generator. Output valid JSON only. JSON keys: chapterId, title, description, questions, encyclopedia. Each question must have id (int), question (string), choices (array of exactly 4 strings), correctAnswer (0-3 int representing index in choices), explanation (string). Generate AT LEAST 30 questions — do not stop early. The encyclopedia key MUST be an array of 5 to 10 important terms/concepts from this chapter, each an object with term (string) and definition (string grounded in the reference).'
+                            'content' => 'You are an expert exam question generator applying the exam-generator-enhanced skill. Output valid JSON only. JSON keys: chapterId, title, description, questions, identification, encyclopedia. Fitness rules: 1) "questions" contains multiple choice questions testing source-dependent knowledge (benefits, challenges, purposes, comparisons, applications). Each item must have: id (string), type ("mc"), question (string), choices (array of exactly 4 strings), correctAnswer (0-3 int representing index in choices), explanation (string). 2) "identification" contains questions testing universal/stable term knowledge ("What is this called?"). Each item must have: id (string), type ("identification"), question (string clue asking what the term/concept is or what it is called), answer (string, main recognized term), alternates (array of strings, acceptable acronyms or alternate spellings), explanation (string). 3) "encyclopedia" is an array of 5 to 10 important terms/concepts from this chapter, each an object with term (string) and definition (string grounded in reference). Generate at least 15-20 multiple choice and 10-15 identification questions.'
                         ],
                         [
                             'role' => 'user',
-                            'content' => "Generate at least 30 multiple choice questions (more is better) and 5 to 10 encyclopedia entries in valid JSON for:\nChapter: $mergeKey - $chTitle\nDescription: $chDesc\n\nReference Material Excerpt:\n$excerpt"
+                            'content' => "Generate multiple choice questions, identification questions, and encyclopedia entries in valid JSON for:\nChapter: $mergeKey - $chTitle\nDescription: $chDesc\n\nReference Material Excerpt:\n$excerpt"
                         ]
                     ],
                     'temperature' => 0.3,
@@ -1193,7 +1238,7 @@ function generate_chapter_direct_api(string $textFile, array $chapter, string $m
                 record_token_usage($dir, $data['usage'] ?? [], $respHeaders, $model);
                 $content = $data['choices'][0]['message']['content'] ?? '';
                 $decoded = json_decode($content, true);
-                if (is_array($decoded) && !empty($decoded['questions'])) {
+                if (is_array($decoded) && (!empty($decoded['questions']) || !empty($decoded['identification']))) {
                     $decoded['chapterId'] = $mergeKey;
                     $decoded['title'] = $chTitle;
                     $decoded['description'] = $chDesc;
@@ -1346,11 +1391,26 @@ function synthesize_chapter_fallback(string $textFile, array $chapter, string $m
         ];
     }
 
+    $identification = [];
+    $idNum = 1;
+    foreach ($definitions as $term => $def) {
+        if ($idNum > 15) break;
+        $identification[] = [
+            'id' => sprintf('%s-id%02d', $mergeKey, $idNum++),
+            'type' => 'identification',
+            'question' => "What is the term or concept defined as: \"$def\"?",
+            'answer' => $term,
+            'alternates' => [],
+            'explanation' => "$term is defined as: $def",
+        ];
+    }
+
     return [
         'chapterId' => $mergeKey,
         'title' => $chTitle,
         'description' => $chDesc,
         'questions' => $questions,
+        'identification' => $identification,
         'encyclopedia' => $encyclopedia,
     ];
 }
@@ -1389,38 +1449,47 @@ function validate_bank(array $data): bool
     if (empty($data['chapters']) || !is_array($data['chapters'])) {
         return false;
     }
-    $qCount = 0;
+    $totalCount = 0;
     foreach ($data['chapters'] as $ch) {
-        if (!is_array($ch) || empty($ch['questions']) || !is_array($ch['questions'])) {
+        if (!is_array($ch)) {
             return false;
         }
-        foreach ($ch['questions'] as $q) {
-            $qCount++;
-            if (!is_array($q)) {
-                return false;
-            }
-            if (empty($q['question']) || empty($q['choices']) || count($q['choices']) !== 4) {
-                return false;
-            }
-            if (!isset($q['correctAnswer']) || !is_int($q['correctAnswer']) || $q['correctAnswer'] < 0 || $q['correctAnswer'] > 3) {
-                return false;
-            }
-            if (empty($q['explanation'])) {
-                return false;
+        $mcCount = 0;
+        if (!empty($ch['questions']) && is_array($ch['questions'])) {
+            foreach ($ch['questions'] as $q) {
+                if (!is_array($q)) return false;
+                if (empty($q['question']) || empty($q['choices']) || count($q['choices']) !== 4) return false;
+                if (!isset($q['correctAnswer']) || !is_int($q['correctAnswer']) || $q['correctAnswer'] < 0 || $q['correctAnswer'] > 3) return false;
+                if (empty($q['explanation'])) return false;
+                $mcCount++;
             }
         }
+        $idCount = 0;
+        if (!empty($ch['identification']) && is_array($ch['identification'])) {
+            foreach ($ch['identification'] as $idq) {
+                if (!is_array($idq)) return false;
+                if (empty($idq['question']) || !isset($idq['answer']) || !is_string($idq['answer']) || trim($idq['answer']) === '') return false;
+                $idCount++;
+            }
+        }
+        if ($mcCount === 0 && $idCount === 0) {
+            return false;
+        }
+        $totalCount += ($mcCount + $idCount);
     }
-    return $qCount >= 1;
+    return $totalCount >= 1;
 }
 
 function normalize_bank(array $data): array
 {
-    // keep only the fields our exam app consumes
     return [
         'title' => (string)($data['title'] ?? 'Untitled Exam'),
         'subject' => (string)($data['subject'] ?? ''),
         'summary' => (string)($data['summary'] ?? ''),
         'chapters' => array_values(array_map(static function (array $ch, int $i): array {
+            $rawQuestions = (isset($ch['questions']) && is_array($ch['questions'])) ? $ch['questions'] : [];
+            $rawIdent = (isset($ch['identification']) && is_array($ch['identification'])) ? $ch['identification'] : [];
+
             return [
                 'chapterId' => (string)($ch['chapterId'] ?? 'ch' . ($i + 1)),
                 'title' => (string)($ch['title'] ?? 'Chapter ' . ($i + 1)),
@@ -1428,12 +1497,35 @@ function normalize_bank(array $data): array
                 'questions' => array_values(array_map(static function (array $q): array {
                     return [
                         'id' => (string)($q['id'] ?? ''),
+                        'type' => (string)($q['type'] ?? 'mc'),
                         'question' => (string)$q['question'],
-                        'choices' => array_values(array_map('strval', $q['choices'])),
-                        'correctAnswer' => (int)$q['correctAnswer'],
-                        'explanation' => (string)$q['explanation'],
+                        'choices' => array_values(array_map('strval', $q['choices'] ?? [])),
+                        'correctAnswer' => (int)($q['correctAnswer'] ?? 0),
+                        'explanation' => (string)($q['explanation'] ?? ''),
                     ];
-                }, $ch['questions'])),
+                }, $rawQuestions)),
+                'identification' => array_values(array_map(static function (array $idq): array {
+                    $alts = isset($idq['alternates']) && is_array($idq['alternates']) ? array_values(array_map('strval', $idq['alternates'])) : [];
+                    $mainAnswer = (string)($idq['answer'] ?? '');
+                    if (strpos($mainAnswer, '|') !== false) {
+                        $parts = explode('|', $mainAnswer);
+                        $mainAnswer = trim($parts[0]);
+                        foreach (array_slice($parts, 1) as $p) {
+                            $p = trim($p);
+                            if ($p !== '' && !in_array($p, $alts, true)) {
+                                $alts[] = $p;
+                            }
+                        }
+                    }
+                    return [
+                        'id' => (string)($idq['id'] ?? ''),
+                        'type' => 'identification',
+                        'question' => (string)$idq['question'],
+                        'answer' => $mainAnswer,
+                        'alternates' => $alts,
+                        'explanation' => (string)($idq['explanation'] ?? ''),
+                    ];
+                }, $rawIdent)),
             ];
         }, $data['chapters'], array_keys($data['chapters']))),
         'encyclopedia' => array_values(array_map(static function (array $e): array {
@@ -1450,7 +1542,8 @@ function bank_totals(array $data): array
 {
     $q = 0;
     foreach ($data['chapters'] as $ch) {
-        $q += count($ch['questions']);
+        $q += count($ch['questions'] ?? []);
+        $q += count($ch['identification'] ?? []);
     }
-    return ['chapters' => count($data['chapters']), 'questions' => $q];
+    return ['chapters' => count($data['chapters'] ?? []), 'questions' => $q];
 }

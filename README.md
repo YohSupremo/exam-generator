@@ -106,5 +106,6 @@ lib/config.php         paths, limits, skill name
 lib/db.php             SQLite metadata (exams table)
 assets/                site + exam app CSS/JS
 data/                  exam.db, job folders, logs (web-inaccessible)
+humanizer/             Essay Humanizer microservice (UI, API, Scorer, Groq client)
 .opencode/skills/      the bundled examiner skill
 ```

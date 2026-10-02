@@ -5,7 +5,7 @@ define('APP_ROOT', dirname(__DIR__));
 define('DATA_DIR', APP_ROOT . '/data');
 define('EXAMS_DIR', DATA_DIR . '/exams');
 define('DB_PATH', DATA_DIR . '/exam.db');
-define('SKILL_NAME', 'interactive-comprehensive-exam-generator');
+define('SKILL_NAME', 'exam-generator-enhanced');
 define('SKILL_DIR', APP_ROOT . '/.opencode/skills/' . SKILL_NAME);
 
 define('MAX_UPLOAD_BYTES', 50 * 1024 * 1024);

@@ -74,7 +74,7 @@ if ($row['status'] !== 'done') {
 </main>
 
 <footer class="exam-footer">
-    <div class="container">Generated with the <em>interactive-comprehensive-exam-generator</em> skill via opencode.</div>
+    <div class="container">Generated with the <em><?= htmlspecialchars(SKILL_NAME) ?></em> skill via opencode.</div>
 </footer>
 
 <script src="assets/exam-app.js?v=<?= filemtime(__DIR__ . '/assets/exam-app.js') ?>"></script>
