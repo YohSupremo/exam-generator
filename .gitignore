@@ -11,6 +11,7 @@ data/*.db-wal
 data/*.db-shm
 data/*.log
 data/ai_quota.json
+data/presence.json
 data/_schtasks_probe.php
 
 # Agent & Scratch Files

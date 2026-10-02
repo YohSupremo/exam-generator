@@ -22,7 +22,14 @@
         <div class="brand-tagline">AI-powered research topic discovery · Location-aware · Multi-field</div>
       </div>
     </div>
-    <a href="../index.php" class="back-link">← Back to Exam Generator</a>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div class="live-users-badge" id="live-users-badge" title="Live active users on website">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span class="live-users-count" id="live-users-count">1</span>
+        <span class="live-users-label">online</span>
+      </div>
+      <a href="../index.php" class="back-link">← Back to Exam Generator</a>
+    </div>
   </header>
 
   <!-- ===== STEP WIZARD ===== -->
@@ -287,5 +294,6 @@
 </div>
 
 <script src="assets/thesis.js"></script>
+<script src="../assets/presence.js"></script>
 </body>
 </html>

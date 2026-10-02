@@ -494,6 +494,13 @@ html.intro-skipped #intro-splash { display: none !important; }
 
             <!-- Right side -->
             <div class="header-actions">
+                <!-- Live Online Users Badge -->
+                <div class="live-users-badge" id="live-users-badge" title="Live active users on website">
+                    <span class="live-dot" aria-hidden="true"></span>
+                    <span class="live-users-count" id="live-users-count">1</span>
+                    <span class="live-users-label">online</span>
+                </div>
+
                 <!-- Professional Single-Line Header Token Badge: Remaining / Limit -->
                 <div class="header-token-badge" id="header-token-badge" title="AI Rate Limit: <?= $initRemTokens ?> / <?= $initLimTokens ?> TPM">
                     <span class="htb-icon-wrap" aria-hidden="true">
@@ -1264,5 +1271,6 @@ html.intro-skipped #intro-splash { display: none !important; }
 const AUTO_POLL_JOB = <?= json_encode($activeJobId ?: null) ?>;
 </script>
 <script src="assets/site.js?v=<?= filemtime(__DIR__ . '/assets/site.js') ?>"></script>
+<script src="assets/presence.js?v=<?= filemtime(__DIR__ . '/assets/presence.js') ?>"></script>
 </body>
 </html>
