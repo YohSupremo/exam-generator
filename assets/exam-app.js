@@ -184,6 +184,13 @@
     return bank.chapters.find(function (c) { return c.chapterId === id; }) || null;
   }
 
+  function getModeLabel(mode) {
+    if (mode === "id") return "Identification";
+    if (mode === "mc") return "Multiple Choice";
+    if (mode === "mixed") return "Mixed Mode";
+    return "Practice";
+  }
+
   function getChapterPool(ch, mode) {
     if (!ch) return [];
     if (mode === "id") {
@@ -199,11 +206,18 @@
       }
       return list;
     }
-    // mode === 'mc'
-    if (Array.isArray(ch.questions)) {
-      return ch.questions.filter(function (q) {
-        return q.type !== "identification" && (!q.answer || (q.choices && q.choices.length === 4));
-      });
+    if (mode === "mc") {
+      if (Array.isArray(ch.questions)) {
+        return ch.questions.filter(function (q) {
+          return q.type !== "identification" && (!q.answer || (q.choices && q.choices.length === 4));
+        });
+      }
+      return [];
+    }
+    if (mode === "mixed") {
+      const idList = getChapterPool(ch, "id");
+      const mcList = getChapterPool(ch, "mc");
+      return idList.concat(mcList);
     }
     return [];
   }
@@ -502,11 +516,11 @@
     }
 
     const choiceOrder = {};
-    if (mode === "mc") {
-      pool.forEach(function (q) {
+    pool.forEach(function (q) {
+      if (Array.isArray(q.choices) && q.choices.length === 4) {
         choiceOrder[q.id] = shuffle([0, 1, 2, 3]);
-      });
-    }
+      }
+    });
 
     chapterState[chId] = {
       mode: mode,
@@ -568,10 +582,13 @@
     const idPool = getChapterPool(ch, "id");
     const mcCount = mcPool.length;
     const idCount = idPool.length;
+    const mixedCount = mcCount + idCount;
 
     // Pick a sensible default mode if not yet set or if current has 0 questions
-    if (!st.mode || (st.mode === "id" && idCount === 0) || (st.mode === "mc" && mcCount === 0)) {
-      st.mode = idCount > 0 ? "id" : "mc";
+    if (!st.mode || (st.mode === "id" && idCount === 0) || (st.mode === "mc" && mcCount === 0) || (st.mode === "mixed" && mixedCount === 0)) {
+      if (idCount > 0 && mcCount > 0) st.mode = "mixed";
+      else if (idCount > 0) st.mode = "id";
+      else st.mode = "mc";
     }
 
     view.innerHTML =
@@ -585,7 +602,7 @@
       '<div class="start-card-header">' +
         '<div class="start-meta-pill">' +
           '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>' +
-          '<span>' + (mcCount + idCount) + ' Questions Total &bull; Select Assessment Mode</span>' +
+          '<span>' + mixedCount + ' Questions Total &bull; Select Assessment Mode</span>' +
         '</div>' +
         '<div class="start-card-tip">Classified by Knowledge Fitness</div>' +
       '</div>' +
@@ -594,6 +611,16 @@
         '<span class="mode-label">1. Assessment Mode</span>' +
       '</div>' +
       '<div class="mode-grid">' +
+      // Mixed Mode Card (Combined Identification & Multiple Choice)
+      '<div class="mode-option ' + (st.mode === "mixed" ? "selected" : "") + (mixedCount === 0 ? " disabled" : "") + '" data-test-mode="mixed" role="button" tabindex="0" aria-pressed="' + (st.mode === "mixed") + '">' +
+        '<div class="mode-option-top">' +
+          '<span class="mode-icon-wrap"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></span>' +
+          '<span class="mode-badge ' + (mixedCount > 0 ? "mode-badge-mixed" : "mode-badge-empty") + '">' + mixedCount + ' Questions</span>' +
+        '</div>' +
+        '<h4>Mixed Mode (' + mixedCount + ')</h4>' +
+        '<p>Comprehensive blended challenge. Combines typed Identification with 4-choice Multiple Choice questions seamlessly.</p>' +
+      '</div>' +
+
       // Identification Mode Card (Section 2.1 & 12)
       '<div class="mode-option ' + (st.mode === "id" ? "selected" : "") + (idCount === 0 ? " disabled" : "") + '" data-test-mode="id" role="button" tabindex="0" aria-pressed="' + (st.mode === "id") + '">' +
         '<div class="mode-option-top">' +
@@ -647,7 +674,7 @@
       '<div class="start-actions">' +
       '<button class="btn btn-primary btn-start-chapter" id="start-id">' +
         '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>' +
-        '<span>Start ' + (st.mode === "id" ? "Identification" : "Multiple Choice") + '</span>' +
+        '<span>Start ' + getModeLabel(st.mode) + '</span>' +
       '</button>' +
       '</div>' +
       '</div></div>';
@@ -663,7 +690,7 @@
         });
         const btnTxt = document.querySelector("#start-id span");
         if (btnTxt) {
-          btnTxt.textContent = "Start " + (st.mode === "id" ? "Identification" : "Multiple Choice");
+          btnTxt.textContent = "Start " + getModeLabel(st.mode);
         }
       };
       el.addEventListener("click", pick);
@@ -695,9 +722,9 @@
     }
 
     document.getElementById("start-id").addEventListener("click", function () {
-      const targetCount = st.mode === "id" ? idCount : mcCount;
+      const targetCount = st.mode === "id" ? idCount : (st.mode === "mc" ? mcCount : mixedCount);
       if (targetCount === 0) {
-        toast("No questions available for " + (st.mode === "id" ? "Identification" : "Multiple Choice") + ".");
+        toast("No questions available for " + getModeLabel(st.mode) + ".");
         return;
       }
       freshChapterState(ch.chapterId, st.mode, null, false, true);
@@ -722,7 +749,8 @@
       return;
     }
 
-    if (st.mode === "id") {
+    const isId = q.type === "identification" || (!q.choices && q.answer != null);
+    if (isId) {
       renderQuestionId(ch, q, st, pos);
     } else {
       renderQuestionMc(ch, q, st, pos);
@@ -1087,7 +1115,7 @@
     let html =
       '<div class="view-panel">' +
       '<h2 class="panel-title">' + (st.isRedemption ? "Redemption Arc Complete" : "Section Complete") + '</h2>' +
-      '<p class="panel-sub">' + esc(ch.title) + " &bull; " + (st.mode === "id" ? "Identification Mode" : "Multiple Choice Mode") + "</p>" +
+      '<p class="panel-sub">' + esc(ch.title) + " &bull; " + getModeLabel(st.mode) + " Mode</p>" +
       '<div class="card card-google-form">' +
       '<div class="result-big">' + pct + "%</div>" +
       '<div class="result-grid">' +
@@ -1139,10 +1167,11 @@
       const correctItems = [];
       st.questions.forEach(function (q) {
         const a = st.answers[q.id];
+        const isId = q.type === "identification" || (!q.choices && q.answer != null);
         if (a && a.correct) {
           correctItems.push({ id: q.id, question: q.question });
         } else {
-          if (st.mode === "id") {
+          if (isId) {
             mistakes.push({
               id: q.id,
               question: q.question,
@@ -1154,8 +1183,8 @@
             mistakes.push({
               id: q.id,
               question: q.question,
-              yourAnswer: a && a.selected != null ? q.choices[a.selected] : "Timed out / unanswered",
-              correctAnswer: q.choices[q.correctAnswer],
+              yourAnswer: a && a.selected != null && q.choices ? q.choices[a.selected] : "Timed out / unanswered",
+              correctAnswer: q.choices ? q.choices[q.correctAnswer] : "",
               explanation: q.explanation,
             });
           }
@@ -1164,7 +1193,7 @@
       const containerEl = document.getElementById("ai-feedback-container");
       triggerAiAnalysis(containerEl, {
         examId: examId,
-        sectionTitle: ch.title + " (" + (st.mode === "id" ? "Identification" : "Multiple Choice") + ")",
+        sectionTitle: ch.title + " (" + getModeLabel(st.mode) + ")",
         score: st.correct,
         total: total,
         mistakes: mistakes,
@@ -1203,12 +1232,12 @@
   function renderReview(chId) {
     const ch = chapterById(chId);
     const st = getChapterState(chId);
-    const isId = st.mode === "id";
 
     const items = st.questions.map(function (q, idx) {
       const a = st.answers[q.id];
       const ok = !!(a && a.correct);
       const verdict = ok ? "Correct ✓" : (a && a.timedOut ? "Time's up ✗" : "Incorrect ✗");
+      const isId = q.type === "identification" || (!q.choices && q.answer != null);
 
       if (isId) {
         const userTyped = a && a.userAnswer ? a.userAnswer : "(none)";
@@ -1246,7 +1275,7 @@
     view.innerHTML =
       '<div class="view-panel">' +
       '<h2 class="panel-title">Review &mdash; ' + esc(ch.title) + "</h2>" +
-      '<p class="panel-sub">' + (isId ? "Identification" : "Multiple Choice") + " &bull; Score: " + st.correct + "/" + st.questions.length + "</p>" +
+      '<p class="panel-sub">' + getModeLabel(st.mode) + " &bull; Score: " + st.correct + "/" + st.questions.length + "</p>" +
       '<div class="next-row" style="justify-content:flex-start; margin-bottom:20px;"><button class="btn btn-primary" id="back-results">Back to results</button></div>' +
       items.join("") +
       "</div>";

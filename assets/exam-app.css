@@ -2067,6 +2067,12 @@ kbd {
     border: 1px solid rgba(59, 130, 246, 0.35);
 }
 
+.mode-badge-mixed {
+    background: rgba(168, 85, 247, 0.16);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.35);
+}
+
 .mode-badge-empty {
     background: rgba(148, 163, 184, 0.1);
     color: #94a3b8;
@@ -2176,6 +2182,17 @@ kbd {
     background: rgba(59, 130, 246, 0.15);
     border: 1px solid rgba(59, 130, 246, 0.35);
     color: #60a5fa;
+}
+
+.badge-mode-mixed {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    color: #c084fc;
 }
 
 .key-item-id {
