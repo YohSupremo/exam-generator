@@ -482,6 +482,10 @@ html.intro-skipped #intro-splash { display: none !important; }
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                 <span>My Exams</span>
             </a>
+            <a class="nav-link" href="html_exam.php">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                <span>HTML Exam</span>
+            </a>
             <a class="nav-link" href="#backend">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
                 <span>System Health</span>
@@ -685,6 +689,15 @@ html.intro-skipped #intro-splash { display: none !important; }
         <div>
             <div style="font-weight:600;">My Exams</div>
             <div style="font-size:12px;color:var(--text-muted);margin-top:1px;">View and manage your generated exams</div>
+        </div>
+    </a>
+    <a class="mobile-nav-link" href="html_exam.php" id="mnl-html">
+        <span class="mnl-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+        </span>
+        <div>
+            <div style="font-weight:600;">HTML Exam</div>
+            <div style="font-size:12px;color:var(--text-muted);margin-top:1px;">Upload a self-contained HTML exam to take</div>
         </div>
     </a>
     <div class="mobile-nav-divider"></div>
