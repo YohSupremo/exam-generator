@@ -39,6 +39,33 @@ function db(): PDO
         } catch (Throwable $e) {
             // column already exists
         }
+        $pdo->exec(
+            'CREATE TABLE IF NOT EXISTS html_exams (
+                id TEXT PRIMARY KEY,
+                title TEXT,
+                source_name TEXT,
+                status TEXT NOT NULL,
+                answers_json TEXT NOT NULL DEFAULT \'{}\',
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            )'
+        );
+        $pdo->exec(
+            'CREATE TABLE IF NOT EXISTS html_exam_attempts (
+                id TEXT PRIMARY KEY,
+                user_token TEXT NOT NULL,
+                exam_id TEXT NOT NULL,
+                attempt_no INTEGER NOT NULL,
+                status TEXT NOT NULL,
+                answers_json TEXT NOT NULL DEFAULT \'{}\',
+                score REAL,
+                correct INTEGER DEFAULT 0,
+                total INTEGER DEFAULT 0,
+                started_at TEXT NOT NULL,
+                last_activity_at TEXT NOT NULL,
+                submitted_at TEXT
+            )'
+        );
     }
     return $pdo;
 }
@@ -129,6 +156,120 @@ function exam_update(string $id, array $fields): void
     $params[':id'] = $id;
     $sql = 'UPDATE exams SET ' . implode(', ', $set) . ' WHERE id = :id';
     db()->prepare($sql)->execute($params);
+}
+
+function html_exam_create(string $id, string $title, string $sourceName, string $answersJson = '{}'): void
+{
+    $now = date('c');
+    $stmt = db()->prepare(
+        'INSERT INTO html_exams (id, title, source_name, status, answers_json, created_at, updated_at)
+         VALUES (:id, :title, :source_name, :status, :answers_json, :created_at, :updated_at)'
+    );
+    $stmt->execute([
+        ':id' => $id,
+        ':title' => $title,
+        ':source_name' => $sourceName,
+        ':status' => 'ready',
+        ':answers_json' => $answersJson,
+        ':created_at' => $now,
+        ':updated_at' => $now,
+    ]);
+}
+
+function html_exam_get(string $id): ?array
+{
+    $stmt = db()->prepare('SELECT * FROM html_exams WHERE id = :id');
+    $stmt->execute([':id' => $id]);
+    $row = $stmt->fetch();
+    return $row === false ? null : $row;
+}
+
+function html_exam_list(): array
+{
+    return db()->query('SELECT * FROM html_exams ORDER BY created_at DESC')->fetchAll();
+}
+
+function html_exam_update(string $id, array $fields): void
+{
+    $set = [];
+    $params = [];
+    foreach ($fields as $col => $value) {
+        $set[] = $col . ' = :' . $col;
+        $params[':' . $col] = $value;
+    }
+    $set[] = 'updated_at = :updated_at';
+    $params[':updated_at'] = date('c');
+    $params[':id'] = $id;
+    $sql = 'UPDATE html_exams SET ' . implode(', ', $set) . ' WHERE id = :id';
+    db()->prepare($sql)->execute($params);
+}
+
+function html_attempt_start(string $userToken, string $examId): array
+{
+    $now = date('c');
+    $countRow = db()->prepare('SELECT COUNT(*) as cnt FROM html_exam_attempts WHERE user_token = :token AND exam_id = :exam_id')->fetch([':token' => $userToken, ':exam_id' => $examId]);
+    $attemptNo = (int)($countRow['cnt'] ?? 0) + 1;
+    $attemptId = strtolower((string)preg_replace('/[^A-Za-z0-9]/', '', base_convert((string)bin2hex(random_bytes(9)), 16, 36)));
+    db()->prepare(
+        'INSERT INTO html_exam_attempts (id, user_token, exam_id, attempt_no, status, answers_json, started_at, last_activity_at, submitted_at)
+         VALUES (:id, :token, :exam_id, :attempt_no, :status, :answers_json, :started_at, :last_activity_at, :submitted_at)'
+    )->execute([
+        ':id' => $attemptId,
+        ':token' => $userToken,
+        ':exam_id' => $examId,
+        ':attempt_no' => $attemptNo,
+        ':status' => 'in_progress',
+        ':answers_json' => '{}',
+        ':started_at' => $now,
+        ':last_activity_at' => $now,
+        ':submitted_at' => null,
+    ]);
+    return [
+        'id' => $attemptId,
+        'user_token' => $userToken,
+        'exam_id' => $examId,
+        'attempt_no' => $attemptNo,
+        'status' => 'in_progress',
+        'answers_json' => '{}',
+        'score' => null,
+        'correct' => 0,
+        'total' => 0,
+        'started_at' => $now,
+        'last_activity_at' => $now,
+        'submitted_at' => null,
+    ];
+}
+
+function html_attempt_get_latest(string $userToken, string $examId): ?array
+{
+    $stmt = db()->prepare('SELECT * FROM html_exam_attempts WHERE user_token = :token AND exam_id = :exam_id ORDER BY attempt_no DESC LIMIT 1');
+    $stmt->execute([':token' => $userToken, ':exam_id' => $examId]);
+    $row = $stmt->fetch();
+    return $row === false ? null : $row;
+}
+
+function html_attempt_get_by_id(string $attemptId): ?array
+{
+    $stmt = db()->prepare('SELECT * FROM html_exam_attempts WHERE id = :id');
+    $stmt->execute([':id' => $attemptId]);
+    $row = $stmt->fetch();
+    return $row === false ? null : $row;
+}
+
+function html_attempt_update(string $id, array $fields): void
+{
+    $set = [];
+    $params = [];
+    foreach ($fields as $col => $value) {
+        if ($col === 'updated_at') { continue; }
+        $set[] = $col . ' = :' . $col;
+        $params[':' . $col] = $value;
+    }
+    if (!$set) { return; }
+    $set[] = 'updated_at = :updated_at';
+    $params[':updated_at'] = date('c');
+    $params[':id'] = $id;
+    db()->prepare('UPDATE html_exam_attempts SET ' . implode(', ', $set) . ' WHERE id = :id')->execute($params);
 }
 
 function extract_chapter_encyclopedia(array $ch, string $chId): array

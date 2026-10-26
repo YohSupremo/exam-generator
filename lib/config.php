@@ -10,6 +10,11 @@ define('SKILL_DIR', APP_ROOT . '/.opencode/skills/' . SKILL_NAME);
 
 define('MAX_UPLOAD_BYTES', 50 * 1024 * 1024);
 
+// HTML Exam Delivery service (self-contained HTML exam upload / stream + answering)
+define('HTML_EXAMS_DIR', DATA_DIR . '/html_exams');
+define('MAX_HTML_BYTES', 10 * 1024 * 1024); // 10 MB per uploaded/streamed HTML exam
+define('HTML_EXAM_IDLE_SECONDS', 300); // idle auto-submit timeout (seconds) for HTML exams
+
 // ETA estimation + parallel generation (used by api/status.php and worker.php)
 define('CONCURRENCY', 3);                 // max simultaneous per-chapter opencode runs
 define('PLAN_EST_SECONDS', 5);            // baseline time for the chapter-detection step

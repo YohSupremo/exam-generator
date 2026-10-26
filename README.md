@@ -77,6 +77,34 @@ tune the skill.
 - While a chapter attempt is active, all other sections are locked until you
   finish or reset that chapter.
 
+## HTML Exam Delivery (new service)
+
+Upload a self-contained HTML file that already embeds its questions + answers,
+or stream/paste HTML. The exam is stored and can be answered through it.
+
+```
+Browser (html_exam.php)
+   │  POST api/html_submit.php            (op=create)  → stores HTML + extracts embedded answers
+   │  GET  api/html_get.php?id=<id>&raw=1 → serves stored HTML for answering
+   │  POST api/html_submit.php            (op=start)  → opens an attempt (attempt no.)
+   │  POST api/html_submit.php            (op=heartbeat) → reports activity; idle auto-submit
+   │  POST api/html_submit.php            (op=submit)  → grades answers, returns score
+   ▼
+SQLite data/exam.db (html_exams + html_exam_attempts tables)
+data/html_exams/<id>/exam.html
+```
+
+- **Create**: file upload (`html` field, ≤ 10 MB, must be HTML) or streamed/pasted
+  HTML via JSON `{ "html": "...", "title": "..." }`. Embedded answers are
+  extracted from `exam-data` script / `EXAM_DATA` / `EXAM` JSON blobs and graded.
+- **Take**: `html_exam.php?id=<id>` renders the HTML in an iframe (srcdoc) with an
+  injected runtime that reports answers via `op=submit`, heartbeats every 15 s, and
+  auto-submits via `op=submit` when idle for `HTML_EXAM_IDLE_SECONDS` (5 min).
+- **Attempts**: every user (identified by the `exam_uid` cookie) gets an incrementing
+  **attempt number** per exam; results are stored per attempt and retakes start at #2, #3…
+- **Multi-user**: any user holding the exam ID can open and take the same exam at the
+  same time; attempts and scores are tracked per user.
+
 ## Notes / limitations
 
 - **Permissions:** the worker invokes opencode with `--auto` so it can read the
@@ -102,8 +130,11 @@ worker.php             CLI worker that runs opencode with the skill
 api/generate.php       upload + spawn detached worker (+ delete op)
 api/status.php         job status polling (+ health ping)
 api/data.php           validated delivery of a finished question bank
+api/html_submit.php   HTML exam service: create (upload/paste) + start + submit + heartbeat + delete
+api/html_get.php      HTML exam service: serve raw HTML, metadata, list, attempt
+html_exam.php          HTML exam delivery page (upload / take / results)
 lib/config.php         paths, limits, skill name
-lib/db.php             SQLite metadata (exams table)
+lib/db.php             SQLite metadata (exams + html_exams + html_exam_attempts tables)
 assets/                site + exam app CSS/JS
 data/                  exam.db, job folders, logs (web-inaccessible)
 humanizer/             Essay Humanizer microservice (UI, API, Scorer, Groq client)
