@@ -294,6 +294,14 @@ main.container {
     opacity: 1;
     transform: translateY(-1px);
 }
+.nav-link.is-current {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.09);
+    box-shadow: var(--glass-specular);
+}
+.nav-link.is-current svg {
+    opacity: 1;
+}
 
 /* Header Actions & Token Badge */
 .header-actions {

@@ -40,13 +40,6 @@
     z-index: 1;
 }
 
-.nav-link.is-current {
-    color: #ffffff;
-    background: rgba(255, 255, 255, 0.09);
-    box-shadow: var(--glass-specular);
-}
-.nav-link.is-current svg { opacity: 1; }
-
 /* ===== STEP WIZARD ===== */
 .step-wizard {
     display: flex;

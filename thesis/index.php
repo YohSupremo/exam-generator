@@ -14,85 +14,19 @@
   <link rel="stylesheet" href="../assets/site.css?v=<?= filemtime(__DIR__ . '/../assets/site.css') ?>">
   <link rel="stylesheet" href="assets/thesis.css?v=<?= filemtime(__DIR__ . '/assets/thesis.css') ?>">
 </head>
-<body>
+<body data-api-base="../api/">
 
 <!-- Ambient lighting — same treatment as the exam generator -->
 <div class="ambient-glow ambient-top-left" aria-hidden="true"></div>
 <div class="ambient-glow ambient-top-right" aria-hidden="true"></div>
 
-<!-- ===================== NAVBAR ===================== -->
-<header class="site-header" id="site-header">
-  <div class="container header-inner">
-
-    <a class="brand" href="../index.php" aria-label="SynthExam home">
-      <div class="brand-logo-wrap">
-        <svg class="brand-logo-svg" width="38" height="38" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="thBrandBg" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#27272a"/>
-              <stop offset="50%" stop-color="#18181b"/>
-              <stop offset="100%" stop-color="#09090b"/>
-            </linearGradient>
-            <linearGradient id="thBrandStroke" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ffffff"/>
-              <stop offset="50%" stop-color="#a1a1aa"/>
-              <stop offset="100%" stop-color="#52525b"/>
-            </linearGradient>
-            <linearGradient id="thFacetTop" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ffffff"/>
-              <stop offset="100%" stop-color="#d4d4d8"/>
-            </linearGradient>
-            <linearGradient id="thFacetLeft" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#a1a1aa"/>
-              <stop offset="100%" stop-color="#52525b"/>
-            </linearGradient>
-            <linearGradient id="thFacetRight" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#71717a"/>
-              <stop offset="100%" stop-color="#27272a"/>
-            </linearGradient>
-          </defs>
-          <rect x="1" y="1" width="38" height="38" rx="11" fill="url(#thBrandBg)" stroke="url(#thBrandStroke)" stroke-width="1.3"/>
-          <path d="M20 9L29 14.2L20 19.4L11 14.2L20 9Z" fill="url(#thFacetTop)"/>
-          <path d="M11 14.2L20 19.4V29.8L11 24.6V14.2Z" fill="url(#thFacetLeft)"/>
-          <path d="M20 19.4L29 14.2V24.6L20 29.8V19.4Z" fill="url(#thFacetRight)"/>
-          <path d="M20 9L20 19.4M11 14.2L20 19.4L29 14.2M20 19.4L20 29.8" stroke="rgba(255,255,255,0.45)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M20 12L20.9 14.1L23 15L20.9 15.9L20 18L19.1 15.9L17 15L19.1 14.1L20 12Z" fill="#ffffff"/>
-        </svg>
-      </div>
-      <div class="brand-text">
-        <div class="brand-name-row">
-          <span class="brand-name">Synth<span class="brand-name-gradient">Exam</span></span>
-          <span class="brand-ai-badge">Thesis</span>
-        </div>
-        <span class="brand-sub">Research Title Studio</span>
-      </div>
-    </a>
-
-    <nav class="site-nav" aria-label="Main navigation">
-      <a class="nav-link" href="../index.php#upload">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        <span>Exam Generator</span>
-      </a>
-      <a class="nav-link is-current" href="index.php" aria-current="page">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-        <span>Thesis Maker</span>
-      </a>
-      <a class="nav-link" href="../index.php#backend">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
-        <span>System Health</span>
-      </a>
-    </nav>
-
-    <div class="header-actions">
-      <div class="live-users-badge" id="live-users-badge" title="Live active users on website">
-        <span class="live-dot" aria-hidden="true"></span>
-        <span class="live-users-count" id="live-users-count">1</span>
-        <span class="live-users-label">online</span>
-      </div>
-    </div>
-
-  </div>
-</header>
+<?php
+$navBase       = '../';
+$navActive     = 'thesis';
+$navBrandBadge = 'Thesis';
+$navBrandSub   = 'Research Title Studio';
+require __DIR__ . '/../lib/site_header.php';
+?>
 
 <main class="container thesis-app">
 
@@ -376,16 +310,8 @@
   </div>
 </div>
 
+<script src="../assets/nav.js"></script>
 <script src="assets/thesis.js"></script>
 <script src="../assets/presence.js"></script>
-<script>
-  // Match the exam generator's sticky-header scroll treatment.
-  (function () {
-    const header = document.getElementById('site-header');
-    const update = () => header.classList.toggle('scrolled', window.scrollY > 12);
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-  })();
-</script>
 </body>
 </html>
