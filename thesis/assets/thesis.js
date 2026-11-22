@@ -36,10 +36,10 @@ const toastStack = (() => {
 })();
 
 function showToast(msg, type = 'info', duration = 3200) {
-  const icons = { success: '✓', error: '✕', info: 'ℹ', gold: '⭐' };
+  const icons = { success: 'check_circle', error: 'error', info: 'info', gold: 'star' };
   const t = document.createElement('div');
   t.className = `toast toast-${type}`;
-  t.innerHTML = `<span>${icons[type] || 'ℹ'}</span><span>${msg}</span>`;
+  t.innerHTML = `<span class="material-symbols-rounded" aria-hidden="true">${icons[type] || 'info'}</span><span>${msg}</span>`;
   toastStack.appendChild(t);
   setTimeout(() => {
     t.classList.add('hide');
@@ -198,7 +198,7 @@ async function fetchProblems(forceMode) {
     showToast(`Found ${data.problems.length} research problems in ${data.location}`, 'success');
   } catch (err) {
     grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:var(--accent-red); padding:40px 0;">
-      <div style="font-size:28px;margin-bottom:10px;">⚠</div>
+      <div style="margin-bottom:10px;"><span class="material-symbols-rounded" style="font-size:34px;color:#fda4af;" aria-hidden="true">error_outline</span></div>
       <div style="font-weight:600; margin-bottom:6px;">Failed to load problems</div>
       <div style="font-size:13px; color:var(--text-secondary);">${err.message}</div>
       <button onclick="fetchProblems()" style="margin-top:16px;" class="btn-secondary">Try Again</button>
@@ -330,7 +330,7 @@ async function fetchTitles() {
     if (meta) meta.textContent = `${State.titles.length} titles · ${State.field} · ${State.location} · via ${data.model}`;
   } catch (err) {
     list.innerHTML = `<div style="text-align:center; color:var(--accent-red); padding:40px 0;">
-      <div style="font-size:28px;margin-bottom:10px;">⚠</div>
+      <div style="margin-bottom:10px;"><span class="material-symbols-rounded" style="font-size:34px;color:#fda4af;" aria-hidden="true">error_outline</span></div>
       <div style="font-weight:600; margin-bottom:6px;">Failed to generate titles</div>
       <div style="font-size:13px; color:var(--text-secondary);">${err.message}</div>
       <button onclick="fetchTitles()" style="margin-top:16px;" class="btn-secondary">Retry</button>
@@ -367,8 +367,8 @@ function renderTitles() {
         <div class="title-num">${String(i+1).padStart(2,'0')}</div>
         <div class="title-text" id="title-text-${i}">${t.title}</div>
         <div class="title-actions">
-          <button class="icon-btn ${isFav ? 'active' : ''}" title="Favorite" onclick="toggleFavorite(${i})" id="fav-btn-${i}">⭐</button>
-          <button class="icon-btn" title="Copy title" onclick="copyTitle(${i})">📋</button>
+          <button class="icon-btn ${isFav ? 'active' : ''}" title="Favorite" onclick="toggleFavorite(${i})" id="fav-btn-${i}"><span class="material-symbols-rounded" aria-hidden="true">star</span></button>
+          <button class="icon-btn" title="Copy title" onclick="copyTitle(${i})"><span class="material-symbols-rounded" aria-hidden="true">content_copy</span></button>
         </div>
       </div>
       <div class="title-meta-row">
@@ -378,7 +378,7 @@ function renderTitles() {
       </div>
       ${t.rationale ? `<div class="title-rationale">${t.rationale}</div>` : ''}
       ${varChips ? `<div class="title-variables">${varChips}</div>` : ''}
-      <button class="btn-analyze-title" onclick="openAnalyzeModal(${i})">🔍 Analyze this title</button>
+      <button class="btn-analyze-title" onclick="openAnalyzeModal(${i})"><span class="material-symbols-rounded" aria-hidden="true">analytics</span> Analyze this title</button>
     </div>`;
   }).join('');
 }
@@ -543,7 +543,7 @@ async function analyzeTitle(titleText, idx) {
         </div>` : ''}`;
   } catch (err) {
     content.innerHTML = `<div style="text-align:center; color:var(--accent-red); padding:32px 0;">
-      <div style="font-size:26px;margin-bottom:8px;">⚠</div>
+      <div style="margin-bottom:8px;"><span class="material-symbols-rounded" style="font-size:30px;color:#fda4af;" aria-hidden="true">error_outline</span></div>
       <div>${err.message}</div>
     </div>`;
     showToast(err.message, 'error');
