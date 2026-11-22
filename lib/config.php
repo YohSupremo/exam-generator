@@ -40,6 +40,13 @@ if (is_file(APP_ROOT . '/.env')) {
     }
 }
 
+// Temporary lock for the HTML Exam Delivery service ("HTML exam streamer").
+// Locked by default: set HTML_EXAM_LOCKED=0 in .env (or change the fallback below)
+// and restart Apache to re-enable uploads, streaming, taking and submitting.
+$htmlExamLockEnv = getenv('HTML_EXAM_LOCKED');
+$htmlExamLockEnv = $htmlExamLockEnv === false ? '1' : strtolower(trim($htmlExamLockEnv));
+define('HTML_EXAM_LOCKED', !in_array($htmlExamLockEnv, ['0', 'false', 'off', 'no'], true));
+
 // AI Provider Credentials & Model Configuration
 define('GROQ_API_KEY', getenv('GROQ_API_KEY') ?: '');
 define('OPENROUTER_API_KEY', getenv('OPENROUTER_API_KEY') ?: '');

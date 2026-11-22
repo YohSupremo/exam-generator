@@ -2,6 +2,9 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../lib/db.php';
+require_once __DIR__ . '/../lib/html_exam_lock.php';
+
+html_exam_lock_guard(true);
 
 header('Content-Type: application/json; charset=utf-8');
 

@@ -2,6 +2,9 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../lib/db.php';
+require_once __DIR__ . '/../lib/html_exam_lock.php';
+
+html_exam_lock_guard(true);
 
 $id = preg_replace('/[^A-Za-z0-9\-_]/', '', (string)($_GET['id'] ?? ''));
 

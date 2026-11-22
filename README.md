@@ -104,6 +104,10 @@ data/html_exams/<id>/exam.html
   **attempt number** per exam; results are stored per attempt and retakes start at #2, #3…
 - **Multi-user**: any user holding the exam ID can open and take the same exam at the
   same time; attempts and scores are tracked per user.
+- **Temporarily locked**: `HTML_EXAM_LOCKED` defaults to on, so `html_exam.php`,
+  `api/html_get.php` and `api/html_submit.php` all return **503** and the nav links are
+  hidden. To re-enable, set `HTML_EXAM_LOCKED=0` in `.env` (or flip the fallback in
+  `lib/config.php`) and restart Apache. Existing exams/attempts are untouched.
 
 ## Notes / limitations
 
